@@ -161,7 +161,7 @@ export default function Admin() {
         body: JSON.stringify(payload),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to add partner");
+      if (!res.ok) throw new Error(data.error || "Failed to add affiliate");
       setAffiliateForm({
         name: "",
         description: "",
@@ -176,7 +176,7 @@ export default function Admin() {
       });
       fetchAffiliatesAdmin();
     } catch (err) {
-      setError("Error adding partner");
+      setError("Error adding affiliate");
     }
   }
 
@@ -197,11 +197,11 @@ export default function Admin() {
         body: JSON.stringify(payload),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to update partner");
+      if (!res.ok) throw new Error(data.error || "Failed to update affiliate");
       setAffiliateEditId(null);
       fetchAffiliatesAdmin();
     } catch (err) {
-      setError("Error updating partner");
+      setError("Error updating affiliate");
     }
   }
 
@@ -214,10 +214,10 @@ export default function Admin() {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.error || "Failed to delete partner");
+      if (!res.ok) throw new Error(data.error || "Failed to delete affiliate");
       fetchAffiliatesAdmin();
     } catch (err) {
-      setError("Error deleting partner");
+      setError("Error deleting affiliate");
     }
   }
 
@@ -1441,7 +1441,10 @@ export default function Admin() {
                     placeholder="https://example.com"
                     value={affiliateForm.website}
                     onChange={(e) =>
-                      setAffiliateForm((f) => ({ ...f, website: e.target.value }))
+                      setAffiliateForm((f) => ({
+                        ...f,
+                        website: e.target.value,
+                      }))
                     }
                     required
                   />
