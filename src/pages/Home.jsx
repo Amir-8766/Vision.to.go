@@ -9,7 +9,7 @@ import ImageSlider from "../components/ImageSlider";
 
 export default function Home() {
   const [newestProducts, setNewestProducts] = useState([]);
-  const [partners, setPartners] = useState([]);
+  const [affiliates, setAffiliates] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -33,14 +33,14 @@ export default function Home() {
           }
         }
 
-        // Fetch partners
-        const partnersRes = await apiFetch("/partners");
-        if (partnersRes.ok) {
-          const partnersData = await partnersRes.json();
-          setPartners(partnersData.slice(0, 3)); // Show only first 3 partners
+        // Fetch affiliates
+        const affiliatesRes = await apiFetch("/partners");
+        if (affiliatesRes.ok) {
+          const affiliatesData = await affiliatesRes.json();
+          setAffiliates(affiliatesData.slice(0, 3)); // Show only first 3 affiliates
         } else {
-          // Fallback partners data
-          const fallbackPartners = [
+          // Fallback affiliates data
+          const fallbackAffiliates = [
             {
               _id: "sample1",
               name: "Paracelsus Gesundheitsakademien",
@@ -139,7 +139,7 @@ export default function Home() {
               isActive: true,
             },
           ];
-          setPartners(fallbackPartners);
+          setAffiliates(fallbackAffiliates);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -376,32 +376,32 @@ export default function Home() {
                   ))}
                 </div>
               ) : (
-                partners.map((partner) => (
-                  <div key={partner._id} className={styles.partnerCard}>
+                affiliates.map((affiliate) => (
+                  <div key={affiliate._id} className={styles.partnerCard}>
                     <div className={styles.partnerImage}>
                       <OptimizedImage
-                        src={partner.featuredImage || "/line-woman12.png"}
-                        alt={partner.name}
+                        src={affiliate.featuredImage || "/line-woman12.png"}
+                        alt={affiliate.name}
                         className={styles.partnerImageContent}
                         priority={false}
                       />
                     </div>
                     <div className={styles.partnerInfo}>
-                      <h3 className={styles.partnerName}>{partner.name}</h3>
+                      <h3 className={styles.partnerName}>{affiliate.name}</h3>
                       <p className={styles.partnerDescription}>
-                        {partner.description?.substring(0, 100)}...
+                        {affiliate.description?.substring(0, 100)}...
                       </p>
                       <div className={styles.partnerCategory}>
-                        {partner.category === "education" && "🎓 Ausbildung"}
-                        {partner.category === "natural_products" &&
+                        {affiliate.category === "education" && "🎓 Ausbildung"}
+                        {affiliate.category === "natural_products" &&
                           "🌿 Naturprodukte"}
-                        {partner.category === "fashion" && "👗 Mode"}
-                        {partner.category === "health_wellness" &&
+                        {affiliate.category === "fashion" && "👗 Mode"}
+                        {affiliate.category === "health_wellness" &&
                           "💊 Gesundheit"}
-                        {partner.category === "beauty" && "💄 Schönheit"}
-                        {partner.category === "sustainability" &&
+                        {affiliate.category === "beauty" && "💄 Schönheit"}
+                        {affiliate.category === "sustainability" &&
                           "♻️ Nachhaltigkeit"}
-                        {partner.category === "other" && "🔗 Andere"}
+                        {affiliate.category === "other" && "🔗 Andere"}
                       </div>
                     </div>
                   </div>
@@ -409,9 +409,9 @@ export default function Home() {
               )}
             </div>
             <div className={styles.partnersCTA}>
-              <Link to="/partners">
+              <Link to="/affiliates">
                 <button className={styles.partnersButton}>
-                  Alle Partner entdecken
+                  Alle Affiliates entdecken
                 </button>
               </Link>
             </div>

@@ -6,12 +6,12 @@ import { getImageUrl } from "../lib/api";
 export default function Admin() {
   const [products, setProducts] = useState([]);
   const [commissionProducts, setCommissionProducts] = useState([]);
-  const [partnersAdmin, setPartnersAdmin] = useState([]);
+  const [affiliatesAdmin, setAffiliatesAdmin] = useState([]);
   const [loading, setLoading] = useState(true);
   const [commissionLoading, setCommissionLoading] = useState(true);
-  const [partnersLoading, setPartnersLoading] = useState(true);
+  const [affiliatesLoading, setAffiliatesLoading] = useState(true);
   const [error, setError] = useState("");
-  const [activeTab, setActiveTab] = useState("products"); // "products" | "commission" | "partners" | "slider"
+  const [activeTab, setActiveTab] = useState("products"); // "products" | "commission" | "affiliates" | "slider"
   const [sliderImagesAdmin, setSliderImagesAdmin] = useState([]);
   const [sliderForm, setSliderForm] = useState({
     imageUrl: "",
@@ -77,8 +77,8 @@ export default function Admin() {
   const [imageUrls, setImageUrls] = useState([]);
   const [selectedFilesCount, setSelectedFilesCount] = useState(0);
 
-  // Partners admin forms
-  const [partnerForm, setPartnerForm] = useState({
+  // Affiliates admin forms
+  const [affiliateForm, setAffiliateForm] = useState({
     name: "",
     description: "",
     website: "",
@@ -90,8 +90,8 @@ export default function Admin() {
     logo: "",
     featuredImage: "",
   });
-  const [partnerEditId, setPartnerEditId] = useState(null);
-  const [partnerEditForm, setPartnerEditForm] = useState({
+  const [affiliateEditId, setAffiliateEditId] = useState(null);
+  const [affiliateEditForm, setAffiliateEditForm] = useState({
     name: "",
     description: "",
     website: "",
@@ -108,7 +108,7 @@ export default function Admin() {
   useEffect(() => {
     fetchProducts();
     fetchCommissionProducts();
-    fetchPartnersAdmin();
+    fetchAffiliatesAdmin();
     fetchSliderAdmin();
   }, []);
 
@@ -125,34 +125,34 @@ export default function Admin() {
     }
   }
 
-  // Partners admin
-  async function fetchPartnersAdmin() {
-    setPartnersLoading(true);
+  // Affiliates admin
+  async function fetchAffiliatesAdmin() {
+    setAffiliatesLoading(true);
     try {
       const token = localStorage.getItem("token");
       const res = await apiFetch("/partners/admin", {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to load partners");
-      setPartnersAdmin(data);
+      if (!res.ok) throw new Error(data.error || "Failed to load affiliates");
+      setAffiliatesAdmin(data);
     } catch (err) {
-      setError("Error fetching partners");
+      setError("Error fetching affiliates");
     } finally {
-      setPartnersLoading(false);
+      setAffiliatesLoading(false);
     }
   }
 
-  async function handleAddPartner(e) {
+  async function handleAddAffiliate(e) {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
       const payload = {
-        ...partnerForm,
-        logo: partnerForm.logo,
-        featuredImage: partnerForm.featuredImage,
-        services: partnerForm.services
-          ? partnerForm.services.split(",").map((s) => s.trim())
+        ...affiliateForm,
+        logo: affiliateForm.logo,
+        featuredImage: affiliateForm.featuredImage,
+        services: affiliateForm.services
+          ? affiliateForm.services.split(",").map((s) => s.trim())
           : [],
       };
       const res = await apiFetch("/partners", {
@@ -162,7 +162,7 @@ export default function Admin() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to add partner");
-      setPartnerForm({
+      setAffiliateForm({
         name: "",
         description: "",
         website: "",
@@ -174,21 +174,21 @@ export default function Admin() {
         logo: "",
         featuredImage: "",
       });
-      fetchPartnersAdmin();
+      fetchAffiliatesAdmin();
     } catch (err) {
       setError("Error adding partner");
     }
   }
 
-  async function handleUpdatePartner(id) {
+  async function handleUpdateAffiliate(id) {
     try {
       const token = localStorage.getItem("token");
       const payload = {
-        ...partnerEditForm,
-        logo: partnerEditForm.logo,
-        featuredImage: partnerEditForm.featuredImage,
-        services: partnerEditForm.services
-          ? partnerEditForm.services.split(",").map((s) => s.trim())
+        ...affiliateEditForm,
+        logo: affiliateEditForm.logo,
+        featuredImage: affiliateEditForm.featuredImage,
+        services: affiliateEditForm.services
+          ? affiliateEditForm.services.split(",").map((s) => s.trim())
           : [],
       };
       const res = await apiFetch(`/partners/${id}`, {
@@ -198,14 +198,14 @@ export default function Admin() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to update partner");
-      setPartnerEditId(null);
-      fetchPartnersAdmin();
+      setAffiliateEditId(null);
+      fetchAffiliatesAdmin();
     } catch (err) {
       setError("Error updating partner");
     }
   }
 
-  async function handleDeletePartner(id) {
+  async function handleDeleteAffiliate(id) {
     if (!window.confirm("Are you sure?")) return;
     try {
       const token = localStorage.getItem("token");
@@ -215,7 +215,7 @@ export default function Admin() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || "Failed to delete partner");
-      fetchPartnersAdmin();
+      fetchAffiliatesAdmin();
     } catch (err) {
       setError("Error deleting partner");
     }
@@ -629,14 +629,14 @@ export default function Admin() {
           Commission Products
         </button>
         <button
-          onClick={() => setActiveTab("partners")}
+          onClick={() => setActiveTab("affiliates")}
           className={`px-4 py-2 rounded ${
-            activeTab === "partners"
+            activeTab === "affiliates"
               ? "bg-pink-600 text-white"
               : "bg-gray-200 text-gray-700"
           }`}
         >
-          Partners
+          Affiliates
         </button>
         <button
           onClick={() => setActiveTab("slider")}
@@ -1422,16 +1422,16 @@ export default function Admin() {
               </>
             )}
 
-            {activeTab === "partners" && (
+            {activeTab === "affiliates" && (
               <>
-                <form onSubmit={handleAddPartner} className="mb-6 space-y-2">
+                <form onSubmit={handleAddAffiliate} className="mb-6 space-y-2">
                   <div className="font-bold">Name</div>
                   <input
                     className="w-full border p-2 rounded"
                     placeholder="Name"
-                    value={partnerForm.name}
+                    value={affiliateForm.name}
                     onChange={(e) =>
-                      setPartnerForm((f) => ({ ...f, name: e.target.value }))
+                      setAffiliateForm((f) => ({ ...f, name: e.target.value }))
                     }
                     required
                   />
@@ -1439,9 +1439,9 @@ export default function Admin() {
                   <input
                     className="w-full border p-2 rounded"
                     placeholder="https://example.com"
-                    value={partnerForm.website}
+                    value={affiliateForm.website}
                     onChange={(e) =>
-                      setPartnerForm((f) => ({ ...f, website: e.target.value }))
+                      setAffiliateForm((f) => ({ ...f, website: e.target.value }))
                     }
                     required
                   />
@@ -1449,9 +1449,9 @@ export default function Admin() {
                   <input
                     className="w-full border p-2 rounded"
                     placeholder="https://instagram.com/..."
-                    value={partnerForm.instagram}
+                    value={affiliateForm.instagram}
                     onChange={(e) =>
-                      setPartnerForm((f) => ({
+                      setAffiliateForm((f) => ({
                         ...f,
                         instagram: e.target.value,
                       }))
@@ -1461,9 +1461,9 @@ export default function Admin() {
                   <textarea
                     className="w-full border p-2 rounded"
                     placeholder="Short description"
-                    value={partnerForm.description}
+                    value={affiliateForm.description}
                     onChange={(e) =>
-                      setPartnerForm((f) => ({
+                      setAffiliateForm((f) => ({
                         ...f,
                         description: e.target.value,
                       }))
@@ -1473,9 +1473,9 @@ export default function Admin() {
                   <div className="font-bold">Category</div>
                   <select
                     className="w-full border p-2 rounded"
-                    value={partnerForm.category}
+                    value={affiliateForm.category}
                     onChange={(e) =>
-                      setPartnerForm((f) => ({
+                      setAffiliateForm((f) => ({
                         ...f,
                         category: e.target.value,
                       }))
@@ -1493,9 +1493,9 @@ export default function Admin() {
                   <input
                     className="w-full border p-2 rounded"
                     placeholder="Service A, Service B"
-                    value={partnerForm.services}
+                    value={affiliateForm.services}
                     onChange={(e) =>
-                      setPartnerForm((f) => ({
+                      setAffiliateForm((f) => ({
                         ...f,
                         services: e.target.value,
                       }))
@@ -1504,9 +1504,9 @@ export default function Admin() {
                   <div className="font-bold">Partnership Type</div>
                   <select
                     className="w-full border p-2 rounded"
-                    value={partnerForm.partnershipType}
+                    value={affiliateForm.partnershipType}
                     onChange={(e) =>
-                      setPartnerForm((f) => ({
+                      setAffiliateForm((f) => ({
                         ...f,
                         partnershipType: e.target.value,
                       }))
@@ -1535,13 +1535,13 @@ export default function Admin() {
                         body: formData,
                       });
                       const data = await res.json();
-                      setPartnerForm((f) => ({ ...f, logo: data.imageUrl }));
+                      setAffiliateForm((f) => ({ ...f, logo: data.imageUrl }));
                     }}
                     className="w-full border p-2 rounded"
                   />
-                  {partnerForm.logo && (
+                  {affiliateForm.logo && (
                     <img
-                      src={getImageUrl(partnerForm.logo)}
+                      src={getImageUrl(affiliateForm.logo)}
                       alt="Logo preview"
                       className="w-16 h-16 object-cover rounded border mt-2"
                     />
@@ -1566,16 +1566,16 @@ export default function Admin() {
                         body: formData,
                       });
                       const data = await res.json();
-                      setPartnerForm((f) => ({
+                      setAffiliateForm((f) => ({
                         ...f,
                         featuredImage: data.imageUrl,
                       }));
                     }}
                     className="w-full border p-2 rounded"
                   />
-                  {partnerForm.featuredImage && (
+                  {affiliateForm.featuredImage && (
                     <img
-                      src={getImageUrl(partnerForm.featuredImage)}
+                      src={getImageUrl(affiliateForm.featuredImage)}
                       alt="Featured preview"
                       className="w-24 h-16 object-cover rounded border mt-2"
                     />
@@ -1584,9 +1584,9 @@ export default function Admin() {
                     <input
                       id="partner-active"
                       type="checkbox"
-                      checked={partnerForm.isActive}
+                      checked={affiliateForm.isActive}
                       onChange={(e) =>
-                        setPartnerForm((f) => ({
+                        setAffiliateForm((f) => ({
                           ...f,
                           isActive: e.target.checked,
                         }))
@@ -1600,32 +1600,32 @@ export default function Admin() {
                     type="submit"
                     className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
                   >
-                    Add Partner
+                    Add Affiliate
                   </button>
                 </form>
 
-                {partnersLoading ? (
-                  <p>Loading partners...</p>
+                {affiliatesLoading ? (
+                  <p>Loading affiliates...</p>
                 ) : (
                   <ul className="space-y-2">
-                    {partnersAdmin.map((p) => (
+                    {affiliatesAdmin.map((p) => (
                       <li
                         key={p._id}
                         className="flex justify-between items-start border p-2 rounded"
                       >
-                        {partnerEditId === p._id ? (
+                        {affiliateEditId === p._id ? (
                           <form
                             onSubmit={(e) => {
                               e.preventDefault();
-                              handleUpdatePartner(p._id);
+                              handleUpdateAffiliate(p._id);
                             }}
                             className="flex flex-col gap-2 w-full"
                           >
                             <input
                               className="border p-2 rounded"
-                              value={partnerEditForm.name}
+                              value={affiliateEditForm.name}
                               onChange={(e) =>
-                                setPartnerEditForm((f) => ({
+                                setAffiliateEditForm((f) => ({
                                   ...f,
                                   name: e.target.value,
                                 }))
@@ -1635,9 +1635,9 @@ export default function Admin() {
                             <input
                               className="border p-2 rounded"
                               placeholder="https://example.com"
-                              value={partnerEditForm.website}
+                              value={affiliateEditForm.website}
                               onChange={(e) =>
-                                setPartnerEditForm((f) => ({
+                                setAffiliateEditForm((f) => ({
                                   ...f,
                                   website: e.target.value,
                                 }))
@@ -1647,9 +1647,9 @@ export default function Admin() {
                             <input
                               className="border p-2 rounded"
                               placeholder="https://instagram.com/..."
-                              value={partnerEditForm.instagram || ""}
+                              value={affiliateEditForm.instagram || ""}
                               onChange={(e) =>
-                                setPartnerEditForm((f) => ({
+                                setAffiliateEditForm((f) => ({
                                   ...f,
                                   instagram: e.target.value,
                                 }))
@@ -1657,9 +1657,9 @@ export default function Admin() {
                             />
                             <textarea
                               className="border p-2 rounded"
-                              value={partnerEditForm.description}
+                              value={affiliateEditForm.description}
                               onChange={(e) =>
-                                setPartnerEditForm((f) => ({
+                                setAffiliateEditForm((f) => ({
                                   ...f,
                                   description: e.target.value,
                                 }))
@@ -1667,9 +1667,9 @@ export default function Admin() {
                             />
                             <select
                               className="border p-2 rounded"
-                              value={partnerEditForm.category}
+                              value={affiliateEditForm.category}
                               onChange={(e) =>
-                                setPartnerEditForm((f) => ({
+                                setAffiliateEditForm((f) => ({
                                   ...f,
                                   category: e.target.value,
                                 }))
@@ -1694,9 +1694,9 @@ export default function Admin() {
                             <input
                               className="border p-2 rounded"
                               placeholder="Service A, Service B"
-                              value={partnerEditForm.services}
+                              value={affiliateEditForm.services}
                               onChange={(e) =>
-                                setPartnerEditForm((f) => ({
+                                setAffiliateEditForm((f) => ({
                                   ...f,
                                   services: e.target.value,
                                 }))
@@ -1704,9 +1704,9 @@ export default function Admin() {
                             />
                             <select
                               className="border p-2 rounded"
-                              value={partnerEditForm.partnershipType}
+                              value={affiliateEditForm.partnershipType}
                               onChange={(e) =>
-                                setPartnerEditForm((f) => ({
+                                setAffiliateEditForm((f) => ({
                                   ...f,
                                   partnershipType: e.target.value,
                                 }))
@@ -1721,9 +1721,9 @@ export default function Admin() {
                               <input
                                 id={`edit-active-${p._id}`}
                                 type="checkbox"
-                                checked={!!partnerEditForm.isActive}
+                                checked={!!affiliateEditForm.isActive}
                                 onChange={(e) =>
-                                  setPartnerEditForm((f) => ({
+                                  setAffiliateEditForm((f) => ({
                                     ...f,
                                     isActive: e.target.checked,
                                   }))
@@ -1746,7 +1746,7 @@ export default function Admin() {
                               <button
                                 type="button"
                                 className="bg-gray-300 px-3 py-1 rounded"
-                                onClick={() => setPartnerEditId(null)}
+                                onClick={() => setAffiliateEditId(null)}
                               >
                                 Cancel
                               </button>
@@ -1777,8 +1777,8 @@ export default function Admin() {
                         <div className="flex flex-col gap-2 ml-4">
                           <button
                             onClick={() => {
-                              setPartnerEditId(p._id);
-                              setPartnerEditForm({
+                              setAffiliateEditId(p._id);
+                              setAffiliateEditForm({
                                 name: p.name || "",
                                 description: p.description || "",
                                 website: p.website || "",
@@ -1797,7 +1797,7 @@ export default function Admin() {
                             Edit
                           </button>
                           <button
-                            onClick={() => handleDeletePartner(p._id)}
+                            onClick={() => handleDeleteAffiliate(p._id)}
                             className="text-red-600 hover:underline"
                           >
                             Delete

@@ -39,7 +39,7 @@ const Terms = React.lazy(() => import("./pages/Terms"));
 const Privacy = React.lazy(() => import("./pages/Privacy"));
 const Impressum = React.lazy(() => import("./pages/Impressum"));
 const FAQ = React.lazy(() => import("./pages/FAQ"));
-import Partners from "./pages/Partners";
+import Affiliates from "./pages/Affiliates";
 import CookieBanner from "./components/CookieBanner";
 
 const AuthSuccess = React.lazy(() => import("./pages/AuthSuccess"));
@@ -396,7 +396,7 @@ function Navigation() {
             "/services",
             "/about",
             "/products",
-            "/partners",
+            "/affiliates",
             "/commission",
           ].map((path, idx) => {
             const names = [
@@ -404,7 +404,7 @@ function Navigation() {
               "SERVICES",
               "ABOUT US",
               "PRODUCTS",
-              "PARTNER",
+              "AFFILIATES",
               "COMMISSION",
             ];
             return (
@@ -555,7 +555,7 @@ function Navigation() {
             "/services",
             "/about",
             "/products",
-            "/partners",
+            "/affiliates",
             "/commission",
           ].map((path, idx) => {
             const names = [
@@ -563,7 +563,7 @@ function Navigation() {
               "SERVICES",
               "ABOUT US",
               "PRODUCTS",
-              "PARTNER",
+              "AFFILIATES",
               "COMMISSION",
             ];
             return (
@@ -730,7 +730,7 @@ export default function App() {
                         <Route path="/services" element={<Services />} />
                         <Route path="/about" element={<About />} />
                         <Route path="/products" element={<Products />} />
-                        <Route path="/partners" element={<Partners />} />
+                        <Route path="/affiliates" element={<Affiliates />} />
                         <Route
                           path="/checkout"
                           element={
