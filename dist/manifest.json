@@ -1,0 +1,27 @@
+{
+  "name": "The Grrrls Club",
+  "short_name": "Grrrls Club",
+  "description": "Fashion & Lifestyle Shopping Platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#DE5499",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["shopping", "fashion", "lifestyle"],
+  "lang": "en",
+  "dir": "ltr"
+}

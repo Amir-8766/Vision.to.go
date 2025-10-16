@@ -1,0 +1,130 @@
+/* Container کلی */
+.checkout-container {
+  max-width: 480px;
+  margin: 3rem auto;
+  padding: 2.5rem 2rem;
+  background: #f2ebe9; /* روشن‌ترین رنگ پالت */
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(34, 31, 33, 0.1);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #221f21; /* تیره‌ترین رنگ متن */
+}
+
+/* تیتر */
+.checkout-container h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #264143; /* سبز تیره، برای تیتر */
+  margin-bottom: 1.75rem;
+  text-align: center;
+  letter-spacing: 0.03em;
+}
+
+/* فرم پرداخت */
+.checkout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+}
+
+/* Payment Element */
+.StripeElement {
+  background: #eddcd9; /* رنگ ملایم پس‌زمینه فرم */
+  padding: 0.85rem 1.2rem;
+  border: 1.8px solid #50514f; /* خاکستری تیره */
+  border-radius: 12px;
+  font-size: 1.05rem;
+  transition: border-color 0.3s ease;
+  color: #221f21;
+}
+
+.StripeElement:focus {
+  border-color: #de5499; /* رنگ صورتی برای فوکوس */
+  box-shadow: 0 0 8px rgba(222, 84, 153, 0.35);
+  outline: none;
+}
+
+/* دکمه پرداخت */
+.checkout-form button {
+  background: #de5499; /* صورتی */
+  color: #f2ebe9; /* سفید کرم */
+  padding: 0.9rem 1.4rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 6px 12px rgba(222, 84, 153, 0.5);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.checkout-form button:hover:not(:disabled) {
+  background: #e99f4c; /* نارنجی ملایم */
+  box-shadow: 0 8px 16px rgba(233, 159, 76, 0.65);
+}
+
+.checkout-form button:disabled {
+  background: #50514f; /* خاکستری */
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* پیام‌ها */
+.message {
+  margin-top: 1.2rem;
+  padding: 1rem 1.1rem;
+  border-radius: 14px;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+/* پیام موفقیت */
+.message.success {
+  background: #264143; /* سبز تیره */
+  color: #f2ebe9; /* روشن */
+  border: 2px solid #e99f4c; /* نارنجی */
+  box-shadow: 0 5px 10px rgba(233, 159, 76, 0.3);
+}
+
+/* پیام خطا */
+.message.error {
+  background: #de5499; /* صورتی */
+  color: #f2ebe9; /* روشن */
+  border: 2px solid #221f21; /* سیاه */
+  box-shadow: 0 5px 10px rgba(34, 31, 33, 0.3);
+}
+
+/* قالب کلی فرم رو کمی محدود و وسط چین کن */
+form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 1rem;
+  width: 100%;
+}
+
+/* دکمه پرداخت */
+button {
+  width: 100%;
+  font-size: 1rem;
+  padding: 12px 0;
+  border-radius: 6px;
+}
+
+/* پیام خطا */
+p {
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+/* ریسپانسیو برای موبایل کوچک‌تر */
+@media (max-width: 480px) {
+  form {
+    max-width: 90%;
+    padding: 0.5rem;
+  }
+  button {
+    font-size: 0.9rem;
+    padding: 10px 0;
+  }
+}

@@ -1,0 +1,207 @@
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../lib/api";
+
+export default function Commission() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedPartner, setSelectedPartner] = useState("all");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/commission`);
+      const data = await response.json();
+      setProducts(data);
+    } catch (error) {
+      console.error("Error fetching commission products:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const uniquePartners = [...new Set(products.map((p) => p.partnerName))];
+  const filteredProducts =
+    selectedPartner === "all"
+      ? products
+      : products.filter((p) => p.partnerName === selectedPartner);
+
+  if (loading) {
+    return <div className="text-center py-8">Loading...</div>;
+  }
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      {/* Header */}
+      <div className="text-center mb-8">
+        <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          Kommissions-Neuware
+        </h1>
+        <p className="text-lg text-gray-600">
+          Entdecken Sie neue Produkte unserer Partner mit attraktiven
+          Kommissionspreisen
+        </p>
+      </div>
+
+      {/* Partner Tabs */}
+      <div className="mb-8">
+        <div className="border-b border-gray-200">
+          <nav className="-mb-px flex space-x-8 justify-center overflow-x-auto">
+            {/* All Partners Tab */}
+            <button
+              onClick={() => setSelectedPartner("all")}
+              className={`whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${
+                selectedPartner === "all"
+                  ? "border-pink-500 text-pink-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-lg">🏪</span>
+                Alle Partner ({products.length})
+              </div>
+            </button>
+
+            {/* Individual Partner Tabs */}
+            {uniquePartners.map((partner) => {
+              const partnerProducts = products.filter(
+                (p) => p.partnerName === partner
+              );
+              const partnerLogo = partnerProducts[0]?.partnerLogo;
+
+              return (
+                <button
+                  key={partner}
+                  onClick={() => setSelectedPartner(partner)}
+                  className={`whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${
+                    selectedPartner === partner
+                      ? "border-pink-500 text-pink-600"
+                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    {partnerLogo ? (
+                      <img
+                        src={BASE_URL + partnerLogo}
+                        alt={partner}
+                        className="w-5 h-5 rounded-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-lg">🏢</span>
+                    )}
+                    <span>{partner}</span>
+                    <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs">
+                      {partnerProducts.length}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </nav>
+        </div>
+
+        {/* Tab Content Indicator */}
+        <div className="mt-4 text-center">
+          <p className="text-sm text-gray-600">
+            {selectedPartner === "all"
+              ? `Zeige alle ${products.length} Produkte von ${uniquePartners.length} Partnern`
+              : `Zeige ${filteredProducts.length} Produkte von ${selectedPartner}`}
+          </p>
+        </div>
+      </div>
+
+      {/* Products Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {filteredProducts.map((product) => (
+          <div
+            key={product._id}
+            className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group"
+            onClick={() => navigate(`/commission/${product._id}`)}
+          >
+            {/* Product Image */}
+            <div className="aspect-square overflow-hidden relative">
+              <img
+                src={
+                  product.images && product.images.length > 0
+                    ? BASE_URL + product.images[0]
+                    : "/placeholder-image.jpg"
+                }
+                alt={product.name}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+
+              {/* Partner Badge */}
+              <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm rounded-full px-2 py-1 flex items-center gap-1">
+                {product.partnerLogo && (
+                  <img
+                    src={BASE_URL + product.partnerLogo}
+                    alt={product.partnerName}
+                    className="w-4 h-4 rounded-full"
+                  />
+                )}
+                <span className="text-xs font-medium text-gray-700">
+                  {product.partnerName}
+                </span>
+              </div>
+            </div>
+
+            {/* Product Info */}
+            <div className="p-4">
+              {/* Product Name */}
+              <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
+                {product.name}
+              </h3>
+
+              {/* Price */}
+              <div className="text-lg font-bold text-pink-600 mb-2">
+                {product.isDiscounted && product.originalPrice ? (
+                  <div className="flex flex-col gap-1">
+                    <span className="line-through text-red-500 text-sm">
+                      €{product.originalPrice.toLocaleString()}
+                    </span>
+                    <span className="text-pink-600">
+                      €{product.price.toLocaleString()}
+                    </span>
+                    <span className="bg-red-500 text-white px-2 py-1 rounded text-xs font-medium w-fit">
+                      {product.discountLabel || "Last Chance"}
+                    </span>
+                  </div>
+                ) : (
+                  <span>€{product.price.toLocaleString()}</span>
+                )}
+              </div>
+
+              {/* Commission Rate */}
+              <div className="flex items-center justify-between">
+                <div className="text-sm text-gray-500">
+                  Kommission: {product.commissionRate}%
+                </div>
+                <div className="text-xs text-gray-400">
+                  {product.category && `• ${product.category}`}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {filteredProducts.length === 0 && (
+        <div className="text-center py-12">
+          <div className="text-gray-400 text-6xl mb-4">🛍️</div>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">
+            Keine Produkte gefunden
+          </h3>
+          <p className="text-gray-500">
+            {selectedPartner === "all"
+              ? "Es sind derzeit keine Kommissionsprodukte verfügbar."
+              : `Keine Produkte für ${selectedPartner} gefunden.`}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}

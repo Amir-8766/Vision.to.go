@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+/* Ensure proper contrast in dark mode */
+.dark {
+  color-scheme: dark;
+}
+
+/* Logo styling for dark mode - only apply to logo class */
+.dark .logo {
+  filter: brightness(0.7) contrast(0.8) grayscale(0.3);
+  opacity: 0.8;
+}
+
+/* Force rebuild - text visibility fixes */
+
+/* Ensure text readability in dark mode */
+.dark .text-gray-900 {
+  color: rgb(17 24 39);
+}
+
+.dark .text-gray-800 {
+  color: rgb(31 41 55);
+}
+
+.dark .text-gray-700 {
+  color: rgb(55 65 81);
+}
+
+.dark .text-gray-600 {
+  color: rgb(75 85 99);
+}
+
+.dark .text-gray-500 {
+  color: rgb(107 114 128);
+}
+
+/* Custom background for Discover Our Fashion Collection section */
+.slider-info-bg {
+  background-color: #849c22 !important;
+  background: #849c22 !important;
+}
+
+/* Scroll Animation Classes */
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Initial state for sections */
+.opacity-0 {
+  opacity: 0;
+}
+
+.translate-y-8 {
+  transform: translateY(2rem);
+}
+
+/* Transition for smooth animation */
+.transition-all {
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+
+/* Keep login inputs bright on desktop, even after fill/autofill */
+@media (min-width: 768px) {
+  input[type="email"],
+  input[type="password"] {
+    background-color: #ffffff !important;
+    color: #111827 !important; /* gray-900 */
+  }
+
+  input[type="email"]:-webkit-autofill,
+  input[type="password"]:-webkit-autofill {
+    -webkit-text-fill-color: #111827 !important;
+    box-shadow: 0 0 0px 1000px #ffffff inset !important;
+    -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+    transition: background-color 9999s ease-in-out 0s;
+  }
+}
+
+/* Make all inputs in Admin page bright for better contrast */
+.admin-page input,
+.admin-page textarea,
+.admin-page select {
+  background-color: #ffffff !important;
+  color: #111827 !important; /* gray-900 */
+}

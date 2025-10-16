@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Test - The Grrrls Club</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        .test-container { max-width: 1200px; margin: 0 auto; }
+        .size-indicator { 
+            position: fixed; 
+            top: 10px; 
+            right: 10px; 
+            background: #333; 
+            color: white; 
+            padding: 10px; 
+            border-radius: 5px; 
+            z-index: 1000;
+        }
+        .breakpoint-info {
+            background: #f0f0f0;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid #DE5499;
+        }
+        .grid-test {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        @media (max-width: 809px) {
+            .size-indicator { background: #e74c3c; }
+            .grid-test { grid-template-columns: 1fr 1fr; }
+        }
+        @media (min-width: 810px) and (max-width: 1279px) {
+            .size-indicator { background: #f39c12; }
+            .grid-test { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (min-width: 1280px) {
+            .size-indicator { background: #27ae60; }
+            .grid-test { grid-template-columns: repeat(4, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="size-indicator" id="sizeIndicator">Resize to test</div>
+    
+    <div class="test-container">
+        <h1>🎯 Responsive Test - The Grrrls Club</h1>
+        
+        <div class="breakpoint-info">
+            <h3>📱 Breakpoint Status:</h3>
+            <p><strong>809px and below:</strong> Mobile (2 columns)</p>
+            <p><strong>810px - 1279px:</strong> Tablet/Laptop (3 columns)</p>
+            <p><strong>1280px and above:</strong> Desktop (4 columns)</p>
+        </div>
+
+        <h2>Product Grid Test</h2>
+        <div class="grid-test">
+            <div class="card">Product 1</div>
+            <div class="card">Product 2</div>
+            <div class="card">Product 3</div>
+            <div class="card">Product 4</div>
+            <div class="card">Product 5</div>
+            <div class="card">Product 6</div>
+            <div class="card">Product 7</div>
+            <div class="card">Product 8</div>
+        </div>
+
+        <div class="breakpoint-info">
+            <h3>✅ Responsive Features:</h3>
+            <ul>
+                <li>Mobile Navigation (bottom bar)</li>
+                <li>Responsive Product Grids</li>
+                <li>Flexible Layouts</li>
+                <li>Touch-friendly Buttons</li>
+                <li>Optimized Images</li>
+                <li>Readable Typography</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function updateSizeIndicator() {
+            const width = window.innerWidth;
+            const indicator = document.getElementById('sizeIndicator');
+            
+            if (width <= 809) {
+                indicator.textContent = `📱 Mobile: ${width}px`;
+                indicator.style.background = '#e74c3c';
+            } else if (width <= 1279) {
+                indicator.textContent = `�� Tablet: ${width}px`;
+                indicator.style.background = '#f39c12';
+            } else {
+                indicator.textContent = `🖥️ Desktop: ${width}px`;
+                indicator.style.background = '#27ae60';
+            }
+        }
+        
+        window.addEventListener('resize', updateSizeIndicator);
+        updateSizeIndicator();
+    </script>
+</body>
+</html>
