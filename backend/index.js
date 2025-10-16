@@ -20,9 +20,11 @@ cloudinary.config({
 // CORS Configuration
 const allowedOrigins = [
   process.env.FRONTEND_URL,
-  "https://thegrrrlsclub.de",
-  "https://www.thegrrrlsclub.de",
   "http://localhost:5173",
+  "http://localhost:5174",
+  "http://localhost:5175",
+  "http://localhost:5176",
+  "http://localhost:5177",
   "http://localhost:3000",
   "http://127.0.0.1:5173",
   "http://127.0.0.1:3000",
@@ -67,6 +69,10 @@ app.use("/profile", require("./routes/profile"));
 app.use("/wishlist", require("./routes/wishlist"));
 app.use("/featured-products", require("./routes/featuredProducts"));
 app.use("/partners", require("./routes/partners"));
+app.use("/slider", require("./routes/slider"));
+
+// Serve uploaded files statically
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // File upload endpoint - Cloudinary
 app.post("/upload", (req, res) => {
@@ -102,28 +108,22 @@ app.post("/upload", (req, res) => {
     }
 
     try {
-      // Upload to Cloudinary
-      const result = await cloudinary.uploader.upload(req.file.path, {
-        folder: "thegrrrlsclub",
-        use_filename: true,
-        unique_filename: true,
-        resource_type: "auto",
-      });
-
-      // Delete temporary file
-      fs.unlinkSync(req.file.path);
+      // Return local file URL instead of Cloudinary
+      const fileUrl = `/uploads/${req.file.filename}`;
 
       res.json({
         message: "File uploaded successfully",
         filename: req.file.filename,
-        path: result.secure_url,
-        imageUrl: result.secure_url,
+        path: fileUrl,
+        imageUrl: fileUrl,
       });
-    } catch (cloudinaryError) {
-      console.error("Cloudinary upload error:", cloudinaryError);
-      // Delete temporary file
-      fs.unlinkSync(req.file.path);
-      res.status(500).json({ error: "Failed to upload to Cloudinary" });
+    } catch (error) {
+      console.error("Upload error:", error);
+      // Delete temporary file if it exists
+      if (req.file && fs.existsSync(req.file.path)) {
+        fs.unlinkSync(req.file.path);
+      }
+      res.status(500).json({ error: "Failed to upload file" });
     }
   });
 });

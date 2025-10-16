@@ -1,6 +1,5 @@
 // src/lib/api.js
-const BASE_URL =
-  import.meta.env.VITE_BACKEND_URL || "https://api.thegrrrlsclub.de";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:10000";
 
 export { BASE_URL };
 
@@ -60,6 +59,6 @@ export const getEnvironmentInfo = () => {
     baseUrl: BASE_URL,
     environment: import.meta.env.VITE_APP_ENVIRONMENT || "development",
     version: import.meta.env.VITE_APP_VERSION || "1.0.0",
-    appName: import.meta.env.VITE_APP_NAME || "The Grrrls Club",
+    appName: import.meta.env.VITE_APP_NAME || "VisionToGo",
   };
 };

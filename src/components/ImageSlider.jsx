@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDarkMode } from "../hooks/useDarkMode";
+import { apiFetch, BASE_URL } from "../lib/api";
 
 const ImageSlider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -7,11 +8,35 @@ const ImageSlider = () => {
   const intervalRef = useRef(null);
   const isDarkMode = useDarkMode();
 
-  // Array of slider images
-  const sliderImages = Array.from(
-    { length: 14 },
-    (_, i) => `slider-${String(i + 1).padStart(2, "0")}.jpg`
-  );
+  const [sliderImages, setSliderImages] = useState([]);
+
+  // Fetch slider images from backend; fallback to local slide01..slide14
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const res = await apiFetch("/slider");
+        if (res.ok) {
+          const data = await res.json();
+          if (mounted)
+            setSliderImages(data.map((i) => `${BASE_URL}${i.imageUrl}`));
+        } else {
+          throw new Error("bad status");
+        }
+      } catch (_) {
+        if (mounted) {
+          const local = Array.from(
+            { length: 14 },
+            (_, i) => `/slide${String(i + 1).padStart(2, "0")}.jpg`
+          );
+          setSliderImages(local);
+        }
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   // Auto-slide functionality
   useEffect(() => {
@@ -76,17 +101,13 @@ const ImageSlider = () => {
                 >
                   {isVisible ? (
                     <picture>
-                      <source
-                        srcSet={`/${image.replace(".jpg", ".webp")}`}
-                        type="image/webp"
-                      />
                       <img
-                        src={`/${image}`}
+                        src={image.startsWith("http") ? image : `/${image}`}
                         alt={`Fashion showcase ${index + 1}`}
                         className="w-full h-full object-cover"
                         loading={index === currentSlide ? "eager" : "lazy"}
                         decoding="async"
-                        fetchpriority={index === 0 ? "high" : undefined}
+                        fetchPriority={index === 0 ? "high" : undefined}
                         width={1920}
                         height={768}
                         sizes="(max-width: 768px) 100vw, 100vw"

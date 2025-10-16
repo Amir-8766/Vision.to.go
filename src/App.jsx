@@ -26,7 +26,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 const Admin = React.lazy(() => import("./pages/Admin"));
 const AdminDashboard = React.lazy(() => import("./pages/AdminDashboard"));
 import Footer from "./components/Footer";
-import logo from "./assets/logo.png";
+import logo from "./assets/VisionToGo-Logo.png";
 const Profile = React.lazy(() => import("./pages/Profile"));
 const UpdatePassword = React.lazy(() => import("./pages/UpdatePassword"));
 import MobileBottomNav from "./components/MobileBottomNav";
@@ -376,19 +376,15 @@ function Navigation() {
     <>
       <nav
         className="text-gray-800 py-8 px-4 shadow-md flex items-center justify-between relative"
-        style={{ backgroundColor: "#EDDCD9" }}
+        style={{ backgroundColor: "#f59e0b" }}
       >
         {/* Left side - Logo */}
         <div className="text-xl font-bold flex items-center justify-start ml-8">
           <NavLink to="/" aria-label="Home">
             <img
               src={logo}
-              alt="Shop Logo"
+              alt="VisionToGo Logo"
               className="h-24 w-auto cursor-pointer logo"
-              style={{
-                filter:
-                  "brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%)",
-              }}
             />
           </NavLink>
         </div>

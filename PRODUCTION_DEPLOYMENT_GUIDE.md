@@ -3,6 +3,7 @@
 ## 📋 Pre-Deployment Checklist
 
 ### ✅ Frontend Checklist
+
 - [ ] Environment variables configured
 - [ ] Build passes without errors
 - [ ] All tests passing
@@ -13,6 +14,7 @@
 - [ ] Performance optimizations applied
 
 ### ✅ Backend Checklist
+
 - [ ] Environment variables set
 - [ ] Database connection tested
 - [ ] Email service configured
@@ -25,8 +27,9 @@
 ## �� Environment Variables
 
 ### Frontend (.env)
+
 ```bash
-VITE_API_BASE_URL=https://api.thegrrrlsclub.de
+VITE_API_BASE_URL=https://your-backend-domain
 VITE_STRIPE_PUBLISHABLE_KEY=pk_live_your_live_stripe_key
 VITE_APP_NAME=The Grrrls Club
 VITE_APP_VERSION=1.0.0
@@ -34,14 +37,15 @@ VITE_APP_ENVIRONMENT=production
 ```
 
 ### Backend Environment Variables (Render)
+
 ```bash
 JWT_SECRET=your-super-secret-jwt-key-here-2024
 MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/database
 STRIPE_SECRET_KEY=sk_live_your_live_stripe_secret_key
 EMAIL_USER=your-email@gmail.com
 EMAIL_PASS=your-app-password
-FRONTEND_URL=https://thegrrrlsclub.de
-BACKEND_URL=https://api.thegrrrlsclub.de
+FRONTEND_URL=https://your-frontend-domain
+BACKEND_URL=https://your-backend-domain
 NODE_ENV=production
 ```
 
@@ -50,6 +54,7 @@ NODE_ENV=production
 ### 1. Frontend Deployment (Netlify)
 
 1. **Connect Repository**
+
    ```bash
    git add .
    git commit -m "feat: production ready deployment"
@@ -57,13 +62,15 @@ NODE_ENV=production
    ```
 
 2. **Netlify Configuration**
+
    - Build command: `npm run build`
    - Publish directory: `dist`
    - Node version: `18.x`
 
 3. **Environment Variables in Netlify**
+
    - Go to Site settings > Environment variables
-   - Add all VITE_ variables
+   - Add all VITE\_ variables
 
 4. **Custom Domain Setup**
    - Add custom domain in Netlify
@@ -73,12 +80,14 @@ NODE_ENV=production
 ### 2. Backend Deployment (Render)
 
 1. **Create Web Service**
+
    - Connect GitHub repository
    - Select backend folder
    - Set build command: `npm install`
    - Set start command: `npm start`
 
 2. **Environment Variables**
+
    - Add all backend environment variables
    - Ensure JWT_SECRET is strong
    - Set NODE_ENV=production
@@ -91,50 +100,58 @@ NODE_ENV=production
 ## 🔒 Security Configuration
 
 ### 1. HTTPS Setup
+
 - [ ] SSL certificates installed
 - [ ] HTTP to HTTPS redirect
 - [ ] HSTS headers configured
 
 ### 2. CORS Configuration
+
 ```javascript
 // Backend CORS
 const corsOptions = {
-  origin: ['https://thegrrrlsclub.de'],
+  origin: ["https://your-frontend-domain"],
   credentials: true,
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
 };
 ```
 
 ### 3. Security Headers
+
 ```javascript
 // Add to backend
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrc: ["'self'", "https://js.stripe.com"],
-      imgSrc: ["'self'", "data:", "https:"],
-      connectSrc: ["'self'", "https://api.stripe.com"]
-    }
-  }
-}));
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrc: ["'self'", "https://js.stripe.com"],
+        imgSrc: ["'self'", "data:", "https:"],
+        connectSrc: ["'self'", "https://api.stripe.com"],
+      },
+    },
+  })
+);
 ```
 
 ## 📊 Monitoring & Analytics
 
 ### 1. Error Monitoring
+
 - [ ] Error boundaries implemented
 - [ ] Logging system active
 - [ ] Error tracking configured
 
 ### 2. Performance Monitoring
+
 - [ ] Bundle size optimized
 - [ ] Code splitting applied
 - [ ] Lazy loading implemented
 - [ ] Image optimization
 
 ### 3. User Analytics
+
 - [ ] Page view tracking
 - [ ] User action tracking
 - [ ] E-commerce tracking
@@ -143,6 +160,7 @@ app.use(helmet({
 ## 🧪 Testing
 
 ### 1. Pre-Deployment Tests
+
 ```bash
 # Run all tests
 npm run test:run
@@ -155,6 +173,7 @@ npm run lint
 ```
 
 ### 2. Production Testing
+
 - [ ] User registration flow
 - [ ] Login/logout functionality
 - [ ] Product browsing
@@ -167,6 +186,7 @@ npm run lint
 ## 🔄 Post-Deployment
 
 ### 1. Health Checks
+
 - [ ] Frontend loads correctly
 - [ ] Backend API responds
 - [ ] Database connection works
@@ -174,12 +194,14 @@ npm run lint
 - [ ] Payment processing works
 
 ### 2. Performance Verification
+
 - [ ] Page load times < 3 seconds
 - [ ] Mobile performance good
 - [ ] SEO meta tags present
 - [ ] PWA features working
 
 ### 3. User Acceptance Testing
+
 - [ ] Complete user journey
 - [ ] All features functional
 - [ ] Error handling works
@@ -190,16 +212,19 @@ npm run lint
 ### Common Issues
 
 1. **Build Failures**
+
    - Check environment variables
    - Verify all dependencies installed
    - Check for TypeScript errors
 
 2. **API Connection Issues**
+
    - Verify CORS configuration
    - Check backend URL
    - Ensure HTTPS in production
 
 3. **Payment Issues**
+
    - Verify Stripe keys
    - Check webhook endpoints
    - Test with test cards first
@@ -227,16 +252,19 @@ npm run lint
 ## 🔄 Maintenance Schedule
 
 ### Daily
+
 - [ ] Monitor error logs
 - [ ] Check performance metrics
 - [ ] Verify payment processing
 
 ### Weekly
+
 - [ ] Review user analytics
 - [ ] Check security updates
 - [ ] Backup verification
 
 ### Monthly
+
 - [ ] Performance optimization
 - [ ] Security audit
 - [ ] Dependency updates
@@ -247,6 +275,7 @@ npm run lint
 ## �� Deployment Complete!
 
 Your website is now production-ready with:
+
 - ✅ Performance optimizations
 - ✅ Security measures
 - ✅ Error handling
@@ -257,9 +286,11 @@ Your website is now production-ready with:
 - ✅ Comprehensive testing
 
 **Live URLs:**
-- Frontend: https://thegrrrlsclub.de
-- Backend API: https://api.thegrrrlsclub.de
+
+- Frontend: https://your-frontend-domain
+- Backend API: https://your-backend-domain
 
 **Admin Access:**
-- Admin Panel: https://thegrrrlsclub.de/admin
+
+- Admin Panel: https://your-frontend-domain/admin
 - Analytics: Check browser console for development logs

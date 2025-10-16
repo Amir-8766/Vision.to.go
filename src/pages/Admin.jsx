@@ -11,7 +11,17 @@ export default function Admin() {
   const [commissionLoading, setCommissionLoading] = useState(true);
   const [partnersLoading, setPartnersLoading] = useState(true);
   const [error, setError] = useState("");
-  const [activeTab, setActiveTab] = useState("products"); // "products" | "commission" | "partners"
+  const [activeTab, setActiveTab] = useState("products"); // "products" | "commission" | "partners" | "slider"
+  const [sliderImagesAdmin, setSliderImagesAdmin] = useState([]);
+  const [sliderForm, setSliderForm] = useState({
+    imageUrl: "",
+    title: "",
+    alt: "",
+    order: 0,
+    isActive: true,
+  });
+  const [multipleFiles, setMultipleFiles] = useState([]);
+  const [uploadingMultiple, setUploadingMultiple] = useState(false);
   const [form, setForm] = useState({
     name: "",
     price: "",
@@ -99,6 +109,7 @@ export default function Admin() {
     fetchProducts();
     fetchCommissionProducts();
     fetchPartnersAdmin();
+    fetchSliderAdmin();
   }, []);
 
   async function fetchProducts() {
@@ -452,6 +463,145 @@ export default function Admin() {
     }
   };
 
+  async function fetchSliderAdmin() {
+    try {
+      const res = await apiFetch("/slider");
+      const data = await res.json();
+      setSliderImagesAdmin(data);
+    } catch (err) {
+      // noop
+    }
+  }
+
+  async function handleCreateSliderImage(e) {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("token");
+      const res = await apiFetch("/slider", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: JSON.stringify(sliderForm),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to add slider image");
+      setSliderForm({
+        imageUrl: "",
+        title: "",
+        alt: "",
+        order: 0,
+        isActive: true,
+      });
+      fetchSliderAdmin();
+    } catch (err) {
+      setError("Error adding slider image");
+    }
+  }
+
+  async function handleAddSliderImage(imageData) {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await apiFetch("/slider", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: JSON.stringify(imageData),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to add slider image");
+      return data;
+    } catch (err) {
+      console.error("Error adding slider image:", err);
+      throw err;
+    }
+  }
+
+  async function handleUpdateSliderImage(id, payload) {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await apiFetch(`/slider/${id}`, {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}` },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok)
+        throw new Error(data.error || "Failed to update slider image");
+      fetchSliderAdmin();
+    } catch (err) {
+      setError("Error updating slider image");
+    }
+  }
+
+  async function handleDeleteSliderImage(id) {
+    if (!window.confirm("Are you sure?")) return;
+    try {
+      const token = localStorage.getItem("token");
+      const res = await apiFetch(`/slider/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error("Delete failed");
+      fetchSliderAdmin();
+    } catch (err) {
+      setError("Error deleting slider image");
+    }
+  }
+
+  async function handleUploadToCloudinary(file, setField) {
+    const formData = new FormData();
+    formData.append("image", file);
+    const res = await fetch(`${BASE_URL}/upload`, {
+      method: "POST",
+      body: formData,
+    });
+    const data = await res.json();
+    if (res.ok && data.imageUrl) {
+      setField(data.imageUrl);
+    } else if (res.ok && data.path) {
+      setField(data.path);
+    }
+  }
+
+  async function handleMultipleFileUpload(files) {
+    setUploadingMultiple(true);
+    const uploadPromises = Array.from(files).map(async (file, index) => {
+      const formData = new FormData();
+      formData.append("image", file);
+      const res = await fetch(`${BASE_URL}/upload`, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok) {
+        return {
+          imageUrl: data.imageUrl || data.path,
+          title: file.name.replace(/\.[^/.]+$/, ""), // Remove extension
+          alt: file.name.replace(/\.[^/.]+$/, ""),
+          order: sliderImagesAdmin.length + index,
+          isActive: true,
+        };
+      }
+      return null;
+    });
+
+    try {
+      const results = await Promise.all(uploadPromises);
+      const validResults = results.filter(Boolean);
+
+      // Upload all valid images to slider API
+      for (const imageData of validResults) {
+        await handleAddSliderImage(imageData);
+      }
+
+      setMultipleFiles([]);
+      fetchSliderAdmin();
+    } catch (error) {
+      console.error("Multiple upload error:", error);
+      setError("Error uploading multiple files");
+    } finally {
+      setUploadingMultiple(false);
+    }
+  }
+
   return (
     <div className="admin-page max-w-2xl mx-auto p-6 bg-white rounded shadow mt-10">
       <h2 className="text-2xl font-bold mb-4">Product Management</h2>
@@ -482,11 +632,19 @@ export default function Admin() {
           onClick={() => setActiveTab("partners")}
           className={`px-4 py-2 rounded ${
             activeTab === "partners"
-              ? "bg-blue-600 text-white"
+              ? "bg-pink-600 text-white"
               : "bg-gray-200 text-gray-700"
           }`}
         >
           Partners
+        </button>
+        <button
+          onClick={() => setActiveTab("slider")}
+          className={`px-4 py-2 rounded ${
+            activeTab === "slider" ? "bg-pink-600 text-white" : "bg-gray-200"
+          }`}
+        >
+          Slider
         </button>
       </div>
 
@@ -2241,6 +2399,236 @@ export default function Admin() {
           )}
           {error && <div className="text-red-500 mt-2">{error}</div>}
         </>
+      )}
+
+      {activeTab === "slider" && (
+        <div className="p-4">
+          <h2 className="text-lg font-semibold mb-3">Manage Slider Images</h2>
+          <form onSubmit={handleCreateSliderImage} className="space-y-3 mb-6">
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="Image URL"
+                value={sliderForm.imageUrl}
+                onChange={(e) =>
+                  setSliderForm({ ...sliderForm, imageUrl: e.target.value })
+                }
+                className="border p-2 flex-1"
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) =>
+                  e.target.files?.[0] &&
+                  handleUploadToCloudinary(e.target.files[0], (url) =>
+                    setSliderForm({ ...sliderForm, imageUrl: url })
+                  )
+                }
+              />
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              <input
+                className="border p-2"
+                placeholder="Title"
+                value={sliderForm.title}
+                onChange={(e) =>
+                  setSliderForm({ ...sliderForm, title: e.target.value })
+                }
+              />
+              <input
+                className="border p-2"
+                placeholder="Alt"
+                value={sliderForm.alt}
+                onChange={(e) =>
+                  setSliderForm({ ...sliderForm, alt: e.target.value })
+                }
+              />
+              <input
+                className="border p-2"
+                type="number"
+                placeholder="Order"
+                value={sliderForm.order}
+                onChange={(e) =>
+                  setSliderForm({
+                    ...sliderForm,
+                    order: Number(e.target.value),
+                  })
+                }
+              />
+            </div>
+            <label className="inline-flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={sliderForm.isActive}
+                onChange={(e) =>
+                  setSliderForm({ ...sliderForm, isActive: e.target.checked })
+                }
+              />
+              Active
+            </label>
+            <button
+              type="submit"
+              className="bg-pink-600 text-white px-4 py-2 rounded"
+            >
+              Add Image
+            </button>
+          </form>
+
+          {/* Multiple File Upload Section */}
+          <div className="border-t pt-4 mt-6">
+            <h3 className="text-md font-semibold mb-3">
+              Upload Multiple Images
+            </h3>
+            <div className="space-y-3">
+              <div className="flex gap-2">
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files.length > 0) {
+                      setMultipleFiles(Array.from(e.target.files));
+                    }
+                  }}
+                  className="hidden"
+                  id="multiple-file-input"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    const input = document.getElementById(
+                      "multiple-file-input"
+                    );
+                    if (input) input.click();
+                  }}
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                >
+                  Choose Multiple Images
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMultipleFiles([])}
+                  className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                >
+                  Clear Selection
+                </button>
+              </div>
+              {multipleFiles.length > 0 && (
+                <div className="bg-gray-50 p-3 rounded">
+                  <p className="text-sm text-gray-600 mb-2">
+                    Selected {multipleFiles.length} files:
+                  </p>
+                  <ul className="text-sm space-y-1">
+                    {multipleFiles.map((file, index) => (
+                      <li key={index} className="text-gray-700">
+                        • {file.name}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              <button
+                type="button"
+                onClick={() =>
+                  multipleFiles.length > 0 &&
+                  handleMultipleFileUpload(multipleFiles)
+                }
+                disabled={multipleFiles.length === 0 || uploadingMultiple}
+                className={`px-4 py-2 rounded ${
+                  multipleFiles.length === 0 || uploadingMultiple
+                    ? "bg-gray-400 text-gray-200 cursor-not-allowed"
+                    : "bg-green-600 text-white hover:bg-green-700"
+                }`}
+              >
+                {uploadingMultiple
+                  ? "Uploading..."
+                  : `Upload ${multipleFiles.length} Images`}
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {sliderImagesAdmin.map((img) => (
+              <div
+                key={img._id}
+                className="border border-gray-200 rounded-lg p-4 bg-white shadow-sm hover:shadow-md transition-shadow"
+              >
+                <div className="mb-3">
+                  <img
+                    src={getImageUrl(img.imageUrl)}
+                    alt={img.alt || img.title || "slider"}
+                    className="w-full h-40 object-cover rounded-lg"
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <div className="text-sm text-gray-600 mb-1">
+                    <span className="font-medium">Order:</span> {img.order}
+                  </div>
+                  <div className="text-sm">
+                    <span
+                      className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                        img.isActive
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
+                      }`}
+                    >
+                      {img.isActive ? "Active" : "Inactive"}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      className="px-3 py-2 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-colors"
+                      onClick={() =>
+                        handleUpdateSliderImage(img._id, {
+                          order: Math.max(0, (img.order || 0) - 1),
+                        })
+                      }
+                    >
+                      ↑ Up
+                    </button>
+                    <button
+                      className="px-3 py-2 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-colors"
+                      onClick={() =>
+                        handleUpdateSliderImage(img._id, {
+                          order: (img.order || 0) + 1,
+                        })
+                      }
+                    >
+                      ↓ Down
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      className={`px-3 py-2 text-xs rounded transition-colors ${
+                        img.isActive
+                          ? "bg-yellow-100 text-yellow-700 hover:bg-yellow-200"
+                          : "bg-green-100 text-green-700 hover:bg-green-200"
+                      }`}
+                      onClick={() =>
+                        handleUpdateSliderImage(img._id, {
+                          isActive: !img.isActive,
+                        })
+                      }
+                    >
+                      {img.isActive ? "Deactivate" : "Activate"}
+                    </button>
+                    <button
+                      className="px-3 py-2 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200 transition-colors"
+                      onClick={() => handleDeleteSliderImage(img._id)}
+                    >
+                      🗑️ Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );

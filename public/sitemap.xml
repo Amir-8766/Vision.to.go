@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://thegrrrlsclub.de/</loc>
+    <loc>http://localhost:5173/</loc>
     <lastmod>2025-01-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://thegrrrlsclub.de/products</loc>
+    <loc>http://localhost:5173/products</loc>
     <lastmod>2025-01-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://thegrrrlsclub.de/commission</loc>
+    <loc>http://localhost:5173/commission</loc>
     <lastmod>2025-01-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://thegrrrlsclub.de/about</loc>
+    <loc>http://localhost:5173/about</loc>
     <lastmod>2025-01-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://thegrrrlsclub.de/services</loc>
+    <loc>http://localhost:5173/services</loc>
     <lastmod>2025-01-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://thegrrrlsclub.de/terms</loc>
+    <loc>http://localhost:5173/terms</loc>
     <lastmod>2025-01-09</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://thegrrrlsclub.de/privacy</loc>
+    <loc>http://localhost:5173/privacy</loc>
     <lastmod>2025-01-09</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://thegrrrlsclub.de/impressum</loc>
+    <loc>http://localhost:5173/impressum</loc>
     <lastmod>2025-01-09</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://thegrrrlsclub.de/faq</loc>
+    <loc>http://localhost:5173/faq</loc>
     <lastmod>2025-01-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
