@@ -108,22 +108,30 @@ app.post("/upload", (req, res) => {
     }
 
     try {
-      // Return local file URL instead of Cloudinary
-      const fileUrl = `/uploads/${req.file.filename}`;
+      // Upload to Cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "visiontogo",
+        use_filename: true,
+        unique_filename: true,
+        resource_type: "auto",
+      });
+
+      // Delete temporary file
+      fs.unlinkSync(req.file.path);
 
       res.json({
         message: "File uploaded successfully",
         filename: req.file.filename,
-        path: fileUrl,
-        imageUrl: fileUrl,
+        path: result.secure_url,
+        imageUrl: result.secure_url,
       });
-    } catch (error) {
-      console.error("Upload error:", error);
-      // Delete temporary file if it exists
+    } catch (cloudinaryError) {
+      console.error("Cloudinary upload error:", cloudinaryError);
+      // Delete temporary file
       if (req.file && fs.existsSync(req.file.path)) {
         fs.unlinkSync(req.file.path);
       }
-      res.status(500).json({ error: "Failed to upload file" });
+      res.status(500).json({ error: "Failed to upload to Cloudinary" });
     }
   });
 });

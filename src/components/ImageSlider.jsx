@@ -27,7 +27,7 @@ const ImageSlider = () => {
         if (mounted) {
           const local = Array.from(
             { length: 14 },
-            (_, i) => `/slide${String(i + 1).padStart(2, "0")}.jpg`
+            (_, i) => `/src/assets/slide${String(i + 1).padStart(2, "0")}.jpg`
           );
           setSliderImages(local);
         }
