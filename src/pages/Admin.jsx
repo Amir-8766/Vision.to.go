@@ -1423,28 +1423,42 @@ export default function Admin() {
             )}
 
             {activeTab === "affiliates" && (
-              <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                <h3 className="text-lg font-bold text-blue-800 mb-2">✅ Affiliates Section is Working!</h3>
-                <p className="text-blue-600 mb-4">This section is now active and functional.</p>
+              <div className="p-4 bg-red-100 border border-red-400 rounded-lg">
+                <h3 className="text-lg font-bold text-red-800 mb-2">
+                  🔴 DEBUG: Affiliates Tab is Active!
+                </h3>
+                <p className="text-red-600 mb-4">
+                  Current activeTab value: "{activeTab}"
+                </p>
+                <p className="text-red-600 mb-4">
+                  This should be visible when you click the Affiliates tab.
+                </p>
                 
                 <div className="bg-white p-4 rounded border">
                   <h4 className="font-bold mb-3">Add New Affiliate</h4>
                   <form onSubmit={handleAddAffiliate} className="space-y-3">
                     <div>
-                      <label className="block text-sm font-medium mb-1">Name *</label>
+                      <label className="block text-sm font-medium mb-1">
+                        Name *
+                      </label>
                       <input
                         className="w-full border p-2 rounded"
                         placeholder="Enter affiliate name"
                         value={affiliateForm.name}
                         onChange={(e) =>
-                          setAffiliateForm((f) => ({ ...f, name: e.target.value }))
+                          setAffiliateForm((f) => ({
+                            ...f,
+                            name: e.target.value,
+                          }))
                         }
                         required
                       />
                     </div>
-                    
+
                     <div>
-                      <label className="block text-sm font-medium mb-1">Website *</label>
+                      <label className="block text-sm font-medium mb-1">
+                        Website *
+                      </label>
                       <input
                         className="w-full border p-2 rounded"
                         placeholder="https://example.com"
@@ -1458,9 +1472,11 @@ export default function Admin() {
                         required
                       />
                     </div>
-                    
+
                     <div>
-                      <label className="block text-sm font-medium mb-1">Description *</label>
+                      <label className="block text-sm font-medium mb-1">
+                        Description *
+                      </label>
                       <textarea
                         className="w-full border p-2 rounded"
                         placeholder="Brief description"
@@ -1475,9 +1491,11 @@ export default function Admin() {
                         required
                       />
                     </div>
-                    
+
                     <div>
-                      <label className="block text-sm font-medium mb-1">Category *</label>
+                      <label className="block text-sm font-medium mb-1">
+                        Category *
+                      </label>
                       <select
                         className="w-full border p-2 rounded"
                         value={affiliateForm.category}
@@ -1490,15 +1508,21 @@ export default function Admin() {
                         required
                       >
                         <option value="education">🎓 Education</option>
-                        <option value="natural_products">🌿 Natural Products</option>
+                        <option value="natural_products">
+                          🌿 Natural Products
+                        </option>
                         <option value="fashion">👗 Fashion</option>
-                        <option value="health_wellness">💪 Health & Wellness</option>
+                        <option value="health_wellness">
+                          💪 Health & Wellness
+                        </option>
                         <option value="beauty">💄 Beauty</option>
-                        <option value="sustainability">🌱 Sustainability</option>
+                        <option value="sustainability">
+                          🌱 Sustainability
+                        </option>
                         <option value="other">🔗 Other</option>
                       </select>
                     </div>
-                    
+
                     <div className="flex items-center space-x-2">
                       <input
                         type="checkbox"
@@ -1512,11 +1536,14 @@ export default function Admin() {
                         }
                         className="rounded"
                       />
-                      <label htmlFor="affiliate-active" className="text-sm font-medium">
+                      <label
+                        htmlFor="affiliate-active"
+                        className="text-sm font-medium"
+                      >
                         Active (visible on website)
                       </label>
                     </div>
-                    
+
                     <button
                       type="submit"
                       className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 font-medium"
@@ -1525,19 +1552,25 @@ export default function Admin() {
                     </button>
                   </form>
                 </div>
-                
+
                 <div className="bg-white p-4 rounded border mt-4">
-                  <h4 className="font-bold mb-3">Current Affiliates ({affiliatesAdmin.length})</h4>
-                  
+                  <h4 className="font-bold mb-3">
+                    Current Affiliates ({affiliatesAdmin.length})
+                  </h4>
+
                   {affiliatesLoading ? (
                     <div className="flex items-center justify-center py-4">
                       <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
-                      <span className="ml-2 text-gray-600">Loading affiliates...</span>
+                      <span className="ml-2 text-gray-600">
+                        Loading affiliates...
+                      </span>
                     </div>
                   ) : affiliatesAdmin.length === 0 ? (
                     <div className="text-center py-4 text-gray-500">
                       <p>No affiliates found.</p>
-                      <p className="text-sm">Add your first affiliate using the form above.</p>
+                      <p className="text-sm">
+                        Add your first affiliate using the form above.
+                      </p>
                     </div>
                   ) : (
                     <div className="space-y-3">
@@ -1548,8 +1581,12 @@ export default function Admin() {
                         >
                           <div className="flex items-start justify-between">
                             <div className="flex-1">
-                              <h5 className="font-semibold text-gray-800">{affiliate.name}</h5>
-                              <p className="text-sm text-gray-600 mt-1">{affiliate.description}</p>
+                              <h5 className="font-semibold text-gray-800">
+                                {affiliate.name}
+                              </h5>
+                              <p className="text-sm text-gray-600 mt-1">
+                                {affiliate.description}
+                              </p>
                               <div className="flex items-center space-x-2 mt-2">
                                 <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">
                                   {affiliate.category}
@@ -1583,11 +1620,16 @@ export default function Admin() {
                                     website: affiliate.website || "",
                                     instagram: affiliate.instagram || "",
                                     category: affiliate.category || "education",
-                                    services: (affiliate.services || []).join(", "),
-                                    partnershipType: affiliate.partnershipType || "geschaeftspartner",
+                                    services: (affiliate.services || []).join(
+                                      ", "
+                                    ),
+                                    partnershipType:
+                                      affiliate.partnershipType ||
+                                      "geschaeftspartner",
                                     isActive: affiliate.isActive !== false,
                                     logo: affiliate.logo || "",
-                                    featuredImage: affiliate.featuredImage || "",
+                                    featuredImage:
+                                      affiliate.featuredImage || "",
                                   });
                                 }}
                                 className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
@@ -1595,7 +1637,9 @@ export default function Admin() {
                                 Edit
                               </button>
                               <button
-                                onClick={() => handleDeleteAffiliate(affiliate._id)}
+                                onClick={() =>
+                                  handleDeleteAffiliate(affiliate._id)
+                                }
                                 className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
                               >
                                 Delete
@@ -1607,7 +1651,233 @@ export default function Admin() {
                     </div>
                   )}
                 </div>
-                
+
+                {error && (
+                  <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                    {error}
+                  </div>
+                )}
+              </div>
+            )}
+
+                <div className="bg-white p-4 rounded border">
+                  <h4 className="font-bold mb-3">Add New Affiliate</h4>
+                  <form onSubmit={handleAddAffiliate} className="space-y-3">
+                    <div>
+                      <label className="block text-sm font-medium mb-1">
+                        Name *
+                      </label>
+                      <input
+                        className="w-full border p-2 rounded"
+                        placeholder="Enter affiliate name"
+                        value={affiliateForm.name}
+                        onChange={(e) =>
+                          setAffiliateForm((f) => ({
+                            ...f,
+                            name: e.target.value,
+                          }))
+                        }
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium mb-1">
+                        Website *
+                      </label>
+                      <input
+                        className="w-full border p-2 rounded"
+                        placeholder="https://example.com"
+                        value={affiliateForm.website}
+                        onChange={(e) =>
+                          setAffiliateForm((f) => ({
+                            ...f,
+                            website: e.target.value,
+                          }))
+                        }
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium mb-1">
+                        Description *
+                      </label>
+                      <textarea
+                        className="w-full border p-2 rounded"
+                        placeholder="Brief description"
+                        rows={3}
+                        value={affiliateForm.description}
+                        onChange={(e) =>
+                          setAffiliateForm((f) => ({
+                            ...f,
+                            description: e.target.value,
+                          }))
+                        }
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium mb-1">
+                        Category *
+                      </label>
+                      <select
+                        className="w-full border p-2 rounded"
+                        value={affiliateForm.category}
+                        onChange={(e) =>
+                          setAffiliateForm((f) => ({
+                            ...f,
+                            category: e.target.value,
+                          }))
+                        }
+                        required
+                      >
+                        <option value="education">🎓 Education</option>
+                        <option value="natural_products">
+                          🌿 Natural Products
+                        </option>
+                        <option value="fashion">👗 Fashion</option>
+                        <option value="health_wellness">
+                          💪 Health & Wellness
+                        </option>
+                        <option value="beauty">💄 Beauty</option>
+                        <option value="sustainability">
+                          🌱 Sustainability
+                        </option>
+                        <option value="other">🔗 Other</option>
+                      </select>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="affiliate-active"
+                        checked={affiliateForm.isActive}
+                        onChange={(e) =>
+                          setAffiliateForm((f) => ({
+                            ...f,
+                            isActive: e.target.checked,
+                          }))
+                        }
+                        className="rounded"
+                      />
+                      <label
+                        htmlFor="affiliate-active"
+                        className="text-sm font-medium"
+                      >
+                        Active (visible on website)
+                      </label>
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 font-medium"
+                    >
+                      Add Affiliate
+                    </button>
+                  </form>
+                </div>
+
+                <div className="bg-white p-4 rounded border mt-4">
+                  <h4 className="font-bold mb-3">
+                    Current Affiliates ({affiliatesAdmin.length})
+                  </h4>
+
+                  {affiliatesLoading ? (
+                    <div className="flex items-center justify-center py-4">
+                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+                      <span className="ml-2 text-gray-600">
+                        Loading affiliates...
+                      </span>
+                    </div>
+                  ) : affiliatesAdmin.length === 0 ? (
+                    <div className="text-center py-4 text-gray-500">
+                      <p>No affiliates found.</p>
+                      <p className="text-sm">
+                        Add your first affiliate using the form above.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {affiliatesAdmin.map((affiliate) => (
+                        <div
+                          key={affiliate._id}
+                          className="border border-gray-200 rounded-lg p-3 hover:shadow-md transition-shadow"
+                        >
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <h5 className="font-semibold text-gray-800">
+                                {affiliate.name}
+                              </h5>
+                              <p className="text-sm text-gray-600 mt-1">
+                                {affiliate.description}
+                              </p>
+                              <div className="flex items-center space-x-2 mt-2">
+                                <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">
+                                  {affiliate.category}
+                                </span>
+                                <span
+                                  className={`px-2 py-1 rounded text-xs font-medium ${
+                                    affiliate.isActive
+                                      ? "bg-green-100 text-green-800"
+                                      : "bg-red-100 text-red-800"
+                                  }`}
+                                >
+                                  {affiliate.isActive ? "Active" : "Inactive"}
+                                </span>
+                              </div>
+                              <a
+                                href={affiliate.website}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 hover:text-blue-800 text-sm mt-1 block"
+                              >
+                                {affiliate.website}
+                              </a>
+                            </div>
+                            <div className="flex space-x-2 ml-4">
+                              <button
+                                onClick={() => {
+                                  setAffiliateEditId(affiliate._id);
+                                  setAffiliateEditForm({
+                                    name: affiliate.name || "",
+                                    description: affiliate.description || "",
+                                    website: affiliate.website || "",
+                                    instagram: affiliate.instagram || "",
+                                    category: affiliate.category || "education",
+                                    services: (affiliate.services || []).join(
+                                      ", "
+                                    ),
+                                    partnershipType:
+                                      affiliate.partnershipType ||
+                                      "geschaeftspartner",
+                                    isActive: affiliate.isActive !== false,
+                                    logo: affiliate.logo || "",
+                                    featuredImage:
+                                      affiliate.featuredImage || "",
+                                  });
+                                }}
+                                className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
+                              >
+                                Edit
+                              </button>
+                              <button
+                                onClick={() =>
+                                  handleDeleteAffiliate(affiliate._id)
+                                }
+                                className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
                 {error && (
                   <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
                     {error}
