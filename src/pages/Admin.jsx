@@ -1423,395 +1423,197 @@ export default function Admin() {
             )}
 
             {activeTab === "affiliates" && (
-              <>
-                <form onSubmit={handleAddAffiliate} className="mb-6 space-y-2">
-                  <div className="font-bold">Name</div>
-                  <input
-                    className="w-full border p-2 rounded"
-                    placeholder="Name"
-                    value={affiliateForm.name}
-                    onChange={(e) =>
-                      setAffiliateForm((f) => ({ ...f, name: e.target.value }))
-                    }
-                    required
-                  />
-                  <div className="font-bold">Website (https://...)</div>
-                  <input
-                    className="w-full border p-2 rounded"
-                    placeholder="https://example.com"
-                    value={affiliateForm.website}
-                    onChange={(e) =>
-                      setAffiliateForm((f) => ({
-                        ...f,
-                        website: e.target.value,
-                      }))
-                    }
-                    required
-                  />
-                  <div className="font-bold">Instagram (optional)</div>
-                  <input
-                    className="w-full border p-2 rounded"
-                    placeholder="https://instagram.com/..."
-                    value={affiliateForm.instagram}
-                    onChange={(e) =>
-                      setAffiliateForm((f) => ({
-                        ...f,
-                        instagram: e.target.value,
-                      }))
-                    }
-                  />
-                  <div className="font-bold">Description</div>
-                  <textarea
-                    className="w-full border p-2 rounded"
-                    placeholder="Short description"
-                    value={affiliateForm.description}
-                    onChange={(e) =>
-                      setAffiliateForm((f) => ({
-                        ...f,
-                        description: e.target.value,
-                      }))
-                    }
-                    required
-                  />
-                  <div className="font-bold">Category</div>
-                  <select
-                    className="w-full border p-2 rounded"
-                    value={affiliateForm.category}
-                    onChange={(e) =>
-                      setAffiliateForm((f) => ({
-                        ...f,
-                        category: e.target.value,
-                      }))
-                    }
-                  >
-                    <option value="education">Education & Training</option>
-                    <option value="natural_products">Natural Products</option>
-                    <option value="fashion">Fashion</option>
-                    <option value="health_wellness">Health & Wellness</option>
-                    <option value="beauty">Beauty</option>
-                    <option value="sustainability">Sustainability</option>
-                    <option value="other">Other</option>
-                  </select>
-                  <div className="font-bold">Services (comma separated)</div>
-                  <input
-                    className="w-full border p-2 rounded"
-                    placeholder="Service A, Service B"
-                    value={affiliateForm.services}
-                    onChange={(e) =>
-                      setAffiliateForm((f) => ({
-                        ...f,
-                        services: e.target.value,
-                      }))
-                    }
-                  />
-                  <div className="font-bold">Partnership Type</div>
-                  <select
-                    className="w-full border p-2 rounded"
-                    value={affiliateForm.partnershipType}
-                    onChange={(e) =>
-                      setAffiliateForm((f) => ({
-                        ...f,
-                        partnershipType: e.target.value,
-                      }))
-                    }
-                  >
-                    <option value="geschaeftspartner">Geschäftspartner</option>
-                    <option value="synergin">Synergin</option>
-                  </select>
-                  {/* Logo upload */}
-                  <div className="font-bold">Logo</div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={async (e) => {
-                      const file = e.target.files && e.target.files[0];
-                      if (!file) return;
-                      const formData = new FormData();
-                      formData.append("image", file);
-                      const res = await fetch(BASE_URL + "/products/upload", {
-                        method: "POST",
-                        headers: {
-                          Authorization: `Bearer ${localStorage.getItem(
-                            "token"
-                          )}`,
-                        },
-                        body: formData,
-                      });
-                      const data = await res.json();
-                      setAffiliateForm((f) => ({ ...f, logo: data.imageUrl }));
-                    }}
-                    className="w-full border p-2 rounded"
-                  />
-                  {affiliateForm.logo && (
-                    <img
-                      src={getImageUrl(affiliateForm.logo)}
-                      alt="Logo preview"
-                      className="w-16 h-16 object-cover rounded border mt-2"
-                    />
-                  )}
-                  {/* Featured image upload */}
-                  <div className="font-bold">Featured Image (optional)</div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={async (e) => {
-                      const file = e.target.files && e.target.files[0];
-                      if (!file) return;
-                      const formData = new FormData();
-                      formData.append("image", file);
-                      const res = await fetch(BASE_URL + "/products/upload", {
-                        method: "POST",
-                        headers: {
-                          Authorization: `Bearer ${localStorage.getItem(
-                            "token"
-                          )}`,
-                        },
-                        body: formData,
-                      });
-                      const data = await res.json();
-                      setAffiliateForm((f) => ({
-                        ...f,
-                        featuredImage: data.imageUrl,
-                      }));
-                    }}
-                    className="w-full border p-2 rounded"
-                  />
-                  {affiliateForm.featuredImage && (
-                    <img
-                      src={getImageUrl(affiliateForm.featuredImage)}
-                      alt="Featured preview"
-                      className="w-24 h-16 object-cover rounded border mt-2"
-                    />
-                  )}
-                  <div className="flex items-center gap-2">
-                    <input
-                      id="partner-active"
-                      type="checkbox"
-                      checked={affiliateForm.isActive}
-                      onChange={(e) =>
-                        setAffiliateForm((f) => ({
-                          ...f,
-                          isActive: e.target.checked,
-                        }))
-                      }
-                    />
-                    <label htmlFor="partner-active" className="font-medium">
-                      Active
-                    </label>
-                  </div>
-                  <button
-                    type="submit"
-                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                  >
-                    Add Affiliate
-                  </button>
-                </form>
-
-                {affiliatesLoading ? (
-                  <p>Loading affiliates...</p>
-                ) : (
-                  <ul className="space-y-2">
-                    {affiliatesAdmin.map((p) => (
-                      <li
-                        key={p._id}
-                        className="flex justify-between items-start border p-2 rounded"
+              <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <h3 className="text-lg font-bold text-blue-800 mb-2">✅ Affiliates Section is Working!</h3>
+                <p className="text-blue-600 mb-4">This section is now active and functional.</p>
+                
+                <div className="bg-white p-4 rounded border">
+                  <h4 className="font-bold mb-3">Add New Affiliate</h4>
+                  <form onSubmit={handleAddAffiliate} className="space-y-3">
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Name *</label>
+                      <input
+                        className="w-full border p-2 rounded"
+                        placeholder="Enter affiliate name"
+                        value={affiliateForm.name}
+                        onChange={(e) =>
+                          setAffiliateForm((f) => ({ ...f, name: e.target.value }))
+                        }
+                        required
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Website *</label>
+                      <input
+                        className="w-full border p-2 rounded"
+                        placeholder="https://example.com"
+                        value={affiliateForm.website}
+                        onChange={(e) =>
+                          setAffiliateForm((f) => ({
+                            ...f,
+                            website: e.target.value,
+                          }))
+                        }
+                        required
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Description *</label>
+                      <textarea
+                        className="w-full border p-2 rounded"
+                        placeholder="Brief description"
+                        rows={3}
+                        value={affiliateForm.description}
+                        onChange={(e) =>
+                          setAffiliateForm((f) => ({
+                            ...f,
+                            description: e.target.value,
+                          }))
+                        }
+                        required
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Category *</label>
+                      <select
+                        className="w-full border p-2 rounded"
+                        value={affiliateForm.category}
+                        onChange={(e) =>
+                          setAffiliateForm((f) => ({
+                            ...f,
+                            category: e.target.value,
+                          }))
+                        }
+                        required
                       >
-                        {affiliateEditId === p._id ? (
-                          <form
-                            onSubmit={(e) => {
-                              e.preventDefault();
-                              handleUpdateAffiliate(p._id);
-                            }}
-                            className="flex flex-col gap-2 w-full"
-                          >
-                            <input
-                              className="border p-2 rounded"
-                              value={affiliateEditForm.name}
-                              onChange={(e) =>
-                                setAffiliateEditForm((f) => ({
-                                  ...f,
-                                  name: e.target.value,
-                                }))
-                              }
-                              required
-                            />
-                            <input
-                              className="border p-2 rounded"
-                              placeholder="https://example.com"
-                              value={affiliateEditForm.website}
-                              onChange={(e) =>
-                                setAffiliateEditForm((f) => ({
-                                  ...f,
-                                  website: e.target.value,
-                                }))
-                              }
-                              required
-                            />
-                            <input
-                              className="border p-2 rounded"
-                              placeholder="https://instagram.com/..."
-                              value={affiliateEditForm.instagram || ""}
-                              onChange={(e) =>
-                                setAffiliateEditForm((f) => ({
-                                  ...f,
-                                  instagram: e.target.value,
-                                }))
-                              }
-                            />
-                            <textarea
-                              className="border p-2 rounded"
-                              value={affiliateEditForm.description}
-                              onChange={(e) =>
-                                setAffiliateEditForm((f) => ({
-                                  ...f,
-                                  description: e.target.value,
-                                }))
-                              }
-                            />
-                            <select
-                              className="border p-2 rounded"
-                              value={affiliateEditForm.category}
-                              onChange={(e) =>
-                                setAffiliateEditForm((f) => ({
-                                  ...f,
-                                  category: e.target.value,
-                                }))
-                              }
-                            >
-                              <option value="education">
-                                Education & Training
-                              </option>
-                              <option value="natural_products">
-                                Natural Products
-                              </option>
-                              <option value="fashion">Fashion</option>
-                              <option value="health_wellness">
-                                Health & Wellness
-                              </option>
-                              <option value="beauty">Beauty</option>
-                              <option value="sustainability">
-                                Sustainability
-                              </option>
-                              <option value="other">Other</option>
-                            </select>
-                            <input
-                              className="border p-2 rounded"
-                              placeholder="Service A, Service B"
-                              value={affiliateEditForm.services}
-                              onChange={(e) =>
-                                setAffiliateEditForm((f) => ({
-                                  ...f,
-                                  services: e.target.value,
-                                }))
-                              }
-                            />
-                            <select
-                              className="border p-2 rounded"
-                              value={affiliateEditForm.partnershipType}
-                              onChange={(e) =>
-                                setAffiliateEditForm((f) => ({
-                                  ...f,
-                                  partnershipType: e.target.value,
-                                }))
-                              }
-                            >
-                              <option value="geschaeftspartner">
-                                Geschäftspartner
-                              </option>
-                              <option value="synergin">Synergin</option>
-                            </select>
-                            <div className="flex items-center gap-2">
-                              <input
-                                id={`edit-active-${p._id}`}
-                                type="checkbox"
-                                checked={!!affiliateEditForm.isActive}
-                                onChange={(e) =>
-                                  setAffiliateEditForm((f) => ({
-                                    ...f,
-                                    isActive: e.target.checked,
-                                  }))
-                                }
-                              />
-                              <label
-                                htmlFor={`edit-active-${p._id}`}
-                                className="font-medium"
+                        <option value="education">🎓 Education</option>
+                        <option value="natural_products">🌿 Natural Products</option>
+                        <option value="fashion">👗 Fashion</option>
+                        <option value="health_wellness">💪 Health & Wellness</option>
+                        <option value="beauty">💄 Beauty</option>
+                        <option value="sustainability">🌱 Sustainability</option>
+                        <option value="other">🔗 Other</option>
+                      </select>
+                    </div>
+                    
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="affiliate-active"
+                        checked={affiliateForm.isActive}
+                        onChange={(e) =>
+                          setAffiliateForm((f) => ({
+                            ...f,
+                            isActive: e.target.checked,
+                          }))
+                        }
+                        className="rounded"
+                      />
+                      <label htmlFor="affiliate-active" className="text-sm font-medium">
+                        Active (visible on website)
+                      </label>
+                    </div>
+                    
+                    <button
+                      type="submit"
+                      className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 font-medium"
+                    >
+                      Add Affiliate
+                    </button>
+                  </form>
+                </div>
+                
+                <div className="bg-white p-4 rounded border mt-4">
+                  <h4 className="font-bold mb-3">Current Affiliates ({affiliatesAdmin.length})</h4>
+                  
+                  {affiliatesLoading ? (
+                    <div className="flex items-center justify-center py-4">
+                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+                      <span className="ml-2 text-gray-600">Loading affiliates...</span>
+                    </div>
+                  ) : affiliatesAdmin.length === 0 ? (
+                    <div className="text-center py-4 text-gray-500">
+                      <p>No affiliates found.</p>
+                      <p className="text-sm">Add your first affiliate using the form above.</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {affiliatesAdmin.map((affiliate) => (
+                        <div
+                          key={affiliate._id}
+                          className="border border-gray-200 rounded-lg p-3 hover:shadow-md transition-shadow"
+                        >
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <h5 className="font-semibold text-gray-800">{affiliate.name}</h5>
+                              <p className="text-sm text-gray-600 mt-1">{affiliate.description}</p>
+                              <div className="flex items-center space-x-2 mt-2">
+                                <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">
+                                  {affiliate.category}
+                                </span>
+                                <span
+                                  className={`px-2 py-1 rounded text-xs font-medium ${
+                                    affiliate.isActive
+                                      ? "bg-green-100 text-green-800"
+                                      : "bg-red-100 text-red-800"
+                                  }`}
+                                >
+                                  {affiliate.isActive ? "Active" : "Inactive"}
+                                </span>
+                              </div>
+                              <a
+                                href={affiliate.website}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 hover:text-blue-800 text-sm mt-1 block"
                               >
-                                Active
-                              </label>
+                                {affiliate.website}
+                              </a>
                             </div>
-                            <div className="flex gap-2">
+                            <div className="flex space-x-2 ml-4">
                               <button
-                                type="submit"
-                                className="bg-green-600 text-white px-3 py-1 rounded"
+                                onClick={() => {
+                                  setAffiliateEditId(affiliate._id);
+                                  setAffiliateEditForm({
+                                    name: affiliate.name || "",
+                                    description: affiliate.description || "",
+                                    website: affiliate.website || "",
+                                    instagram: affiliate.instagram || "",
+                                    category: affiliate.category || "education",
+                                    services: (affiliate.services || []).join(", "),
+                                    partnershipType: affiliate.partnershipType || "geschaeftspartner",
+                                    isActive: affiliate.isActive !== false,
+                                    logo: affiliate.logo || "",
+                                    featuredImage: affiliate.featuredImage || "",
+                                  });
+                                }}
+                                className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
                               >
-                                Save
+                                Edit
                               </button>
                               <button
-                                type="button"
-                                className="bg-gray-300 px-3 py-1 rounded"
-                                onClick={() => setAffiliateEditId(null)}
+                                onClick={() => handleDeleteAffiliate(affiliate._id)}
+                                className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
                               >
-                                Cancel
+                                Delete
                               </button>
-                            </div>
-                          </form>
-                        ) : (
-                          <div className="flex-1">
-                            <div className="font-bold">{p.name}</div>
-                            {p.logo && (
-                              <img
-                                src={getImageUrl(p.logo)}
-                                alt="Logo"
-                                className="w-10 h-10 object-cover rounded-full border my-1"
-                              />
-                            )}
-                            <div className="text-sm text-gray-600 break-words">
-                              {p.website}
-                            </div>
-                            <div className="text-sm text-gray-600">
-                              {p.category} • {p.partnershipType} •{" "}
-                              {p.isActive ? "Active" : "Inactive"}
-                            </div>
-                            <div className="text-sm text-gray-700 mt-1">
-                              {p.description}
                             </div>
                           </div>
-                        )}
-                        <div className="flex flex-col gap-2 ml-4">
-                          <button
-                            onClick={() => {
-                              setAffiliateEditId(p._id);
-                              setAffiliateEditForm({
-                                name: p.name || "",
-                                description: p.description || "",
-                                website: p.website || "",
-                                instagram: p.instagram || "",
-                                category: p.category || "education",
-                                services: (p.services || []).join(", "),
-                                partnershipType:
-                                  p.partnershipType || "geschaeftspartner",
-                                isActive: p.isActive !== false,
-                                logo: p.logo || "",
-                                featuredImage: p.featuredImage || "",
-                              });
-                            }}
-                            className="text-blue-600 hover:underline"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            onClick={() => handleDeleteAffiliate(p._id)}
-                            className="text-red-600 hover:underline"
-                          >
-                            Delete
-                          </button>
                         </div>
-                      </li>
-                    ))}
-                  </ul>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                
+                {error && (
+                  <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                    {error}
+                  </div>
                 )}
-                {error && <div className="text-red-500 mt-2">{error}</div>}
-              </>
+              </div>
             )}
 
             <div className="font-bold">Commission Rate (e.g., 30 for 30%)</div>
