@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+
+# Disallow admin and API routes
+Disallow: /admin
+Disallow: /api
+Disallow: /checkout
+Disallow: /profile
+Disallow: /orders
+
+# Allow important pages
+Allow: /products
+Allow: /commission
+Allow: /about
+Allow: /services
+Allow: /terms
+Allow: /privacy
+Allow: /impressum
+Allow: /faq
+
+# Sitemap
+Sitemap: https://thegrrrlsclub.de/sitemap.xml
