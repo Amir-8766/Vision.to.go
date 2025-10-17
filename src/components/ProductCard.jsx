@@ -333,15 +333,19 @@ const ProductCard = ({ product, linkPath = null }) => {
 
       {/* Image with hover effect */}
       <Link to={getLinkPath()} className="block" onClick={handleCardClick}>
-        <div className="relative w-full aspect-[4/5] overflow-hidden">
+        <div className="relative w-full aspect-[3/4] overflow-hidden">
+          {/* Product Image covering entire card */}
           <OptimizedImage
             src={getImageUrl(hovered ? secondImg : mainImg)}
             alt={product.name}
-            className={`w-full h-full object-contain transition-transform duration-500 ${
+            className={`w-full h-full object-cover transition-transform duration-500 ${
               hovered ? "scale-105" : "scale-100"
             }`}
             priority={true}
           />
+
+          {/* Gradient Overlay for better text readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
 
           {/* Left icons with animation */}
           <div
@@ -356,7 +360,7 @@ const ProductCard = ({ product, linkPath = null }) => {
           >
             <div className="relative">
               <button
-                className="bg-white rounded-full w-9 h-9 flex items-center justify-center shadow hover:scale-110 transition"
+                className="bg-white/90 backdrop-blur-sm rounded-full w-9 h-9 flex items-center justify-center shadow hover:scale-110 transition"
                 onMouseEnter={() => setShowSearchTip(true)}
                 onMouseLeave={() => setShowSearchTip(false)}
                 onClick={(e) => {
@@ -372,7 +376,7 @@ const ProductCard = ({ product, linkPath = null }) => {
             </div>
             <div className="relative">
               <button
-                className="bg-white rounded-full w-9 h-9 flex items-center justify-center shadow hover:scale-110 transition"
+                className="bg-white/90 backdrop-blur-sm rounded-full w-9 h-9 flex items-center justify-center shadow hover:scale-110 transition"
                 onMouseEnter={() => setShowHeartTip(true)}
                 onMouseLeave={() => setShowHeartTip(false)}
                 onClick={(e) => {
@@ -398,57 +402,61 @@ const ProductCard = ({ product, linkPath = null }) => {
           </div>
 
           {/* Cart Icon fixed at bottom */}
-          <div className="absolute bottom-[-09px] left-1/2 transform -translate-x-1/2">
+          <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 z-20">
             <button
               onClick={handleAddToCart}
-              className="text-[#171717] hover:text-pink-600 dark:hover:text-pink-400 transition-colors cursor-pointer"
+              className="bg-white/90 backdrop-blur-sm text-gray-700 hover:text-pink-600 dark:hover:text-pink-400 transition-colors cursor-pointer rounded-full w-10 h-10 flex items-center justify-center shadow hover:scale-110"
               title="Add to Cart"
               aria-label={`Add ${product.name} to cart`}
             >
-              <CiShoppingBasket size={24} />
+              <CiShoppingBasket size={20} />
             </button>
+          </div>
+
+          {/* Product info overlay at bottom */}
+          <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+            {/* Partner Logo for Commission products */}
+            {product.partnerLogo && (
+              <div className="mb-2">
+                <OptimizedImage
+                  src={getImageUrl(product.partnerLogo)}
+                  alt={product.partnerName || "Partner"}
+                  className="w-8 h-8 rounded-full object-cover border border-white/30"
+                  title={product.partnerName || "Partner"}
+                  width={32}
+                  height={32}
+                />
+              </div>
+            )}
+
+            {/* Product Name */}
+            <div className="text-lg font-semibold text-white mb-2 line-clamp-2">
+              {product.name}
+            </div>
+
+            {/* Price */}
+            <div className="text-white font-bold text-xl">
+              {product.isDiscounted && product.originalPrice ? (
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-2">
+                    <span className="line-through text-red-300 text-sm">
+                      €{product.originalPrice.toLocaleString()}
+                    </span>
+                    <span className="text-white text-xl">
+                      €{product.price.toLocaleString()}
+                    </span>
+                  </div>
+                  <span className="bg-red-500 text-white px-2 py-1 rounded text-xs font-medium inline-block w-fit">
+                    {product.discountLabel || "Last Chance"}
+                  </span>
+                </div>
+              ) : (
+                <span>€{product.price.toLocaleString()}</span>
+              )}
+            </div>
           </div>
         </div>
       </Link>
-
-      {/* Product info */}
-      <div className="flex flex-col items-center mt-1 mb-2">
-        <div className="flex items-center justify-between w-full px-2 mb-2">
-          {/* Partner Logo for Commission products - left side */}
-          {product.partnerLogo && (
-            <OptimizedImage
-              src={getImageUrl(product.partnerLogo)}
-              alt={product.partnerName || "Partner"}
-              className="w-8 h-8 rounded-full object-cover border border-gray-200"
-              title={product.partnerName || "Partner"}
-              width={32}
-              height={32}
-            />
-          )}
-          {/* Empty space for balance */}
-          <div className="flex-1"></div>
-        </div>
-        <div className="text-base font-medium text-gray-900 text-center truncate w-full max-w-[90%]">
-          {product.name}
-        </div>
-        <div className="text-pink-400 text-lg font-bold mt-1">
-          {product.isDiscounted && product.originalPrice ? (
-            <div className="flex flex-col items-center gap-1">
-              <span className="line-through text-red-500 text-sm">
-                €{product.originalPrice.toLocaleString()}
-              </span>
-              <span className="text-pink-400">
-                €{product.price.toLocaleString()}
-              </span>
-              <span className="bg-red-500 text-white px-2 py-1 rounded text-xs font-medium">
-                {product.discountLabel || "Last Chance"}
-              </span>
-            </div>
-          ) : (
-            <span>€{product.price.toLocaleString()}</span>
-          )}
-        </div>
-      </div>
 
       {/* Quick View Modal */}
       <QuickViewModal

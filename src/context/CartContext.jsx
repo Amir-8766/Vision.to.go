@@ -17,13 +17,16 @@ export const CartProvider = ({ children }) => {
   }, [items]);
 
   const addToCart = (item) => {
+    console.log("CartContext addToCart called with:", item);
     setItems((prev) => {
       const existingItem = prev.find((i) => i._id === item._id);
       if (existingItem) {
+        console.log("Item exists, increasing quantity");
         return prev.map((i) =>
           i._id === item._id ? { ...i, quantity: (i.quantity || 1) + 1 } : i
         );
       } else {
+        console.log("New item, adding to cart");
         return [...prev, { ...item, quantity: 1 }];
       }
     });
