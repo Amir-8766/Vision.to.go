@@ -25,7 +25,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 const Admin = React.lazy(() => import("./pages/Admin"));
 const AdminDashboard = React.lazy(() => import("./pages/AdminDashboard"));
-import Footer from "./components/Footer";
+import { Footer } from "./components/Footer";
 import logo from "./assets/VisionToGo-Logo.png";
 const Profile = React.lazy(() => import("./pages/Profile"));
 const UpdatePassword = React.lazy(() => import("./pages/UpdatePassword"));
