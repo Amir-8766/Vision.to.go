@@ -68,7 +68,7 @@ const FAQ = () => {
   return (
     <>
       <SEOHead
-        title="FAQ - Frequently Asked Questions - The Grrrls Club"
+        title="FAQ - Frequently Asked Questions - Vision To Go"
         description="Answers to frequently asked questions about shipping, payment, returns and more at The Grrrls Club"
         keywords="FAQ, questions, shipping, payment, returns, support, help"
       />

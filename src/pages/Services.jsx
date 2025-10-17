@@ -33,7 +33,7 @@ export default function Services() {
   return (
     <>
       <SEOHead
-        title="Services - The Grrrls Club"
+        title="Services - Vision To Go"
         description="Professional services including organization help, daily assistance, moving preparation, and companionship at The Grrrls Club."
         keywords="services, organization, assistance, moving, companionship, support"
       />

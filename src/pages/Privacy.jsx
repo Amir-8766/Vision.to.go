@@ -5,7 +5,7 @@ const Privacy = () => {
   return (
     <>
       <SEOHead
-        title="Privacy Policy - The Grrrls Club"
+        title="Privacy Policy - Vision To Go"
         description="Privacy Policy for The Grrrls Club online store"
         keywords="privacy, policy, data protection, GDPR, personal information"
       />

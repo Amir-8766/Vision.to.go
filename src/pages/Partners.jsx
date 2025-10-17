@@ -96,7 +96,7 @@ export default function Partners() {
   return (
     <>
       <SEOHead
-        title="Geschäftspartner & Synergin - The Grrrls Club"
+        title="Affiliates & Partners - Vision To Go"
         description="Entdecken Sie unsere Geschäftspartner und Synergin, die nachhaltige und natürliche Produkte und Dienstleistungen anbieten."
         keywords="Geschäftspartner, Synergin, Nachhaltigkeit, Naturprodukte, Partnerschaften"
       />

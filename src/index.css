@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Main website background */
+body {
+  background-color: #e0f2fe !important;
+}
+
+/* Override all white backgrounds with our custom color */
+.min-h-screen.bg-white,
+.bg-white {
+  background-color: #e0f2fe !important;
+}
+
 /* Dark Mode Support */
 @media (prefers-color-scheme: dark) {
   html {
@@ -14,10 +25,10 @@
   color-scheme: dark;
 }
 
-/* Logo styling for dark mode - only apply to logo class */
-.dark .logo {
-  filter: brightness(0.7) contrast(0.8) grayscale(0.3);
-  opacity: 0.8;
+/* Logo styling - clear and bright */
+.logo {
+  filter: none;
+  opacity: 1;
 }
 
 /* Force rebuild - text visibility fixes */

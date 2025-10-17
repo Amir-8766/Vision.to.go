@@ -5,7 +5,7 @@ const Impressum = () => {
   return (
     <>
       <SEOHead
-        title="Legal Notice - The Grrrls Club"
+        title="Legal Notice - Vision To Go"
         description="Legal notice for The Grrrls Club online store"
         keywords="legal notice, company information, contact, impressum"
       />

@@ -165,7 +165,7 @@ export default function Home() {
   return (
     <>
       <SEOHead
-        title="The Grrrls Club - Fashion & Lifestyle"
+        title="Vision To Go - Travel & Flight Deals"
         description="Discover unique fashion items, accessories, and lifestyle products at The Grrrls Club. Shop now for the latest trends and exclusive collections."
         keywords="fashion, lifestyle, clothing, accessories, shopping, women, style, boutique"
       />

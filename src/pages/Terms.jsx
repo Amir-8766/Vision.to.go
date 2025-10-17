@@ -5,7 +5,7 @@ const Terms = () => {
   return (
     <>
       <SEOHead
-        title="Terms and Conditions - The Grrrls Club"
+        title="Terms and Conditions - Vision To Go"
         description="Terms and Conditions for The Grrrls Club online store"
         keywords="terms, conditions, legal, shop, online store"
       />
