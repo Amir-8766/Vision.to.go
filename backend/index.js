@@ -8,7 +8,16 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const connectDB = require("./db");
 const path = require("path");
 const cloudinary = require("cloudinary").v2;
-connectDB();
+
+// Allow running without DB for local UI/dev
+const SKIP_DB = process.env.SKIP_DB === "1";
+if (SKIP_DB) {
+  console.warn(
+    "⚠️  SKIP_DB=1 → skipping MongoDB connection. Some routes will return mock data."
+  );
+} else {
+  connectDB();
+}
 
 // Cloudinary config
 cloudinary.config({
@@ -60,16 +69,40 @@ app.get("/health", (req, res) => {
 // Routes
 app.use("/auth", require("./routes/auth"));
 app.use("/users", require("./routes/users"));
-app.use("/products", require("./routes/products"));
+
+if (SKIP_DB) {
+  // Minimal mock for home page data needs
+  app.get("/products", (req, res) => {
+    res.json([]);
+  });
+} else {
+  app.use("/products", require("./routes/products"));
+}
+
 app.use("/productDetails", require("./routes/productDetails"));
 app.use("/orders", require("./routes/orders"));
 app.use("/inventory", require("./routes/inventory"));
 app.use("/commission", require("./routes/commission"));
 app.use("/profile", require("./routes/profile"));
 app.use("/wishlist", require("./routes/wishlist"));
-app.use("/featured-products", require("./routes/featuredProducts"));
-app.use("/partners", require("./routes/partners"));
-app.use("/slider", require("./routes/slider"));
+
+if (SKIP_DB) {
+  app.get("/featured-products", (req, res) => res.json([]));
+} else {
+  app.use("/featured-products", require("./routes/featuredProducts"));
+}
+
+if (SKIP_DB) {
+  app.get("/partners", (req, res) => res.json([]));
+} else {
+  app.use("/partners", require("./routes/partners"));
+}
+
+if (SKIP_DB) {
+  app.get("/slider", (req, res) => res.json([]));
+} else {
+  app.use("/slider", require("./routes/slider"));
+}
 
 // Serve uploaded files statically
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
@@ -100,6 +133,7 @@ app.post("/upload", (req, res) => {
 
   upload.single("image")(req, res, async (err) => {
     if (err) {
+      console.error("Multer error:", err);
       return res.status(400).json({ error: err.message });
     }
 
@@ -108,30 +142,63 @@ app.post("/upload", (req, res) => {
     }
 
     try {
-      // Upload to Cloudinary
-      const result = await cloudinary.uploader.upload(req.file.path, {
-        folder: "visiontogo",
-        use_filename: true,
-        unique_filename: true,
-        resource_type: "auto",
-      });
+      const hasCreds =
+        !!process.env.CLOUDINARY_CLOUD_NAME &&
+        !!process.env.CLOUDINARY_API_KEY &&
+        !!process.env.CLOUDINARY_API_SECRET;
 
-      // Delete temporary file
-      fs.unlinkSync(req.file.path);
+      if (hasCreds) {
+        const result = await cloudinary.uploader.upload(req.file.path, {
+          folder: "visiontogo",
+          use_filename: true,
+          unique_filename: true,
+          resource_type: "auto",
+        });
+        fs.unlinkSync(req.file.path);
+        return res.json({
+          message: "File uploaded successfully",
+          filename: req.file.filename,
+          path: result.secure_url,
+          imageUrl: result.secure_url,
+          storedLocally: false,
+        });
+      }
 
-      res.json({
-        message: "File uploaded successfully",
+      const localUrl = `/uploads/${req.file.filename}`;
+      console.warn(
+        "Cloudinary credentials missing. Returning local file URL:",
+        localUrl
+      );
+      return res.json({
+        message: "File saved locally",
         filename: req.file.filename,
-        path: result.secure_url,
-        imageUrl: result.secure_url,
+        path: localUrl,
+        imageUrl: localUrl,
+        storedLocally: true,
       });
     } catch (cloudinaryError) {
       console.error("Cloudinary upload error:", cloudinaryError);
-      // Delete temporary file
-      if (req.file && fs.existsSync(req.file.path)) {
-        fs.unlinkSync(req.file.path);
+      const localUrl = req.file ? `/uploads/${req.file.filename}` : null;
+      if (localUrl) {
+        console.warn(
+          "Falling back to local upload URL due to Cloudinary error:",
+          localUrl
+        );
+        return res.status(200).json({
+          message: "File saved locally (Cloudinary failed)",
+          filename: req.file.filename,
+          path: localUrl,
+          imageUrl: localUrl,
+          storedLocally: true,
+          cloudinaryError:
+            cloudinaryError?.message || cloudinaryError?.error?.message,
+        });
       }
-      res.status(500).json({ error: "Failed to upload to Cloudinary" });
+      const message =
+        cloudinaryError?.message ||
+        cloudinaryError?.error?.message ||
+        "Failed to upload to Cloudinary";
+      return res.status(500).json({ error: message });
     }
   });
 });

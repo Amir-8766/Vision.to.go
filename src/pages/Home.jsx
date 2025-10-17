@@ -175,14 +175,10 @@ export default function Home() {
         <section className={styles.bannerSection}>
           {/* Background image as content image to allow fetchpriority */}
           <picture>
-            <source
-              srcSet={
-                new URL("../../public/Background.webp", import.meta.url).href
-              }
-              type="image/webp"
-            />
             <img
-              src={new URL("../assets/Background.jpg", import.meta.url).href}
+              src={
+                new URL("../assets/Background.Hero.jpg", import.meta.url).href
+              }
               alt="Background"
               style={{
                 position: "absolute",
@@ -200,10 +196,12 @@ export default function Home() {
             className={styles.bannerBox}
             style={{ position: "relative", zIndex: 1 }}
           >
-            <h2>Welcome to Your Second Hand Online Shop</h2>
-            <p>Save the world by giving used clothes a second life</p>
+            <h2>Your Gateway to Flights, Tours & Travel Essentials</h2>
+            <p>
+              Book your next trip with the best deals on flights and vacations
+            </p>
             <span style={{ color: "#849c22", fontWeight: 700 }}>
-              #savetheworldbuysecondhand
+              #FlyExploreRelax
             </span>
           </div>
         </section>
@@ -221,12 +219,12 @@ export default function Home() {
               color: "#849c22",
             }}
           >
-            Welcome to Your Second Hand Online Shop
+            Plan Your Next Journey with VisionToGo
           </h1>
           <div style={{ fontSize: "1.1rem", color: "#444", fontWeight: 500 }}>
-            Save the world by giving used clothes a second life{" "}
+            Flights, tours and travel gear — all in one place{" "}
             <span style={{ color: "#849c22", fontWeight: 700 }}>
-              #savetheworldbuysecondhand
+              #FlyExploreRelax
             </span>
           </div>
         </section>

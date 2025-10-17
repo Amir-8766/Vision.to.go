@@ -10,7 +10,7 @@ const ImageSlider = () => {
 
   const [sliderImages, setSliderImages] = useState([]);
 
-  // Fetch slider images from backend; fallback to local slide01..slide14
+  // Fetch slider images from backend; fallback to local slide01..slide14 via Vite imports
   useEffect(() => {
     let mounted = true;
     (async () => {
@@ -25,11 +25,15 @@ const ImageSlider = () => {
         }
       } catch (_) {
         if (mounted) {
-          const local = Array.from(
-            { length: 14 },
-            (_, i) => `/src/assets/slide${String(i + 1).padStart(2, "0")}.jpg`
-          );
-          setSliderImages(local);
+          // Use Vite's glob import to get real URLs for local images
+          const modules = import.meta.glob("../assets/slide*.jpg", {
+            eager: true,
+            import: "default",
+          });
+          const sorted = Object.entries(modules)
+            .sort((a, b) => a[0].localeCompare(b[0]))
+            .map(([, url]) => url);
+          setSliderImages(sorted);
         }
       }
     })();
@@ -102,7 +106,7 @@ const ImageSlider = () => {
                   {isVisible ? (
                     <picture>
                       <img
-                        src={image.startsWith("http") ? image : `/${image}`}
+                        src={image}
                         alt={`Fashion showcase ${index + 1}`}
                         className="w-full h-full object-cover"
                         loading={index === currentSlide ? "eager" : "lazy"}

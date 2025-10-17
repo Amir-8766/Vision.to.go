@@ -437,18 +437,24 @@ export default function Admin() {
         const formData = new FormData();
         formData.append("image", file);
 
-        const res = await fetch(BASE_URL + "/products/upload", {
+        const res = await fetch(BASE_URL + "/upload", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: formData,
         });
-
-        if (!res.ok) throw new Error(`Failed to upload ${file.name}`);
-
+        if (!res.ok) {
+          let message = `Failed to upload ${file.name}`;
+          try {
+            const errJson = await res.json();
+            message = errJson?.error || message;
+          } catch {}
+          throw new Error(message);
+        }
         const data = await res.json();
-        setImageUrls((prev) => [...prev, data.imageUrl]);
+        const url = data.imageUrl || data.path;
+        if (url) setImageUrls((prev) => [...prev, url]);
       }
 
       setImageUrl(""); // پاک کردن
@@ -632,7 +638,7 @@ export default function Admin() {
           onClick={() => setActiveTab("affiliates")}
           className={`px-4 py-2 rounded ${
             activeTab === "affiliates"
-              ? "bg-pink-600 text-white"
+              ? "bg-blue-600 text-white"
               : "bg-gray-200 text-gray-700"
           }`}
         >
@@ -641,7 +647,9 @@ export default function Admin() {
         <button
           onClick={() => setActiveTab("slider")}
           className={`px-4 py-2 rounded ${
-            activeTab === "slider" ? "bg-pink-600 text-white" : "bg-gray-200"
+            activeTab === "slider"
+              ? "bg-blue-600 text-white"
+              : "bg-gray-200 text-gray-700"
           }`}
         >
           Slider
@@ -651,7 +659,7 @@ export default function Admin() {
       {activeTab === "products" && (
         <>
           <form onSubmit={handleAdd} className="mb-6 space-y-2">
-            <div className="font-bold">Product Name</div>
+            <div className="font-bold text-gray-800">Product Name</div>
             <input
               className="w-full border p-2 rounded"
               placeholder="Product Name"
@@ -660,7 +668,7 @@ export default function Admin() {
               required
             />
 
-            <div className="font-bold">
+            <div className="font-bold text-gray-800">
               Current Price (Lower Price - What customer pays)
             </div>
             <input
@@ -674,7 +682,7 @@ export default function Admin() {
               required
             />
 
-            <div className="font-bold">
+            <div className="font-bold text-gray-800">
               Original Price (Optional - for discounts only)
             </div>
             <input
@@ -695,9 +703,9 @@ export default function Admin() {
                 onChange={(e) =>
                   setForm((f) => ({ ...f, isDiscounted: e.target.checked }))
                 }
-                className="w-4 h-4"
+                className="w-4 h-4 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500"
               />
-              <label htmlFor="isDiscounted" className="font-bold">
+              <label htmlFor="isDiscounted" className="font-bold text-gray-800">
                 Mark as Discounted
               </label>
             </div>
@@ -713,7 +721,7 @@ export default function Admin() {
                   <br />
                   Example: Original: €15.99, Current: €12.99
                 </div>
-                <div className="font-bold">Discount Label</div>
+                <div className="font-bold text-gray-800">Discount Label</div>
                 <input
                   className="w-full border p-2 rounded"
                   placeholder="Discount Label (e.g., Last Chance)"
@@ -725,7 +733,7 @@ export default function Admin() {
               </>
             )}
 
-            <div className="font-bold">Description</div>
+            <div className="font-bold text-gray-800">Description</div>
             <textarea
               className="w-full border p-2 rounded"
               placeholder="Description"
@@ -735,7 +743,7 @@ export default function Admin() {
               }
             />
 
-            <div className="font-bold">Zustand</div>
+            <div className="font-bold text-gray-800">Zustand</div>
             <select
               className="w-full border p-2 rounded"
               value={form.zustand}
@@ -755,7 +763,7 @@ export default function Admin() {
               </option>
             </select>
 
-            <div className="font-bold">Size (cm)</div>
+            <div className="font-bold text-gray-800">Size (cm)</div>
             <div className="flex gap-2">
               <input
                 className="border p-2 rounded w-1/3"
@@ -786,7 +794,7 @@ export default function Admin() {
               />
             </div>
 
-            <div className="font-bold">Details</div>
+            <div className="font-bold text-gray-800">Details</div>
             <input
               className="w-full border p-2 rounded"
               placeholder="Brand"
@@ -1029,7 +1037,7 @@ export default function Admin() {
                               isDiscounted: e.target.checked,
                             }))
                           }
-                          className="w-4 h-4"
+                          className="w-4 h-4 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500"
                         />
                         <label htmlFor="isDiscounted" className="font-bold">
                           Mark as Discounted
@@ -1188,23 +1196,31 @@ export default function Admin() {
                           for (const file of files) {
                             const formData = new FormData();
                             formData.append("image", file);
-                            const res = await fetch(
-                              BASE_URL + "/products/upload",
-                              {
-                                method: "POST",
-                                headers: {
-                                  Authorization: `Bearer ${localStorage.getItem(
-                                    "token"
-                                  )}`,
-                                },
-                                body: formData,
-                              }
-                            );
+                            const res = await fetch(BASE_URL + "/upload", {
+                              method: "POST",
+                              headers: {
+                                Authorization: `Bearer ${localStorage.getItem(
+                                  "token"
+                                )}`,
+                              },
+                              body: formData,
+                            });
+                            if (!res.ok) {
+                              let message = "Upload failed";
+                              try {
+                                const j = await res.json();
+                                message = j?.error || message;
+                              } catch {}
+                              throw new Error(message);
+                            }
                             const data = await res.json();
-                            setEditForm((f) => ({
-                              ...f,
-                              images: [...(f.images || []), data.imageUrl],
-                            }));
+                            const url = data.imageUrl || data.path;
+                            if (url) {
+                              setEditForm((f) => ({
+                                ...f,
+                                images: [...(f.images || []), url],
+                              }));
+                            }
                           }
                         }}
                       />
@@ -1340,7 +1356,9 @@ export default function Admin() {
       {activeTab === "commission" && (
         <>
           <form onSubmit={handleAddCommission} className="mb-6 space-y-2">
-            <div className="font-bold">Commission Product Name</div>
+            <div className="font-bold text-gray-800">
+              Commission Product Name
+            </div>
             <input
               className="w-full border p-2 rounded"
               placeholder="Commission Product Name"
@@ -1350,7 +1368,7 @@ export default function Admin() {
               }
               required
             />
-            <div className="font-bold">
+            <div className="font-bold text-gray-800">
               Current Price (Lower Price - What customer pays)
             </div>
             <input
@@ -1363,7 +1381,7 @@ export default function Admin() {
               }
               required
             />
-            <div className="font-bold">
+            <div className="font-bold text-gray-800">
               Original Price (Optional - for discounts only)
             </div>
             <input
@@ -1389,9 +1407,9 @@ export default function Admin() {
                     isDiscounted: e.target.checked,
                   }))
                 }
-                className="w-4 h-4"
+                className="w-4 h-4 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500"
               />
-              <label htmlFor="isDiscounted" className="font-bold">
+              <label htmlFor="isDiscounted" className="font-bold text-gray-800">
                 Mark as Discounted
               </label>
             </div>
@@ -1407,7 +1425,7 @@ export default function Admin() {
                   <br />
                   Example: Original: €15.99, Current: €12.99
                 </div>
-                <div className="font-bold">Discount Label</div>
+                <div className="font-bold text-gray-800">Discount Label</div>
                 <input
                   className="w-full border p-2 rounded"
                   placeholder="Discount Label (e.g., Last Chance)"
@@ -1422,245 +1440,9 @@ export default function Admin() {
               </>
             )}
 
-            {activeTab === "affiliates" && (
-              <div className="p-4 bg-red-100 border border-red-400 rounded-lg">
-                <h3 className="text-lg font-bold text-red-800 mb-2">
-                  🔴 DEBUG: Affiliates Tab is Active!
-                </h3>
-                <p className="text-red-600 mb-4">
-                  Current activeTab value: "{activeTab}"
-                </p>
-                <p className="text-red-600 mb-4">
-                  This should be visible when you click the Affiliates tab.
-                </p>
-                
-                <div className="bg-white p-4 rounded border">
-                  <h4 className="font-bold mb-3">Add New Affiliate</h4>
-                  <form onSubmit={handleAddAffiliate} className="space-y-3">
-                    <div>
-                      <label className="block text-sm font-medium mb-1">
-                        Name *
-                      </label>
-                      <input
-                        className="w-full border p-2 rounded"
-                        placeholder="Enter affiliate name"
-                        value={affiliateForm.name}
-                        onChange={(e) =>
-                          setAffiliateForm((f) => ({
-                            ...f,
-                            name: e.target.value,
-                          }))
-                        }
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium mb-1">
-                        Website *
-                      </label>
-                      <input
-                        className="w-full border p-2 rounded"
-                        placeholder="https://example.com"
-                        value={affiliateForm.website}
-                        onChange={(e) =>
-                          setAffiliateForm((f) => ({
-                            ...f,
-                            website: e.target.value,
-                          }))
-                        }
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium mb-1">
-                        Description *
-                      </label>
-                      <textarea
-                        className="w-full border p-2 rounded"
-                        placeholder="Brief description"
-                        rows={3}
-                        value={affiliateForm.description}
-                        onChange={(e) =>
-                          setAffiliateForm((f) => ({
-                            ...f,
-                            description: e.target.value,
-                          }))
-                        }
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium mb-1">
-                        Category *
-                      </label>
-                      <select
-                        className="w-full border p-2 rounded"
-                        value={affiliateForm.category}
-                        onChange={(e) =>
-                          setAffiliateForm((f) => ({
-                            ...f,
-                            category: e.target.value,
-                          }))
-                        }
-                        required
-                      >
-                        <option value="education">🎓 Education</option>
-                        <option value="natural_products">
-                          🌿 Natural Products
-                        </option>
-                        <option value="fashion">👗 Fashion</option>
-                        <option value="health_wellness">
-                          💪 Health & Wellness
-                        </option>
-                        <option value="beauty">💄 Beauty</option>
-                        <option value="sustainability">
-                          🌱 Sustainability
-                        </option>
-                        <option value="other">🔗 Other</option>
-                      </select>
-                    </div>
-
-                    <div className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        id="affiliate-active"
-                        checked={affiliateForm.isActive}
-                        onChange={(e) =>
-                          setAffiliateForm((f) => ({
-                            ...f,
-                            isActive: e.target.checked,
-                          }))
-                        }
-                        className="rounded"
-                      />
-                      <label
-                        htmlFor="affiliate-active"
-                        className="text-sm font-medium"
-                      >
-                        Active (visible on website)
-                      </label>
-                    </div>
-
-                    <button
-                      type="submit"
-                      className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 font-medium"
-                    >
-                      Add Affiliate
-                    </button>
-                  </form>
-                </div>
-
-                <div className="bg-white p-4 rounded border mt-4">
-                  <h4 className="font-bold mb-3">
-                    Current Affiliates ({affiliatesAdmin.length})
-                  </h4>
-
-                  {affiliatesLoading ? (
-                    <div className="flex items-center justify-center py-4">
-                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
-                      <span className="ml-2 text-gray-600">
-                        Loading affiliates...
-                      </span>
-                    </div>
-                  ) : affiliatesAdmin.length === 0 ? (
-                    <div className="text-center py-4 text-gray-500">
-                      <p>No affiliates found.</p>
-                      <p className="text-sm">
-                        Add your first affiliate using the form above.
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="space-y-3">
-                      {affiliatesAdmin.map((affiliate) => (
-                        <div
-                          key={affiliate._id}
-                          className="border border-gray-200 rounded-lg p-3 hover:shadow-md transition-shadow"
-                        >
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1">
-                              <h5 className="font-semibold text-gray-800">
-                                {affiliate.name}
-                              </h5>
-                              <p className="text-sm text-gray-600 mt-1">
-                                {affiliate.description}
-                              </p>
-                              <div className="flex items-center space-x-2 mt-2">
-                                <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">
-                                  {affiliate.category}
-                                </span>
-                                <span
-                                  className={`px-2 py-1 rounded text-xs font-medium ${
-                                    affiliate.isActive
-                                      ? "bg-green-100 text-green-800"
-                                      : "bg-red-100 text-red-800"
-                                  }`}
-                                >
-                                  {affiliate.isActive ? "Active" : "Inactive"}
-                                </span>
-                              </div>
-                              <a
-                                href={affiliate.website}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-blue-600 hover:text-blue-800 text-sm mt-1 block"
-                              >
-                                {affiliate.website}
-                              </a>
-                            </div>
-                            <div className="flex space-x-2 ml-4">
-                              <button
-                                onClick={() => {
-                                  setAffiliateEditId(affiliate._id);
-                                  setAffiliateEditForm({
-                                    name: affiliate.name || "",
-                                    description: affiliate.description || "",
-                                    website: affiliate.website || "",
-                                    instagram: affiliate.instagram || "",
-                                    category: affiliate.category || "education",
-                                    services: (affiliate.services || []).join(
-                                      ", "
-                                    ),
-                                    partnershipType:
-                                      affiliate.partnershipType ||
-                                      "geschaeftspartner",
-                                    isActive: affiliate.isActive !== false,
-                                    logo: affiliate.logo || "",
-                                    featuredImage:
-                                      affiliate.featuredImage || "",
-                                  });
-                                }}
-                                className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
-                              >
-                                Edit
-                              </button>
-                              <button
-                                onClick={() =>
-                                  handleDeleteAffiliate(affiliate._id)
-                                }
-                                className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
-                              >
-                                Delete
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {error && (
-                  <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-                    {error}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {activeTab === "commission" && (
+            <div className="font-bold text-gray-800">
+              Commission Rate (e.g., 30 for 30%)
+            </div>
             <input
               className="w-full border p-2 rounded"
               placeholder="Commission Rate (e.g., 30 for 30%)"
@@ -1674,7 +1456,8 @@ export default function Admin() {
               }
               required
             />
-            <div className="font-bold">Partner Name</div>
+
+            <div className="font-bold text-gray-800">Partner Name</div>
             <input
               className="w-full border p-2 rounded"
               placeholder="Partner Name"
@@ -1688,62 +1471,7 @@ export default function Admin() {
               required
             />
 
-            <div className="font-bold">Partner Logo</div>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                const file = e.target.files[0];
-                if (file) {
-                  // آپلود لوگوی پارتنر
-                  const formData = new FormData();
-                  formData.append("image", file);
-
-                  fetch(BASE_URL + "/products/upload", {
-                    method: "POST",
-                    headers: {
-                      Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                    body: formData,
-                  })
-                    .then((res) => res.json())
-                    .then((data) => {
-                      setCommissionForm((f) => ({
-                        ...f,
-                        partnerLogo: data.imageUrl,
-                      }));
-                    })
-                    .catch((err) => {
-                      setError("Error uploading partner logo");
-                    });
-                }
-              }}
-              className="w-full border p-2 rounded"
-            />
-
-            {commissionForm.partnerLogo && (
-              <div className="flex items-center gap-2">
-                <img
-                  src={getImageUrl(commissionForm.partnerLogo)}
-                  alt="Partner Logo"
-                  className="w-12 h-12 rounded-full object-cover border"
-                />
-                <span className="text-sm text-gray-600">
-                  Logo uploaded successfully
-                </span>
-                <button
-                  type="button"
-                  onClick={() =>
-                    setCommissionForm((f) => ({ ...f, partnerLogo: "" }))
-                  }
-                  className="text-red-500 text-sm hover:underline"
-                >
-                  Remove
-                </button>
-              </div>
-            )}
-
-            <div className="font-bold">Partner Description</div>
+            <div className="font-bold text-gray-800">Partner Description</div>
             <textarea
               className="w-full border p-2 rounded"
               placeholder="Partner Description"
@@ -1755,7 +1483,38 @@ export default function Admin() {
                 }))
               }
             />
-            <div className="font-bold">Category</div>
+
+            <div className="font-bold text-gray-800">Partner Logo</div>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={async (e) => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                const formData = new FormData();
+                formData.append("image", file);
+                const res = await fetch(BASE_URL + "/upload", {
+                  method: "POST",
+                  headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                  },
+                  body: formData,
+                });
+                const data = await res.json();
+                const url = data.imageUrl || data.path;
+                if (url) setCommissionForm((f) => ({ ...f, partnerLogo: url }));
+              }}
+              className="w-full border p-2 rounded"
+            />
+            {commissionForm.partnerLogo && (
+              <img
+                src={getImageUrl(commissionForm.partnerLogo)}
+                alt="Partner Logo preview"
+                className="w-16 h-16 object-cover rounded border mt-2"
+              />
+            )}
+
+            <div className="font-bold text-gray-800">Category</div>
             <select
               className="w-full border p-2 rounded"
               value={commissionForm.category}
@@ -1951,7 +1710,7 @@ export default function Admin() {
                               isDiscounted: e.target.checked,
                             }))
                           }
-                          className="w-4 h-4"
+                          className="w-4 h-4 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500"
                         />
                         <label htmlFor="isDiscounted" className="font-bold">
                           Mark as Discounted
@@ -2110,23 +1869,31 @@ export default function Admin() {
                           for (const file of files) {
                             const formData = new FormData();
                             formData.append("image", file);
-                            const res = await fetch(
-                              BASE_URL + "/products/upload",
-                              {
-                                method: "POST",
-                                headers: {
-                                  Authorization: `Bearer ${localStorage.getItem(
-                                    "token"
-                                  )}`,
-                                },
-                                body: formData,
-                              }
-                            );
+                            const res = await fetch(BASE_URL + "/upload", {
+                              method: "POST",
+                              headers: {
+                                Authorization: `Bearer ${localStorage.getItem(
+                                  "token"
+                                )}`,
+                              },
+                              body: formData,
+                            });
+                            if (!res.ok) {
+                              let message = "Upload failed";
+                              try {
+                                const j = await res.json();
+                                message = j?.error || message;
+                              } catch {}
+                              throw new Error(message);
+                            }
                             const data = await res.json();
-                            setEditForm((f) => ({
-                              ...f,
-                              images: [...(f.images || []), data.imageUrl],
-                            }));
+                            const url = data.imageUrl || data.path;
+                            if (url) {
+                              setEditForm((f) => ({
+                                ...f,
+                                images: [...(f.images || []), url],
+                              }));
+                            }
                           }
                         }}
                       />
@@ -2250,9 +2017,307 @@ export default function Admin() {
         </>
       )}
 
+      {activeTab === "affiliates" && (
+        <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+          <h3 className="text-lg font-bold text-green-800 mb-4">
+            ✅ Affiliates Management
+          </h3>
+
+          <div className="bg-white p-4 rounded border">
+            <h4 className="font-bold mb-3">Add New Affiliate</h4>
+            <form onSubmit={handleAddAffiliate} className="space-y-3">
+              <div>
+                <label className="block text-sm font-medium mb-1 text-gray-800">
+                  Name *
+                </label>
+                <input
+                  className="w-full border p-2 rounded"
+                  placeholder="Enter affiliate name"
+                  value={affiliateForm.name}
+                  onChange={(e) =>
+                    setAffiliateForm((f) => ({ ...f, name: e.target.value }))
+                  }
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1 text-gray-800">
+                  Website *
+                </label>
+                <input
+                  className="w-full border p-2 rounded"
+                  placeholder="https://example.com"
+                  value={affiliateForm.website}
+                  onChange={(e) =>
+                    setAffiliateForm((f) => ({
+                      ...f,
+                      website: e.target.value,
+                    }))
+                  }
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1 text-gray-800">
+                  Description *
+                </label>
+                <textarea
+                  className="w-full border p-2 rounded"
+                  placeholder="Brief description"
+                  rows={3}
+                  value={affiliateForm.description}
+                  onChange={(e) =>
+                    setAffiliateForm((f) => ({
+                      ...f,
+                      description: e.target.value,
+                    }))
+                  }
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1 text-gray-800">
+                  Category *
+                </label>
+                <select
+                  className="w-full border p-2 rounded"
+                  value={affiliateForm.category}
+                  onChange={(e) =>
+                    setAffiliateForm((f) => ({
+                      ...f,
+                      category: e.target.value,
+                    }))
+                  }
+                  required
+                >
+                  <option value="education">🎓 Education</option>
+                  <option value="natural_products">🌿 Natural Products</option>
+                  <option value="fashion">👗 Fashion</option>
+                  <option value="health_wellness">💪 Health & Wellness</option>
+                  <option value="beauty">💄 Beauty</option>
+                  <option value="sustainability">🌱 Sustainability</option>
+                  <option value="other">🔗 Other</option>
+                </select>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="affiliate-active"
+                  checked={affiliateForm.isActive}
+                  onChange={(e) =>
+                    setAffiliateForm((f) => ({
+                      ...f,
+                      isActive: e.target.checked,
+                    }))
+                  }
+                  className="rounded"
+                />
+                <label
+                  htmlFor="affiliate-active"
+                  className="text-sm font-medium"
+                >
+                  Active (visible on website)
+                </label>
+              </div>
+
+              {/* Logo upload */}
+              <div>
+                <label className="block text-sm font-medium mb-1 text-gray-800">
+                  Logo
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={async (e) => {
+                    const file = e.target.files && e.target.files[0];
+                    if (!file) return;
+                    const formData = new FormData();
+                    formData.append("image", file);
+                    const res = await fetch(BASE_URL + "/upload", {
+                      method: "POST",
+                      headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                          "token"
+                        )}`,
+                      },
+                      body: formData,
+                    });
+                    const data = await res.json();
+                    const url = data.imageUrl || data.path;
+                    if (url) setAffiliateForm((f) => ({ ...f, logo: url }));
+                  }}
+                  className="w-full border p-2 rounded"
+                />
+                {affiliateForm.logo && (
+                  <img
+                    src={getImageUrl(affiliateForm.logo)}
+                    alt="Logo preview"
+                    className="w-16 h-16 object-cover rounded border mt-2"
+                  />
+                )}
+              </div>
+
+              {/* Featured image upload (optional) */}
+              <div>
+                <label className="block text-sm font-medium mb-1 text-gray-800">
+                  Featured Image (optional)
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={async (e) => {
+                    const file = e.target.files && e.target.files[0];
+                    if (!file) return;
+                    const formData = new FormData();
+                    formData.append("image", file);
+                    const res = await fetch(BASE_URL + "/upload", {
+                      method: "POST",
+                      headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                          "token"
+                        )}`,
+                      },
+                      body: formData,
+                    });
+                    const data = await res.json();
+                    const url = data.imageUrl || data.path;
+                    if (url)
+                      setAffiliateForm((f) => ({
+                        ...f,
+                        featuredImage: url,
+                      }));
+                  }}
+                  className="w-full border p-2 rounded"
+                />
+                {affiliateForm.featuredImage && (
+                  <img
+                    src={getImageUrl(affiliateForm.featuredImage)}
+                    alt="Featured preview"
+                    className="w-24 h-16 object-cover rounded border mt-2"
+                  />
+                )}
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 font-medium"
+              >
+                Add Affiliate
+              </button>
+            </form>
+          </div>
+
+          <div className="bg-white p-4 rounded border mt-4">
+            <h4 className="font-bold mb-3">
+              Current Affiliates ({affiliatesAdmin.length})
+            </h4>
+
+            {affiliatesLoading ? (
+              <div className="flex items-center justify-center py-4">
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+                <span className="ml-2 text-gray-600">
+                  Loading affiliates...
+                </span>
+              </div>
+            ) : affiliatesAdmin.length === 0 ? (
+              <div className="text-center py-4 text-gray-500">
+                <p>No affiliates found.</p>
+                <p className="text-sm">
+                  Add your first affiliate using the form above.
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {affiliatesAdmin.map((affiliate) => (
+                  <div
+                    key={affiliate._id}
+                    className="border border-gray-200 rounded-lg p-3 hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <h5 className="font-semibold text-gray-800">
+                          {affiliate.name}
+                        </h5>
+                        <p className="text-sm text-gray-600 mt-1">
+                          {affiliate.description}
+                        </p>
+                        <div className="flex items-center space-x-2 mt-2">
+                          <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">
+                            {affiliate.category}
+                          </span>
+                          <span
+                            className={`px-2 py-1 rounded text-xs font-medium ${
+                              affiliate.isActive
+                                ? "bg-green-100 text-green-800"
+                                : "bg-red-100 text-red-800"
+                            }`}
+                          >
+                            {affiliate.isActive ? "Active" : "Inactive"}
+                          </span>
+                        </div>
+                        <a
+                          href={affiliate.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-800 text-sm mt-1 block"
+                        >
+                          {affiliate.website}
+                        </a>
+                      </div>
+                      <div className="flex space-x-2 ml-4">
+                        <button
+                          onClick={() => {
+                            setAffiliateEditId(affiliate._id);
+                            setAffiliateEditForm({
+                              name: affiliate.name || "",
+                              description: affiliate.description || "",
+                              website: affiliate.website || "",
+                              instagram: affiliate.instagram || "",
+                              category: affiliate.category || "education",
+                              services: (affiliate.services || []).join(", "),
+                              partnershipType:
+                                affiliate.partnershipType ||
+                                "geschaeftspartner",
+                              isActive: affiliate.isActive !== false,
+                              logo: affiliate.logo || "",
+                              featuredImage: affiliate.featuredImage || "",
+                            });
+                          }}
+                          className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDeleteAffiliate(affiliate._id)}
+                          className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {error && (
+            <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+              {error}
+            </div>
+          )}
+        </div>
+      )}
+
       {activeTab === "slider" && (
         <div className="p-4">
-          <h2 className="text-lg font-semibold mb-3">Manage Slider Images</h2>
+          <h2 className="text-lg font-semibold mb-3 text-gray-800">
+            Manage Slider Images
+          </h2>
           <form onSubmit={handleCreateSliderImage} className="space-y-3 mb-6">
             <div className="flex items-center gap-2">
               <input
@@ -2305,7 +2370,7 @@ export default function Admin() {
                 }
               />
             </div>
-            <label className="inline-flex items-center gap-2">
+            <label className="inline-flex items-center gap-2 text-gray-800">
               <input
                 type="checkbox"
                 checked={sliderForm.isActive}
@@ -2317,7 +2382,7 @@ export default function Admin() {
             </label>
             <button
               type="submit"
-              className="bg-pink-600 text-white px-4 py-2 rounded"
+              className="bg-pink-600 text-white px-4 py-2 rounded ml-4"
             >
               Add Image
             </button>
@@ -2383,7 +2448,7 @@ export default function Admin() {
                   handleMultipleFileUpload(multipleFiles)
                 }
                 disabled={multipleFiles.length === 0 || uploadingMultiple}
-                className={`px-4 py-2 rounded ${
+                className={`px-4 py-2 rounded mb-6 ${
                   multipleFiles.length === 0 || uploadingMultiple
                     ? "bg-gray-400 text-gray-200 cursor-not-allowed"
                     : "bg-green-600 text-white hover:bg-green-700"
@@ -2396,7 +2461,7 @@ export default function Admin() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
             {sliderImagesAdmin.map((img) => (
               <div
                 key={img._id}
