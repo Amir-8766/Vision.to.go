@@ -19,7 +19,6 @@ export default function About() {
           src={aboutUsImg}
           alt="About Us"
           className="w-full h-full object-cover object-[75%_center] md:object-center"
-          در
           fetchpriority="high"
           decoding="async"
         />
@@ -28,11 +27,11 @@ export default function About() {
           style={{ width: "45%", maxWidth: "600px" }}
         >
           <h1 className="text-xl md:text-4xl font-bold mb-2 md:mb-4 leading-snug">
-            Girl&apos;s Club is your platform for pre-owned pieces you’ll love
+            Vision To Go — Your Gateway to Smart Travel
           </h1>
           <h3 className="text-sm md:text-xl font-medium">
-            One community, thousands of brands, and a whole lot of second-hand
-            style. Ready to get started? Here’s how it works.
+            We help you find cheap flights, trusted partners, and must‑have
+            travel gear — all in one place.
           </h3>
         </div>
       </div>
@@ -41,7 +40,7 @@ export default function About() {
       <div className="max-w-6xl mx-auto mt-16 px-4">
         <div className="flex items-end mb-8">
           <h2 className="text-2xl font-bold flex-1 text-left">
-            Selling is simple
+            Booking is simple
           </h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -49,16 +48,15 @@ export default function About() {
           <div className="flex flex-col items-center text-center">
             <img
               src={about01}
-              alt="List for free"
+              alt="Search flights"
               className="rounded-lg w-full max-w-xs mb-4 shadow"
               loading="lazy"
               decoding="async"
             />
-            <h3 className="font-bold text-lg mb-2">1. List for free</h3>
+            <h3 className="font-bold text-lg mb-2">1. Search flights</h3>
             <p className="mb-4 text-gray-700 text-sm">
-              Download the Vinted app for free. Take photos of your item,
-              describe it, and set your price. Tap “Upload” and your listing is
-              live.
+              Enter your route and dates. We scan trusted providers to surface
+              the best prices in real time.
             </p>
             <a
               href="/how-to-list"
@@ -71,15 +69,15 @@ export default function About() {
           <div className="flex flex-col items-center text-center">
             <img
               src={about02}
-              alt="Sell it, ship it"
+              alt="Compare and book"
               className="rounded-lg w-full max-w-xs mb-4 shadow"
               loading="lazy"
               decoding="async"
             />
-            <h3 className="font-bold text-lg mb-2">2. Sell it, ship it</h3>
+            <h3 className="font-bold text-lg mb-2">2. Compare & Book</h3>
             <p className="mb-4 text-gray-700 text-sm">
-              Sold! Box your item, print your prepaid shipping label, and pop to
-              the drop-off point within 5 days.
+              Filter by stops, times, and airlines. Book securely with our
+              partners at the lowest available fare.
             </p>
             <a
               href="/how-to-ship"
@@ -92,15 +90,15 @@ export default function About() {
           <div className="flex flex-col items-center text-center">
             <img
               src={about03}
-              alt="It’s payday!"
+              alt="Get ready to fly"
               className="rounded-lg w-full max-w-xs mb-4 shadow"
               loading="lazy"
               decoding="async"
             />
-            <h3 className="font-bold text-lg mb-2">3. It’s payday!</h3>
+            <h3 className="font-bold text-lg mb-2">3. Get ready to fly</h3>
             <p className="mb-4 text-gray-700 text-sm">
-              There are zero selling fees, so what you earn is yours to keep.
-              You’ll be paid as soon as the buyer confirms everything’s OK.
+              Receive your e‑ticket, travel tips, and a checklist of essentials
+              to make your journey smooth.
             </p>
             <a
               href="/how-to-get-paid"
@@ -113,10 +111,10 @@ export default function About() {
         {/* Start selling button */}
         <div className="flex justify-center mt-10">
           <a
-            href="/products"
+            href="/services"
             className="px-8 py-3 rounded border border-teal-700 text-teal-700 font-semibold hover:bg-[#849c22] hover:text-white transition text-lg shadow-sm"
           >
-            Start selling
+            Explore flight deals
           </a>
         </div>
       </div>
@@ -127,7 +125,7 @@ export default function About() {
       <div className="max-w-6xl mx-auto mt-16 px-4">
         <div className="flex items-end mb-8">
           <h2 className="text-2xl font-bold flex-1 text-left">
-            Shop safely and securely
+            Travel safely and confidently
           </h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -135,15 +133,15 @@ export default function About() {
           <div className="flex flex-col items-center text-center">
             <img
               src={about04}
-              alt="Find it"
+              alt="Find deals"
               className="rounded-lg w-full max-w-xs mb-4 shadow"
               loading="lazy"
               decoding="async"
             />
-            <h3 className="font-bold text-lg mb-2">1. Find it</h3>
+            <h3 className="font-bold text-lg mb-2">1. Find deals</h3>
             <p className="mb-4 text-gray-700 text-sm">
-              Download the Vinted app for free. Browse millions of unique items,
-              search thousands of brands, and find your favourites.
+              Discover exclusive flight offers and seasonal discounts from
+              trusted partners.
             </p>
             <a
               href="/how-to-find"
@@ -156,16 +154,15 @@ export default function About() {
           <div className="flex flex-col items-center text-center">
             <img
               src={about05}
-              alt="Buy it"
+              alt="Book with confidence"
               className="rounded-lg w-full max-w-xs mb-4 shadow"
               loading="lazy"
               decoding="async"
             />
-            <h3 className="font-bold text-lg mb-2">2. Buy it</h3>
+            <h3 className="font-bold text-lg mb-2">2. Book with confidence</h3>
             <p className="mb-4 text-gray-700 text-sm">
-              Ask the seller any questions, then buy with the tap of a button.
-              Pay securely via PayPal, bank card, Apple Pay or your Vinted
-              Balance.
+              Secure checkout, transparent pricing, and clear policies you can
+              rely on.
             </p>
             <a
               href="/how-to-buy"
@@ -178,16 +175,15 @@ export default function About() {
           <div className="flex flex-col items-center text-center">
             <img
               src={about06}
-              alt="Get it"
+              alt="Enjoy your trip"
               className="rounded-lg w-full max-w-xs mb-4 shadow"
               loading="lazy"
               decoding="async"
             />
-            <h3 className="font-bold text-lg mb-2">3. Get it</h3>
+            <h3 className="font-bold text-lg mb-2">3. Enjoy your trip</h3>
             <p className="mb-4 text-gray-700 text-sm">
-              You’ll see your item’s estimated delivery date at checkout, and
-              we’ll let you know when it’s in the post. In a few days, it’ll be
-              with you.
+              From packing tips to destination ideas — we make flying easier and
+              more enjoyable.
             </p>
             <a
               href="/how-to-get"
@@ -203,7 +199,7 @@ export default function About() {
             href="/products"
             className="px-8 py-3 rounded border border-teal-700 text-[#849c22] font-semibold hover:bg-teal-700 hover:text-white transition text-lg shadow-sm"
           >
-            Start shopping
+            Shop travel essentials
           </a>
         </div>
       </div>
@@ -213,9 +209,7 @@ export default function About() {
 
       {/* You’re safe with us section */}
       <div className="max-w-6xl mx-auto mt-16 px-4">
-        <h2 className="text-2xl font-bold mb-8 text-left">
-          You’re safe with us
-        </h2>
+        <h2 className="text-2xl font-bold mb-8 text-left">Why trust us</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {/* Card 1 */}
           <div className="flex items-start gap-4">
@@ -243,15 +237,10 @@ export default function About() {
               </svg>
             </div>
             <div>
-              <h3 className="font-bold text-lg mb-1">
-                Shop with peace of mind
-              </h3>
+              <h3 className="font-bold text-lg mb-1">Secure by design</h3>
               <p className="mb-2 text-gray-700 text-sm">
-                As a buyer, you pay a Buyer Protection fee on each transaction
-                when using the "Buy now" button. This helps safeguard your
-                money, adding an extra layer of protection to your purchases and
-                keeping your information secure. The cost is 5% of the item
-                price plus 0,70 €.
+                We partner with reputable providers and payment gateways, so
+                your data and bookings stay protected.
               </p>
               <a
                 href="/buyer-protection"
@@ -281,13 +270,10 @@ export default function About() {
               </svg>
             </div>
             <div>
-              <h3 className="font-bold text-lg mb-1">Reliable refund policy</h3>
+              <h3 className="font-bold text-lg mb-1">Clear refund policy</h3>
               <p className="mb-2 text-gray-700 text-sm">
-                Your order is protected when you pay through Vinted. You’ll get
-                a refund if your item doesn’t arrive, was damaged in transit, or
-                is significantly not as described. Let us know within 2 days of
-                delivery if something isn’t right. Unless otherwise agreed, the
-                buyer covers the return cost.
+                Get support for issues with your booking. We provide clear
+                guidance and advocate with partners when plans change.
               </p>
               <a
                 href="/refund-policy"
@@ -312,20 +298,20 @@ export default function About() {
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center md:items-end md:pr-12 md:text-right">
           <h2 className="text-2xl md:text-4xl font-bold text-[#171717] mb-4 md:mb-6 drop-shadow-lg">
-            Ready to go?
+            Ready to take off?
           </h2>
           <div className="flex gap-2 md:gap-4 flex-wrap justify-center">
             <a
-              href="/products"
+              href="/services"
               className="px-4 py-2 md:px-8 md:py-3 rounded border border-white text-[#849c22] font-semibold bg-transparent hover:bg-white hover:text-teal-700 transition text-base md:text-lg shadow whitespace-nowrap"
             >
-              Start shopping
+              Explore flights
             </a>
             <a
-              href="/sell"
+              href="/products"
               className="px-4 py-2 md:px-8 md:py-3 rounded bg-white text-teal-700 font-semibold hover:bg-[#849c22] hover:text-white transition text-base md:text-lg shadow whitespace-nowrap"
             >
-              Start selling
+              Travel essentials
             </a>
           </div>
         </div>
