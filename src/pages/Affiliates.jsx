@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { apiFetch } from "../lib/api";
 import { getImageUrl } from "../lib/api";
 import SEOHead from "../components/SEOHead";
+import { PiInstagramLogoLight } from "react-icons/pi";
 
 export default function Affiliates() {
   const [affiliates, setAffiliates] = useState([]);
@@ -307,27 +308,38 @@ export default function Affiliates() {
                       </p>
                       <div className="flex items-center justify-between">
                         <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                          {affiliate.category === "education" && "🎓 Education"}
-                          {affiliate.category === "natural_products" &&
-                            "🌿 Natural Products"}
-                          {affiliate.category === "fashion" && "👗 Fashion"}
-                          {affiliate.category === "health_wellness" &&
-                            "💪 Health & Wellness"}
-                          {affiliate.category === "beauty" && "💄 Beauty"}
-                          {affiliate.category === "sustainability" &&
-                            "🌱 Sustainability"}
+                          {affiliate.category === "flights" && "✈️ Flights"}
+                          {affiliate.category === "hotels" && "🏨 Hotels"}
+                          {affiliate.category === "transport" && "🚄 Transport"}
+                          {affiliate.category === "packages" && "🎁 Packages"}
+                          {affiliate.category === "car_rental" && "🚗 Car Rental"}
+                          {affiliate.category === "travel_insurance" && "🛡️ Travel Insurance"}
+                          {affiliate.category === "activities" && "🎯 Activities & Tours"}
                           {affiliate.category === "other" && "🔗 Other"}
                         </span>
-                        {affiliate.website && (
-                          <a
-                            href={affiliate.website}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-800 font-medium"
-                          >
-                            Visit Website
-                          </a>
-                        )}
+                        <div className="flex items-center gap-3">
+                          {affiliate.instagram && (
+                            <a
+                              href={affiliate.instagram}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-pink-600 hover:text-pink-800 text-lg"
+                              title="Follow on Instagram"
+                            >
+                              <PiInstagramLogoLight />
+                            </a>
+                          )}
+                          {affiliate.website && (
+                            <a
+                              href={affiliate.website}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-600 hover:text-blue-800 font-medium"
+                            >
+                              Visit Website
+                            </a>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
