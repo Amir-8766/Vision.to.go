@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { apiFetch } from "../lib/api";
 import { BASE_URL } from "../lib/api";
 import { getImageUrl } from "../lib/api";
+import { PiInstagramLogoLight } from "react-icons/pi";
 
 export default function Admin() {
   const [products, setProducts] = useState([]);
@@ -83,7 +84,7 @@ export default function Admin() {
     description: "",
     website: "",
     instagram: "",
-    category: "education",
+    category: "flights",
     services: "",
     partnershipType: "geschaeftspartner",
     isActive: true,
@@ -96,7 +97,7 @@ export default function Admin() {
     description: "",
     website: "",
     instagram: "",
-    category: "education",
+    category: "flights",
     services: "",
     partnershipType: "geschaeftspartner",
     isActive: true,
@@ -149,7 +150,7 @@ export default function Admin() {
       const token = localStorage.getItem("token");
       const payload = {
         ...affiliateForm,
-        logo: affiliateForm.logo,
+        logo: affiliateForm.featuredImage, // Use featuredImage as logo
         featuredImage: affiliateForm.featuredImage,
         services: affiliateForm.services
           ? affiliateForm.services.split(",").map((s) => s.trim())
@@ -167,7 +168,7 @@ export default function Admin() {
         description: "",
         website: "",
         instagram: "",
-        category: "education",
+        category: "flights",
         services: "",
         partnershipType: "geschaeftspartner",
         isActive: true,
@@ -185,7 +186,7 @@ export default function Admin() {
       const token = localStorage.getItem("token");
       const payload = {
         ...affiliateEditForm,
-        logo: affiliateEditForm.logo,
+        logo: affiliateEditForm.featuredImage, // Use featuredImage as logo
         featuredImage: affiliateEditForm.featuredImage,
         services: affiliateEditForm.services
           ? affiliateEditForm.services.split(",").map((s) => s.trim())
@@ -2061,6 +2062,23 @@ export default function Admin() {
 
               <div>
                 <label className="block text-sm font-medium mb-1 text-gray-800">
+                  Instagram
+                </label>
+                <input
+                  className="w-full border p-2 rounded"
+                  placeholder="https://instagram.com/username"
+                  value={affiliateForm.instagram}
+                  onChange={(e) =>
+                    setAffiliateForm((f) => ({
+                      ...f,
+                      instagram: e.target.value,
+                    }))
+                  }
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1 text-gray-800">
                   Description *
                 </label>
                 <textarea
@@ -2093,12 +2111,13 @@ export default function Admin() {
                   }
                   required
                 >
-                  <option value="education">🎓 Education</option>
-                  <option value="natural_products">🌿 Natural Products</option>
-                  <option value="fashion">👗 Fashion</option>
-                  <option value="health_wellness">💪 Health & Wellness</option>
-                  <option value="beauty">💄 Beauty</option>
-                  <option value="sustainability">🌱 Sustainability</option>
+                  <option value="flights">✈️ Flights</option>
+                  <option value="hotels">🏨 Hotels</option>
+                  <option value="transport">🚗 Transport</option>
+                  <option value="packages">📦 Travel Packages</option>
+                  <option value="car_rental">🚙 Car Rental</option>
+                  <option value="travel_insurance">🛡️ Travel Insurance</option>
+                  <option value="activities">🎯 Activities & Tours</option>
                   <option value="other">🔗 Other</option>
                 </select>
               </div>
@@ -2124,80 +2143,57 @@ export default function Admin() {
                 </label>
               </div>
 
-              {/* Logo upload */}
+              {/* Partner Logo */}
               <div>
                 <label className="block text-sm font-medium mb-1 text-gray-800">
-                  Logo
+                  Partner Logo
                 </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={async (e) => {
-                    const file = e.target.files && e.target.files[0];
-                    if (!file) return;
-                    const formData = new FormData();
-                    formData.append("image", file);
-                    const res = await fetch(BASE_URL + "/upload", {
-                      method: "POST",
-                      headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                          "token"
-                        )}`,
-                      },
-                      body: formData,
-                    });
-                    const data = await res.json();
-                    const url = data.imageUrl || data.path;
-                    if (url) setAffiliateForm((f) => ({ ...f, logo: url }));
-                  }}
-                  className="w-full border p-2 rounded"
-                />
-                {affiliateForm.logo && (
-                  <img
-                    src={getImageUrl(affiliateForm.logo)}
-                    alt="Logo preview"
-                    className="w-16 h-16 object-cover rounded border mt-2"
-                  />
-                )}
-              </div>
-
-              {/* Featured image upload (optional) */}
-              <div>
-                <label className="block text-sm font-medium mb-1 text-gray-800">
-                  Featured Image (optional)
-                </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={async (e) => {
-                    const file = e.target.files && e.target.files[0];
-                    if (!file) return;
-                    const formData = new FormData();
-                    formData.append("image", file);
-                    const res = await fetch(BASE_URL + "/upload", {
-                      method: "POST",
-                      headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                          "token"
-                        )}`,
-                      },
-                      body: formData,
-                    });
-                    const data = await res.json();
-                    const url = data.imageUrl || data.path;
-                    if (url)
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={affiliateForm.featuredImage}
+                    onChange={(e) =>
                       setAffiliateForm((f) => ({
                         ...f,
-                        featuredImage: url,
-                      }));
-                  }}
-                  className="w-full border p-2 rounded"
-                />
+                        featuredImage: e.target.value,
+                      }))
+                    }
+                    className="border p-2 flex-1"
+                    placeholder="Logo URL"
+                  />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={async (e) => {
+                      const file = e.target.files && e.target.files[0];
+                      if (!file) return;
+                      const formData = new FormData();
+                      formData.append("image", file);
+                      const res = await fetch(BASE_URL + "/upload", {
+                        method: "POST",
+                        headers: {
+                          Authorization: `Bearer ${localStorage.getItem(
+                            "token"
+                          )}`,
+                        },
+                        body: formData,
+                      });
+                      const data = await res.json();
+                      const url = data.imageUrl || data.path;
+                      if (url)
+                        setAffiliateForm((f) => ({
+                          ...f,
+                          featuredImage: url,
+                        }));
+                    }}
+                    className="text-sm"
+                  />
+                </div>
                 {affiliateForm.featuredImage && (
                   <img
                     src={getImageUrl(affiliateForm.featuredImage)}
-                    alt="Featured preview"
-                    className="w-24 h-16 object-cover rounded border mt-2"
+                    alt="Logo preview"
+                    className="w-16 h-16 object-contain rounded border mt-2"
                   />
                 )}
               </div>
@@ -2267,6 +2263,17 @@ export default function Admin() {
                         >
                           {affiliate.website}
                         </a>
+                        {affiliate.instagram && (
+                          <a
+                            href={affiliate.instagram}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-pink-600 hover:text-pink-800 text-sm mt-1 flex items-center gap-1"
+                          >
+                            <PiInstagramLogoLight className="text-lg" />
+                            Instagram
+                          </a>
+                        )}
                       </div>
                       <div className="flex space-x-2 ml-4">
                         <button
@@ -2277,14 +2284,14 @@ export default function Admin() {
                               description: affiliate.description || "",
                               website: affiliate.website || "",
                               instagram: affiliate.instagram || "",
-                              category: affiliate.category || "education",
+                              category: affiliate.category || "flights",
                               services: (affiliate.services || []).join(", "),
                               partnershipType:
                                 affiliate.partnershipType ||
                                 "geschaeftspartner",
                               isActive: affiliate.isActive !== false,
                               logo: affiliate.logo || "",
-                              featuredImage: affiliate.featuredImage || "",
+                              featuredImage: affiliate.logo || affiliate.featuredImage || "",
                             });
                           }}
                           className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
@@ -2304,6 +2311,234 @@ export default function Admin() {
               </div>
             )}
           </div>
+
+          {/* Edit Affiliate Form */}
+          {affiliateEditId && (
+            <div className="mt-6 p-4 bg-gray-50 rounded-lg border">
+              <h3 className="text-lg font-semibold mb-4 text-gray-800">
+                Edit Affiliate
+              </h3>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleUpdateAffiliate(affiliateEditId);
+                }}
+                className="space-y-4"
+              >
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-bold text-gray-800 mb-1">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      value={affiliateEditForm.name}
+                      onChange={(e) =>
+                        setAffiliateEditForm({
+                          ...affiliateEditForm,
+                          name: e.target.value,
+                        })
+                      }
+                      className="w-full border p-2 rounded"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-gray-800 mb-1">
+                      Website
+                    </label>
+                    <input
+                      type="url"
+                      value={affiliateEditForm.website}
+                      onChange={(e) =>
+                        setAffiliateEditForm({
+                          ...affiliateEditForm,
+                          website: e.target.value,
+                        })
+                      }
+                      className="w-full border p-2 rounded"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-gray-800 mb-1">
+                    Description
+                  </label>
+                  <textarea
+                    value={affiliateEditForm.description}
+                    onChange={(e) =>
+                      setAffiliateEditForm({
+                        ...affiliateEditForm,
+                        description: e.target.value,
+                      })
+                    }
+                    className="w-full border p-2 rounded h-20"
+                    required
+                  />
+                </div>
+
+                <div className="grid grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-sm font-bold text-gray-800 mb-1">
+                      Category
+                    </label>
+                    <select
+                      value={affiliateEditForm.category}
+                      onChange={(e) =>
+                        setAffiliateEditForm({
+                          ...affiliateEditForm,
+                          category: e.target.value,
+                        })
+                      }
+                      className="w-full border p-2 rounded"
+                    >
+                      <option value="flights">Flights</option>
+                      <option value="hotels">Hotels</option>
+                      <option value="transport">Transport</option>
+                      <option value="packages">Travel Packages</option>
+                      <option value="car_rental">Car Rental</option>
+                      <option value="travel_insurance">Travel Insurance</option>
+                      <option value="activities">Activities & Tours</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-gray-800 mb-1">
+                      Partnership Type
+                    </label>
+                    <select
+                      value={affiliateEditForm.partnershipType}
+                      onChange={(e) =>
+                        setAffiliateEditForm({
+                          ...affiliateEditForm,
+                          partnershipType: e.target.value,
+                        })
+                      }
+                      className="w-full border p-2 rounded"
+                    >
+                      <option value="geschaeftspartner">
+                        Geschäftspartner
+                      </option>
+                      <option value="synergin">Synergin</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-gray-800 mb-1">
+                      Instagram
+                    </label>
+                    <input
+                      type="url"
+                      value={affiliateEditForm.instagram}
+                      onChange={(e) =>
+                        setAffiliateEditForm({
+                          ...affiliateEditForm,
+                          instagram: e.target.value,
+                        })
+                      }
+                      className="w-full border p-2 rounded"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-gray-800 mb-1">
+                    Services (comma-separated)
+                  </label>
+                  <input
+                    type="text"
+                    value={affiliateEditForm.services}
+                    onChange={(e) =>
+                      setAffiliateEditForm({
+                        ...affiliateEditForm,
+                        services: e.target.value,
+                      })
+                    }
+                    className="w-full border p-2 rounded"
+                    placeholder="Service 1, Service 2, Service 3"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 gap-4">
+                  <div>
+                    <label className="block text-sm font-bold text-gray-800 mb-1">
+                      Partner Logo
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={affiliateEditForm.featuredImage}
+                        onChange={(e) =>
+                          setAffiliateEditForm({
+                            ...affiliateEditForm,
+                            featuredImage: e.target.value,
+                          })
+                        }
+                        className="border p-2 flex-1"
+                        placeholder="Logo URL"
+                      />
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) =>
+                          e.target.files?.[0] &&
+                          handleUploadToCloudinary(e.target.files[0], (url) =>
+                            setAffiliateEditForm({
+                              ...affiliateEditForm,
+                              featuredImage: url,
+                            })
+                          )
+                        }
+                        className="text-sm"
+                      />
+                    </div>
+                    {affiliateEditForm.featuredImage && (
+                      <div className="mt-2">
+                        <img
+                          src={getImageUrl(affiliateEditForm.featuredImage)}
+                          alt="Logo preview"
+                          className="w-16 h-16 object-contain border rounded"
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <label className="flex items-center gap-2 text-gray-800">
+                    <input
+                      type="checkbox"
+                      checked={affiliateEditForm.isActive}
+                      onChange={(e) =>
+                        setAffiliateEditForm({
+                          ...affiliateEditForm,
+                          isActive: e.target.checked,
+                        })
+                      }
+                      className="text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500"
+                    />
+                    <span className="font-bold">Active</span>
+                  </label>
+                </div>
+
+                <div className="flex gap-2">
+                  <button
+                    type="submit"
+                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                  >
+                    Update Affiliate
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setAffiliateEditId(null)}
+                    className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          )}
 
           {error && (
             <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
