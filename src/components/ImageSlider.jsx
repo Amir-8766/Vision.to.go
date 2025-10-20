@@ -107,7 +107,7 @@ const ImageSlider = () => {
                     <picture>
                       <img
                         src={image}
-                        alt={`Fashion showcase ${index + 1}`}
+                        alt={`Travel deals slide ${index + 1}`}
                         className="w-full h-full object-cover"
                         loading={index === currentSlide ? "eager" : "lazy"}
                         decoding="async"
@@ -158,12 +158,11 @@ const ImageSlider = () => {
             className="text-xl font-bold text-white mb-2"
             style={{ color: "white" }}
           >
-            Discover Our Fashion Collection
+            Discover Unbeatable Flight Deals
           </h3>
           <p className="text-white" style={{ color: "white" }}>
-            Explore our curated selection of stylish second-hand clothing and
-            accessories. Each piece tells a story and contributes to sustainable
-            fashion.
+            Explore cheap airline tickets, exclusive travel offers, and
+            must-have gear for your next journey — all in one place.
           </p>
         </div>
       </div>

@@ -6,25 +6,27 @@ import SEOHead from "../components/SEOHead";
 
 const services = [
   {
-    title: "Aufräumhilfe",
+    title: "Cheap Flight Deals",
     description:
-      "Professionelle Unterstützung beim Aufräumen und Organisieren.",
+      "Search and book the best-priced airline tickets with real-time offers and seasonal discounts.",
     image: lineWoman11,
   },
   {
-    title: "Alltagsbegleitung",
+    title: "Affiliate Partnerships",
     description:
-      "Begleitung und Unterstützung im Alltag für mehr Lebensqualität.",
+      "Join our affiliate program and earn commissions by promoting exclusive travel and flight deals.",
     image: lineWoman12,
   },
   {
-    title: "Umzugsvorpacken",
-    description: "Hilfe beim Vorbereiten und Packen für den Umzug.",
+    title: "Travel Essentials Shop",
+    description:
+      "Find curated gear for air travel: luggage, tech accessories, comfort items and more.",
     image: lineWoman13,
   },
   {
-    title: "Gesellschaftlerin",
-    description: "Gesellschaft leisten und soziale Kontakte fördern.",
+    title: "Support & Trip Assistance",
+    description:
+      "Get help with planning, booking changes, and customer support before and during your trip.",
     image: lineWoman11,
   },
 ];
@@ -34,8 +36,8 @@ export default function Services() {
     <>
       <SEOHead
         title="Services - Vision To Go"
-        description="Professional services including organization help, daily assistance, moving preparation, and companionship at The Grrrls Club."
-        keywords="services, organization, assistance, moving, companionship, support"
+        description="Flights, affiliate partnerships, and travel essentials. Find cheap tickets, join our affiliate program, and gear up for your next journey."
+        keywords="flights, cheap flights, travel deals, affiliate program, airline tickets, travel shop, luggage, travel accessories, support"
       />
 
       <main className="min-h-screen bg-white">
@@ -45,11 +47,11 @@ export default function Services() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               <div>
                 <h1 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6">
-                  Our Services
+                  Travel Services
                 </h1>
                 <p className="text-xl text-[#171717] mb-8">
-                  Professional support services to make your life easier and
-                  more organized.
+                  Flights, affiliates, and travel essentials — everything you
+                  need for your next trip in one place.
                 </p>
                 <div className="flex items-center gap-4">
                   <img
@@ -58,7 +60,7 @@ export default function Services() {
                     className="w-16 h-16 rounded-full object-cover border-4 border-pink-300"
                   />
                   <span className="text-lg font-semibold text-gray-700">
-                    Quality Service Guaranteed
+                    Best Deals • Trusted Partners
                   </span>
                 </div>
               </div>
@@ -81,7 +83,7 @@ export default function Services() {
                 What We Offer
               </h2>
               <p className="text-lg text-[#171717]">
-                Comprehensive services tailored to your needs
+                Smart travel services for flights, affiliates, and gear
               </p>
             </div>
 
@@ -120,10 +122,11 @@ export default function Services() {
               {/* Text content */}
               <div className="text-center lg:text-left lg:flex-1">
                 <h2 className="text-3xl lg:text-4xl font-bold text-[#171717] mb-4">
-                  Ready to Get Started?
+                  Ready to Plan Your Trip?
                 </h2>
                 <p className="text-xl text-[#171717] mb-8">
-                  Contact us today to learn more about our services
+                  Find flight deals, join our affiliate program, and gear up
+                  today.
                 </p>
                 <button className="bg-gradient-to-r from-[#849c22] to-[#6b7e1c] text-white px-8 py-3 rounded-lg font-semibold hover:from-[#6b7e1c] hover:to-[#849c22] transition-all duration-300">
                   Contact Us
