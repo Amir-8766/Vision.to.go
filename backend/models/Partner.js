@@ -35,12 +35,13 @@ const partnerSchema = new mongoose.Schema(
       type: String,
       required: true,
       enum: [
-        "education", // Education & Training
-        "natural_products", // Natural Products
-        "fashion", // Fashion & Clothing
-        "health_wellness", // Health & Wellness
-        "beauty", // Beauty
-        "sustainability", // Sustainability
+        "flights", // Flights
+        "hotels", // Hotels
+        "transport", // Transport
+        "packages", // Travel Packages
+        "car_rental", // Car Rental
+        "travel_insurance", // Travel Insurance
+        "activities", // Activities & Tours
         "other", // Other
       ],
     },

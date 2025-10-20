@@ -6,6 +6,14 @@ import { apiFetch, BASE_URL, getImageUrl } from "../lib/api";
 import OptimizedImage from "../components/OptimizedImage";
 import LazyWrapper from "../components/LazyWrapper";
 import ImageSlider from "../components/ImageSlider";
+import { PiInstagramLogoLight } from "react-icons/pi";
+import beautifulCollage from "../assets/beautiful-collage-travel-concept-removebg-preview.png";
+import flightLineArt from "../assets/Flight line art.png";
+import affiliateMarketing from "../assets/affiliate-marketing-fotor-20251020213745.png";
+import travelEssential from "../assets/travel essemtial.png";
+import synergyIcon from "../assets/synergy-icon-line-illustration-vector.jpg";
+import featureProduct from "../assets/feature product.jpg";
+import travelPlan from "../assets/Travel Plan.webp";
 
 export default function Home() {
   const [newestProducts, setNewestProducts] = useState([]);
@@ -216,7 +224,7 @@ export default function Home() {
               fontSize: "2.1rem",
               fontWeight: 700,
               marginBottom: "0.5rem",
-              color: "#849c22",
+              color: "#faba00",
             }}
           >
             Plan Your Next Journey with VisionToGo
@@ -234,8 +242,8 @@ export default function Home() {
           <div className={styles.sectionHeader}>
             <h2 className={styles.suggestedSectionTitle}>Featured Products</h2>
             <OptimizedImage
-              src="/line-woman02.jpg"
-              alt="Fashion illustration"
+              src={featureProduct}
+              alt="Featured Products illustration"
               className={styles.sectionIcon}
               priority={true}
               width={60}
@@ -283,14 +291,12 @@ export default function Home() {
         {/* Features Section with Line Women */}
         <LazyWrapper className={styles.featuresSection}>
           <div className={styles.featuresContainer}>
-            <h2 className={styles.featuresTitle}>
-              Why Choose Vision To Go?
-            </h2>
+            <h2 className={styles.featuresTitle}>Why Choose Vision To Go?</h2>
             <div className={styles.featuresGrid}>
               <div className={styles.featureItem}>
                 <div className={styles.featureImage}>
                   <OptimizedImage
-                    src="/line-woman03.jpg"
+                    src={flightLineArt}
                     alt="Best Flight Deals"
                     className={styles.featureIcon}
                     priority={false}
@@ -300,13 +306,14 @@ export default function Home() {
                 </div>
                 <h3 className={styles.featureTitle}>Best Flight Deals</h3>
                 <p className={styles.featureDescription}>
-                  Find the cheapest flights and exclusive travel offers worldwide
+                  Find the cheapest flights and exclusive travel offers
+                  worldwide
                 </p>
               </div>
               <div className={styles.featureItem}>
                 <div className={styles.featureImage}>
                   <OptimizedImage
-                    src="/line-woman04.jpg"
+                    src={affiliateMarketing}
                     alt="Affiliate Program"
                     className={styles.featureIcon}
                     priority={false}
@@ -316,21 +323,19 @@ export default function Home() {
                 </div>
                 <h3 className={styles.featureTitle}>Affiliate Program</h3>
                 <p className={styles.featureDescription}>
-                  Earn commissions by promoting our travel deals and flight offers
+                  Earn commissions by promoting our travel deals and flight
+                  offers
                 </p>
               </div>
               <div className={styles.featureItem}>
                 <div className={styles.featureImage}>
-                  <img
-                    src="./line-woman06.png"
+                  <OptimizedImage
+                    src={travelEssential}
                     alt="Travel Essentials"
                     className={styles.featureIcon}
+                    priority={false}
                     width={80}
                     height={80}
-                    onError={(e) => {
-                      console.log("Image failed to load:", e.target.src);
-                      e.target.src = "/line-woman06.png";
-                    }}
                   />
                 </div>
                 <h3 className={styles.featureTitle}>Travel Essentials</h3>
@@ -350,7 +355,7 @@ export default function Home() {
                 Unsere Geschäftspartner & Synergin
               </h2>
               <OptimizedImage
-                src="/line-woman11.png"
+                src={synergyIcon}
                 alt="Partners illustration"
                 className={styles.sectionIcon}
                 priority={false}
@@ -375,29 +380,56 @@ export default function Home() {
                 </div>
               ) : (
                 affiliates.map((affiliate) => (
-                  <div key={affiliate._id} className={styles.partnerCard}>
+                  <div
+                    key={affiliate._id}
+                    className={`${styles.partnerCard} flex flex-col h-full`}
+                  >
                     <div className={styles.partnerImage}>
                       <OptimizedImage
-                        src={getImageUrl(affiliate.featuredImage || affiliate.logo || "/line-woman12.png")}
+                        src={getImageUrl(
+                          affiliate.featuredImage ||
+                            affiliate.logo ||
+                            "/line-woman12.png"
+                        )}
                         alt={affiliate.name}
                         className={styles.partnerImageContent}
                         priority={false}
                       />
                     </div>
-                    <div className={styles.partnerInfo}>
-                      <h3 className={styles.partnerName}>{affiliate.name}</h3>
-                      <p className={styles.partnerDescription}>
-                        {affiliate.description?.substring(0, 100)}...
-                      </p>
-                      <div className={styles.partnerCategory}>
-                        {affiliate.category === "flights" && "✈️ Flights"}
-                        {affiliate.category === "hotels" && "🏨 Hotels"}
-                        {affiliate.category === "transport" && "🚄 Transport"}
-                        {affiliate.category === "packages" && "🎁 Packages"}
-                        {affiliate.category === "car_rental" && "🚗 Car Rental"}
-                        {affiliate.category === "travel_insurance" && "🛡️ Travel Insurance"}
-                        {affiliate.category === "activities" && "🎯 Activities & Tours"}
-                        {affiliate.category === "other" && "🔗 Other"}
+                    <div
+                      className={`${styles.partnerInfo} flex flex-col flex-1`}
+                    >
+                      <div className="flex-1">
+                        <h3 className={styles.partnerName}>{affiliate.name}</h3>
+                        <p className={styles.partnerDescription}>
+                          {affiliate.description?.substring(0, 100)}...
+                        </p>
+                      </div>
+                      <div className="flex items-center justify-between mt-auto">
+                        <div className={`${styles.partnerCategory}`}>
+                          {affiliate.category === "flights" && "✈️ Flights"}
+                          {affiliate.category === "hotels" && "🏨 Hotels"}
+                          {affiliate.category === "transport" && "🚄 Transport"}
+                          {affiliate.category === "packages" && "🎁 Packages"}
+                          {affiliate.category === "car_rental" &&
+                            "🚗 Car Rental"}
+                          {affiliate.category === "travel_insurance" &&
+                            "🛡️ Travel Insurance"}
+                          {affiliate.category === "activities" &&
+                            "🎯 Activities & Tours"}
+                          {affiliate.category === "other" && "🔗 Other"}
+                        </div>
+                        {affiliate.instagram && (
+                          <a
+                            href={affiliate.instagram}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-pink-600 hover:text-pink-800 text-2xl"
+                            title="Follow on Instagram"
+                          >
+                            <PiInstagramLogoLight />
+                          </a>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -431,11 +463,9 @@ export default function Home() {
             </div>
             <div className={styles.ctaImage}>
               <img
-                src="./line-woman09.png"
+                src={beautifulCollage}
                 alt="Travel illustration"
                 className={styles.ctaIllustration}
-                width={400}
-                height={300}
                 onError={(e) => {
                   console.log("Image failed to load:", e.target.src);
                   e.target.src = "/line-woman09.png";

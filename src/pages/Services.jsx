@@ -2,6 +2,7 @@ import React from "react";
 import lineWoman11 from "../assets/line-woman11.png";
 import lineWoman12 from "../assets/line-woman12.png";
 import lineWoman13 from "../assets/line-woman13.png";
+import travelPlan from "../assets/Travel Plan.webp";
 import SEOHead from "../components/SEOHead";
 
 const services = [
@@ -140,7 +141,7 @@ export default function Services() {
                 <div className="relative">
                   {/* Main image */}
                   <img
-                    src={lineWoman13}
+                    src={travelPlan}
                     alt="Contact illustration"
                     className="relative w-32 h-32 lg:w-40 lg:h-40 rounded-full object-cover border-4 border-gray-200"
                   />

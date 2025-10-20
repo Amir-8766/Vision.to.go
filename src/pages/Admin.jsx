@@ -2291,7 +2291,8 @@ export default function Admin() {
                                 "geschaeftspartner",
                               isActive: affiliate.isActive !== false,
                               logo: affiliate.logo || "",
-                              featuredImage: affiliate.logo || affiliate.featuredImage || "",
+                              featuredImage:
+                                affiliate.logo || affiliate.featuredImage || "",
                             });
                           }}
                           className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"

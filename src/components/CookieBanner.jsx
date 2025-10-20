@@ -21,23 +21,29 @@ const CookieBanner = () => {
 
   const handleAcceptAll = () => {
     localStorage.setItem("cookiesAccepted", "all");
-    localStorage.setItem("cookieSettings", JSON.stringify({
-      necessary: true,
-      analytics: true,
-      marketing: true,
-      preferences: true,
-    }));
+    localStorage.setItem(
+      "cookieSettings",
+      JSON.stringify({
+        necessary: true,
+        analytics: true,
+        marketing: true,
+        preferences: true,
+      })
+    );
     setShowBanner(false);
   };
 
   const handleNecessaryOnly = () => {
     localStorage.setItem("cookiesAccepted", "necessary");
-    localStorage.setItem("cookieSettings", JSON.stringify({
-      necessary: true,
-      analytics: false,
-      marketing: false,
-      preferences: false,
-    }));
+    localStorage.setItem(
+      "cookieSettings",
+      JSON.stringify({
+        necessary: true,
+        analytics: false,
+        marketing: false,
+        preferences: false,
+      })
+    );
     setShowBanner(false);
   };
 
@@ -68,9 +74,11 @@ const CookieBanner = () => {
               Enhance Your Travel Experience
             </h3>
             <p className="text-sm text-gray-700 mb-3">
-              We use cookies and similar technologies to keep our travel platform running smoothly for you. 
-              They allow us to understand and improve how our website is used, offer you personalized flight deals, 
-              and display relevant travel content and offers. Help us provide you with the best travel experience possible.
+              We use cookies and similar technologies to keep our travel
+              platform running smoothly for you. They allow us to understand and
+              improve how our website is used, offer you personalized flight
+              deals, and display relevant travel content and offers. Help us
+              provide you with the best travel experience possible.
             </p>
             <p className="text-xs text-gray-500">
               More information can be found in our{" "}
@@ -79,8 +87,8 @@ const CookieBanner = () => {
                 className="text-blue-600 hover:text-blue-700 underline"
               >
                 Privacy Policy
-              </a>
-              {" "}and{" "}
+              </a>{" "}
+              and{" "}
               <a
                 href="/terms"
                 className="text-blue-600 hover:text-blue-700 underline"
@@ -117,12 +125,18 @@ const CookieBanner = () => {
         {/* Cookie Settings Panel */}
         {showSettings && (
           <div className="mt-6 p-4 bg-gray-50 rounded-lg border">
-            <h4 className="text-lg font-semibold text-gray-900 mb-4">Cookie Preferences</h4>
+            <h4 className="text-lg font-semibold text-gray-900 mb-4">
+              Cookie Preferences
+            </h4>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h5 className="font-medium text-gray-900">Necessary Cookies</h5>
-                  <p className="text-sm text-gray-600">Essential for website functionality and security</p>
+                  <h5 className="font-medium text-gray-900">
+                    Necessary Cookies
+                  </h5>
+                  <p className="text-sm text-gray-600">
+                    Essential for website functionality and security
+                  </p>
                 </div>
                 <input
                   type="checkbox"
@@ -133,37 +147,64 @@ const CookieBanner = () => {
               </div>
               <div className="flex items-center justify-between">
                 <div>
-                  <h5 className="font-medium text-gray-900">Analytics Cookies</h5>
-                  <p className="text-sm text-gray-600">Help us understand how visitors use our travel platform</p>
+                  <h5 className="font-medium text-gray-900">
+                    Analytics Cookies
+                  </h5>
+                  <p className="text-sm text-gray-600">
+                    Help us understand how visitors use our travel platform
+                  </p>
                 </div>
                 <input
                   type="checkbox"
                   checked={cookieSettings.analytics}
-                  onChange={(e) => setCookieSettings({...cookieSettings, analytics: e.target.checked})}
+                  onChange={(e) =>
+                    setCookieSettings({
+                      ...cookieSettings,
+                      analytics: e.target.checked,
+                    })
+                  }
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded"
                 />
               </div>
               <div className="flex items-center justify-between">
                 <div>
-                  <h5 className="font-medium text-gray-900">Marketing Cookies</h5>
-                  <p className="text-sm text-gray-600">Enable personalized travel offers and advertisements</p>
+                  <h5 className="font-medium text-gray-900">
+                    Marketing Cookies
+                  </h5>
+                  <p className="text-sm text-gray-600">
+                    Enable personalized travel offers and advertisements
+                  </p>
                 </div>
                 <input
                   type="checkbox"
                   checked={cookieSettings.marketing}
-                  onChange={(e) => setCookieSettings({...cookieSettings, marketing: e.target.checked})}
+                  onChange={(e) =>
+                    setCookieSettings({
+                      ...cookieSettings,
+                      marketing: e.target.checked,
+                    })
+                  }
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded"
                 />
               </div>
               <div className="flex items-center justify-between">
                 <div>
-                  <h5 className="font-medium text-gray-900">Preference Cookies</h5>
-                  <p className="text-sm text-gray-600">Remember your travel preferences and settings</p>
+                  <h5 className="font-medium text-gray-900">
+                    Preference Cookies
+                  </h5>
+                  <p className="text-sm text-gray-600">
+                    Remember your travel preferences and settings
+                  </p>
                 </div>
                 <input
                   type="checkbox"
                   checked={cookieSettings.preferences}
-                  onChange={(e) => setCookieSettings({...cookieSettings, preferences: e.target.checked})}
+                  onChange={(e) =>
+                    setCookieSettings({
+                      ...cookieSettings,
+                      preferences: e.target.checked,
+                    })
+                  }
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded"
                 />
               </div>
