@@ -378,7 +378,7 @@ export default function Home() {
                   <div key={affiliate._id} className={styles.partnerCard}>
                     <div className={styles.partnerImage}>
                       <OptimizedImage
-                        src={affiliate.featuredImage || "/line-woman12.png"}
+                        src={getImageUrl(affiliate.featuredImage || affiliate.logo || "/line-woman12.png")}
                         alt={affiliate.name}
                         className={styles.partnerImageContent}
                         priority={false}
@@ -390,16 +390,14 @@ export default function Home() {
                         {affiliate.description?.substring(0, 100)}...
                       </p>
                       <div className={styles.partnerCategory}>
-                        {affiliate.category === "education" && "🎓 Ausbildung"}
-                        {affiliate.category === "natural_products" &&
-                          "🌿 Naturprodukte"}
-                        {affiliate.category === "fashion" && "👗 Mode"}
-                        {affiliate.category === "health_wellness" &&
-                          "💊 Gesundheit"}
-                        {affiliate.category === "beauty" && "💄 Schönheit"}
-                        {affiliate.category === "sustainability" &&
-                          "♻️ Nachhaltigkeit"}
-                        {affiliate.category === "other" && "🔗 Andere"}
+                        {affiliate.category === "flights" && "✈️ Flights"}
+                        {affiliate.category === "hotels" && "🏨 Hotels"}
+                        {affiliate.category === "transport" && "🚄 Transport"}
+                        {affiliate.category === "packages" && "🎁 Packages"}
+                        {affiliate.category === "car_rental" && "🚗 Car Rental"}
+                        {affiliate.category === "travel_insurance" && "🛡️ Travel Insurance"}
+                        {affiliate.category === "activities" && "🎯 Activities & Tours"}
+                        {affiliate.category === "other" && "🔗 Other"}
                       </div>
                     </div>
                   </div>
