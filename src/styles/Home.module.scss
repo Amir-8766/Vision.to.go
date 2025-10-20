@@ -617,7 +617,7 @@
   height: 60px;
   object-fit: cover;
   border-radius: 50%;
-  border: 4px solid #f9a8d4;
+  border: 4px solid #faba00;
   display: block;
   margin: 0 auto;
   overflow: hidden;
@@ -672,7 +672,7 @@
   height: 80px;
   object-fit: cover;
   border-radius: 50%;
-  border: 4px solid #f9a8d4;
+  border: 4px solid #faba00;
   display: block;
   margin: 0 auto;
   overflow: hidden;
@@ -695,7 +695,7 @@
 .ctaSection {
   background: white;
   color: #333;
-  padding: 4rem 2rem;
+  padding: 0 2rem 4rem 2rem;
   margin: 4rem 0 0 0;
 }
 
@@ -705,11 +705,12 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 3rem;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .ctaText {
   text-align: left;
+  margin-top: 15rem;
 }
 
 .ctaTitle {
@@ -746,11 +747,13 @@
 .ctaImage {
   display: flex;
   justify-content: flex-end;
-  align-items: center;
+  align-items: flex-start;
   padding-right: 2rem;
+  padding-top: 0;
   border-radius: 12px;
-  overflow: hidden;
-  height: 400px;
+  overflow: visible;
+  height: auto;
+  min-height: 300px;
 }
 
 .ctaIllustration {
@@ -761,6 +764,8 @@
   object-fit: contain;
   border-radius: 12px;
   filter: brightness(1.1);
+  margin-top: 0;
+  align-self: flex-start;
 }
 
 /* ====== Mobile (<= 768px) ====== */
@@ -853,7 +858,7 @@
     height: 80px;
     object-fit: cover;
     border-radius: 50%;
-    border: 4px solid #f9a8d4;
+    border: 4px solid #faba00;
     order: -1;
     display: block;
     margin: 0 auto 0.5rem auto;
@@ -973,10 +978,11 @@
   display: inline-block;
   background: linear-gradient(135deg, #849c22 0%, #6b7e1c 100%);
   color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 2rem;
-  font-size: 0.85rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 1.5rem;
+  font-size: 0.8rem;
   font-weight: 500;
+  width: fit-content;
 }
 
 .partnersCTA {
