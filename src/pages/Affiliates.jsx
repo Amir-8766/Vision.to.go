@@ -288,7 +288,7 @@ export default function Affiliates() {
                 {affiliates.map((affiliate) => (
                   <div
                     key={affiliate._id}
-                    className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+                    className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col h-full"
                   >
                     <div className="aspect-w-16 aspect-h-9">
                       <img
@@ -299,22 +299,27 @@ export default function Affiliates() {
                         className="w-full h-48 object-cover"
                       />
                     </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                        {affiliate.name}
-                      </h3>
-                      <p className="text-gray-600 mb-4 line-clamp-3">
-                        {affiliate.description}
-                      </p>
-                      <div className="flex items-center justify-between">
+                    <div className="p-6 flex flex-col flex-1">
+                      <div className="flex-1">
+                        <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                          {affiliate.name}
+                        </h3>
+                        <p className="text-gray-600 mb-4 line-clamp-3">
+                          {affiliate.description}
+                        </p>
+                      </div>
+                      <div className="flex items-center justify-between mt-auto">
                         <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                           {affiliate.category === "flights" && "✈️ Flights"}
                           {affiliate.category === "hotels" && "🏨 Hotels"}
                           {affiliate.category === "transport" && "🚄 Transport"}
                           {affiliate.category === "packages" && "🎁 Packages"}
-                          {affiliate.category === "car_rental" && "🚗 Car Rental"}
-                          {affiliate.category === "travel_insurance" && "🛡️ Travel Insurance"}
-                          {affiliate.category === "activities" && "🎯 Activities & Tours"}
+                          {affiliate.category === "car_rental" &&
+                            "🚗 Car Rental"}
+                          {affiliate.category === "travel_insurance" &&
+                            "🛡️ Travel Insurance"}
+                          {affiliate.category === "activities" &&
+                            "🎯 Activities & Tours"}
                           {affiliate.category === "other" && "🔗 Other"}
                         </span>
                         <div className="flex items-center gap-3">
