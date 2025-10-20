@@ -166,8 +166,8 @@ export default function Home() {
     <>
       <SEOHead
         title="Vision To Go - Travel & Flight Deals"
-        description="Discover unique fashion items, accessories, and lifestyle products at The Grrrls Club. Shop now for the latest trends and exclusive collections."
-        keywords="fashion, lifestyle, clothing, accessories, shopping, women, style, boutique"
+        description="Find the best flight deals, travel essentials, and exclusive offers at Vision To Go. Book your next adventure with unbeatable prices and quality service."
+        keywords="flights, travel, deals, airline tickets, travel essentials, affiliate program, cheap flights, vacation packages"
       />
 
       <main id="main-content" className="min-h-screen bg-white">
@@ -284,46 +284,46 @@ export default function Home() {
         <LazyWrapper className={styles.featuresSection}>
           <div className={styles.featuresContainer}>
             <h2 className={styles.featuresTitle}>
-              Why Choose The Grrrls Club?
+              Why Choose Vision To Go?
             </h2>
             <div className={styles.featuresGrid}>
               <div className={styles.featureItem}>
                 <div className={styles.featureImage}>
                   <OptimizedImage
                     src="/line-woman03.jpg"
-                    alt="Sustainable fashion"
+                    alt="Best Flight Deals"
                     className={styles.featureIcon}
                     priority={false}
                     width={80}
                     height={80}
                   />
                 </div>
-                <h3 className={styles.featureTitle}>Sustainable Fashion</h3>
+                <h3 className={styles.featureTitle}>Best Flight Deals</h3>
                 <p className={styles.featureDescription}>
-                  Give clothes a second life and help save the environment
+                  Find the cheapest flights and exclusive travel offers worldwide
                 </p>
               </div>
               <div className={styles.featureItem}>
                 <div className={styles.featureImage}>
                   <OptimizedImage
                     src="/line-woman04.jpg"
-                    alt="Unique finds"
+                    alt="Affiliate Program"
                     className={styles.featureIcon}
                     priority={false}
                     width={80}
                     height={80}
                   />
                 </div>
-                <h3 className={styles.featureTitle}>Unique Finds</h3>
+                <h3 className={styles.featureTitle}>Affiliate Program</h3>
                 <p className={styles.featureDescription}>
-                  Discover one-of-a-kind pieces you won't find anywhere else
+                  Earn commissions by promoting our travel deals and flight offers
                 </p>
               </div>
               <div className={styles.featureItem}>
                 <div className={styles.featureImage}>
                   <img
                     src="./line-woman06.png"
-                    alt="Fast shipping"
+                    alt="Travel Essentials"
                     className={styles.featureIcon}
                     width={80}
                     height={80}
@@ -333,9 +333,9 @@ export default function Home() {
                     }}
                   />
                 </div>
-                <h3 className={styles.featureTitle}>Fast Shipping</h3>
+                <h3 className={styles.featureTitle}>Travel Essentials</h3>
                 <p className={styles.featureDescription}>
-                  Quick and reliable delivery to your doorstep
+                  Complete your journey with quality travel accessories and gear
                 </p>
               </div>
             </div>
@@ -420,21 +420,21 @@ export default function Home() {
         <LazyWrapper className={styles.ctaSection}>
           <div className={styles.ctaContent}>
             <div className={styles.ctaText}>
-              <h2 className={styles.ctaTitle}>Ready to Start Shopping?</h2>
+              <h2 className={styles.ctaTitle}>Ready to Start Your Journey?</h2>
               <p className={styles.ctaDescription}>
-                Join thousands of fashion lovers who have discovered their style
-                at The Grrrls Club
+                Join thousands of travelers who have found their perfect flights
+                and travel essentials with Vision To Go
               </p>
               <Link to="/products">
                 <button className={styles.ctaButton}>
-                  Explore Our Collection
+                  Explore Travel Deals
                 </button>
               </Link>
             </div>
             <div className={styles.ctaImage}>
               <img
                 src="./line-woman09.png"
-                alt="Shopping illustration"
+                alt="Travel illustration"
                 className={styles.ctaIllustration}
                 width={400}
                 height={300}
