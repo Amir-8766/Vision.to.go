@@ -40,6 +40,7 @@ const Privacy = React.lazy(() => import("./pages/Privacy"));
 const Impressum = React.lazy(() => import("./pages/Impressum"));
 const FAQ = React.lazy(() => import("./pages/FAQ"));
 import Affiliates from "./pages/Affiliates";
+const Contact = React.lazy(() => import("./pages/Contact"));
 import CookieBanner from "./components/CookieBanner";
 
 const AuthSuccess = React.lazy(() => import("./pages/AuthSuccess"));
@@ -789,6 +790,7 @@ export default function App() {
                         <Route path="/privacy" element={<Privacy />} />
                         <Route path="/impressum" element={<Impressum />} />
                         <Route path="/faq" element={<FAQ />} />
+                        <Route path="/contact" element={<Contact />} />
 
                         <Route path="/auth-success" element={<AuthSuccess />} />
                         <Route

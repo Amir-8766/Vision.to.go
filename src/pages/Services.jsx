@@ -128,9 +128,11 @@ export default function Services() {
                   Find flight deals, join our affiliate program, and gear up
                   today.
                 </p>
-                <button className="bg-gradient-to-r from-[#849c22] to-[#6b7e1c] text-white px-8 py-3 rounded-lg font-semibold hover:from-[#6b7e1c] hover:to-[#849c22] transition-all duration-300">
-                  Contact Us
-                </button>
+                <a href="/contact">
+                  <button className="bg-gradient-to-r from-[#849c22] to-[#6b7e1c] text-white px-8 py-3 rounded-lg font-semibold hover:from-[#6b7e1c] hover:to-[#849c22] transition-all duration-300">
+                    Contact Us
+                  </button>
+                </a>
               </div>
 
               {/* Image with blur background effect */}
