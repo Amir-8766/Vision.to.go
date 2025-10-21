@@ -31,6 +31,14 @@ body {
   opacity: 1;
 }
 
+/* Mobile logo sizing */
+@media (max-width: 767px) {
+  .logo {
+    height: 3rem !important; /* 48px instead of 96px (h-24) */
+    width: auto !important;
+  }
+}
+
 /* Force rebuild - text visibility fixes */
 
 /* Ensure text readability in dark mode */

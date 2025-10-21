@@ -158,7 +158,7 @@ export default function MobileBottomNav() {
         <div className="p-4">
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-lg font-semibold text-[#171717]">
-              Search Products
+              Search Travel & Flights
             </h3>
             <button
               onClick={() => setSearchOpen(false)}
@@ -177,7 +177,7 @@ export default function MobileBottomNav() {
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search for products..."
+                placeholder="Search for flights, hotels, travel gear..."
                 className="flex-1 bg-transparent outline-none text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                 autoFocus
               />
@@ -206,18 +206,20 @@ export default function MobileBottomNav() {
           <div className="mt-4">
             <p className="text-sm text-[#171717] mb-2">Popular searches:</p>
             <div className="flex flex-wrap gap-2">
-              {["Dress", "Shoes", "Bag", "Accessories"].map((term) => (
-                <button
-                  key={term}
-                  onClick={() => {
-                    setSearchTerm(term);
-                    handleSearch({ preventDefault: () => {} });
-                  }}
-                  className="px-3 py-1 bg-gray-100 hover:bg-pink-100 text-gray-700 hover:text-pink-700 rounded-full text-sm transition-colors"
-                >
-                  {term}
-                </button>
-              ))}
+              {["Flights", "Hotels", "Travel Gear", "Vacation Packages"].map(
+                (term) => (
+                  <button
+                    key={term}
+                    onClick={() => {
+                      setSearchTerm(term);
+                      handleSearch({ preventDefault: () => {} });
+                    }}
+                    className="px-3 py-1 bg-gray-100 hover:bg-pink-100 text-gray-700 hover:text-pink-700 rounded-full text-sm transition-colors"
+                  >
+                    {term}
+                  </button>
+                )
+              )}
             </div>
           </div>
         </div>
