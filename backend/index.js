@@ -215,10 +215,14 @@ app.post("/create-payment-intent", async (req, res) => {
     // Create simplified items metadata (only essential info)
     const simplifiedItems = (items || []).map((item) => ({
       id: item._id,
-      name: item.name,
+      name: item.name.length > 50 ? item.name.substring(0, 47) + "..." : item.name,
       price: item.price,
       quantity: item.quantity || 1,
     }));
+
+    // Truncate metadata if too long
+    const itemsJson = JSON.stringify(simplifiedItems);
+    const finalItemsJson = itemsJson.length > 400 ? itemsJson.substring(0, 397) + "..." : itemsJson;
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amount, // amount in cents
@@ -226,7 +230,7 @@ app.post("/create-payment-intent", async (req, res) => {
       metadata: {
         userId: userId || "anonymous",
         itemsCount: (items || []).length.toString(),
-        items: JSON.stringify(simplifiedItems),
+        items: finalItemsJson,
       },
     });
 
