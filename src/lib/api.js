@@ -22,7 +22,9 @@ export const getImageUrl = (imagePath) => {
 };
 
 export const apiFetch = async (endpoint, options = {}) => {
-  const url = `${BASE_URL}${endpoint}`;
+  // Remove /api prefix if it exists since backend doesn't use it
+  const cleanEndpoint = endpoint.startsWith('/api') ? endpoint.replace('/api', '') : endpoint;
+  const url = `${BASE_URL}${cleanEndpoint}`;
 
   // Get token from localStorage
   const token = localStorage.getItem("token");
