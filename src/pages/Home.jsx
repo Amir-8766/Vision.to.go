@@ -15,6 +15,7 @@ import synergyIcon from "../assets/synergy-icon-line-illustration-vector.jpg";
 import featureProduct from "../assets/feature product.jpg";
 import travelPlan from "../assets/Travel Plan.webp";
 import homeLogo from "../assets/Home-Logo.png";
+import FlightCard from "../components/ui/FlightCard.jsx";
 
 export default function Home() {
   const [newestProducts, setNewestProducts] = useState([]);
@@ -217,7 +218,7 @@ export default function Home() {
         <ImageSlider />
 
         {/* Welcome Message Section */}
-        <section style={{ textAlign: "center", margin: "2.5rem 0 1.5rem 0" }}>
+        <section style={{ textAlign: "center", margin: "10rem 0 1.5rem 0" }}>
           <h1
             style={{
               fontSize: "2.1rem",
@@ -236,8 +237,271 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Last Minute Flights Section */}
+        <LazyWrapper className={`${styles.suggestedSection} mt-44`}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.suggestedSectionTitle}>
+              Last Minute Flights
+            </h2>
+            <OptimizedImage
+              src={flightLineArt}
+              alt="Last minute flights illustration"
+              className={styles.sectionIcon}
+              priority={true}
+              width={60}
+              height={60}
+            />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto px-4">
+            {[
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1529074963764-98f45c47344b?q=80&w=400&auto=format&fit=crop",
+                airline: "Lufthansa",
+                flightCode: "LH 441",
+                flightClass: "Economy",
+                departureCode: "FRA",
+                departureCity: "Frankfurt",
+                departureTime: "08:45",
+                arrivalCode: "BCN",
+                arrivalCity: "Barcelona",
+                arrivalTime: "11:20",
+                duration: "2h 35m",
+                price: "€89",
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=400&auto=format&fit=crop",
+                airline: "Eurowings",
+                flightCode: "EW 1234",
+                flightClass: "Economy",
+                departureCode: "MUC",
+                departureCity: "Munich",
+                departureTime: "14:30",
+                arrivalCode: "MAD",
+                arrivalCity: "Madrid",
+                arrivalTime: "17:15",
+                duration: "2h 45m",
+                price: "€95",
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=400&auto=format&fit=crop",
+                airline: "Alitalia",
+                flightCode: "AZ 567",
+                flightClass: "Economy",
+                departureCode: "FCO",
+                departureCity: "Rome",
+                departureTime: "09:15",
+                arrivalCode: "CDG",
+                arrivalCity: "Paris",
+                arrivalTime: "11:45",
+                duration: "2h 30m",
+                price: "€78",
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1506905925346-14b1e5dba7c4?q=80&w=400&auto=format&fit=crop",
+                airline: "KLM",
+                flightCode: "KL 890",
+                flightClass: "Economy",
+                departureCode: "HAM",
+                departureCity: "Hamburg",
+                departureTime: "16:20",
+                arrivalCode: "AMS",
+                arrivalCity: "Amsterdam",
+                arrivalTime: "17:40",
+                duration: "1h 20m",
+                price: "€65",
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=400&auto=format&fit=crop",
+                airline: "Czech Airlines",
+                flightCode: "OK 234",
+                flightClass: "Economy",
+                departureCode: "TXL",
+                departureCity: "Berlin",
+                departureTime: "12:45",
+                arrivalCode: "PRG",
+                arrivalCity: "Prague",
+                arrivalTime: "13:55",
+                duration: "1h 10m",
+                price: "€45",
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=400&auto=format&fit=crop",
+                airline: "Austrian",
+                flightCode: "OS 345",
+                flightClass: "Economy",
+                departureCode: "MUC",
+                departureCity: "Munich",
+                departureTime: "10:30",
+                arrivalCode: "VIE",
+                arrivalCity: "Vienna",
+                arrivalTime: "11:45",
+                duration: "1h 15m",
+                price: "€72",
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=400&auto=format&fit=crop",
+                airline: "Swiss",
+                flightCode: "LX 456",
+                flightClass: "Economy",
+                departureCode: "FRA",
+                departureCity: "Frankfurt",
+                departureTime: "15:10",
+                arrivalCode: "ZUR",
+                arrivalCity: "Zurich",
+                arrivalTime: "16:25",
+                duration: "1h 15m",
+                price: "€85",
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1506905925346-14b1e5dba7c4?q=80&w=400&auto=format&fit=crop",
+                airline: "SAS",
+                flightCode: "SK 567",
+                flightClass: "Economy",
+                departureCode: "HAM",
+                departureCity: "Hamburg",
+                departureTime: "13:25",
+                arrivalCode: "CPH",
+                arrivalCity: "Copenhagen",
+                arrivalTime: "14:40",
+                duration: "1h 15m",
+                price: "€58",
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1529074963764-98f45c47344b?q=80&w=400&auto=format&fit=crop",
+                airline: "SAS",
+                flightCode: "SK 678",
+                flightClass: "Economy",
+                departureCode: "TXL",
+                departureCity: "Berlin",
+                departureTime: "11:40",
+                arrivalCode: "ARN",
+                arrivalCity: "Stockholm",
+                arrivalTime: "13:20",
+                duration: "1h 40m",
+                price: "€68",
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=400&auto=format&fit=crop",
+                airline: "Norwegian",
+                flightCode: "DY 789",
+                flightClass: "Economy",
+                departureCode: "MUC",
+                departureCity: "Munich",
+                departureTime: "08:50",
+                arrivalCode: "OSL",
+                arrivalCity: "Oslo",
+                arrivalTime: "10:55",
+                duration: "2h 05m",
+                price: "€75",
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=400&auto=format&fit=crop",
+                airline: "Finnair",
+                flightCode: "AY 890",
+                flightClass: "Economy",
+                departureCode: "FRA",
+                departureCity: "Frankfurt",
+                departureTime: "14:15",
+                arrivalCode: "HEL",
+                arrivalCity: "Helsinki",
+                arrivalTime: "16:35",
+                duration: "2h 20m",
+                price: "€82",
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1506905925346-14b1e5dba7c4?q=80&w=400&auto=format&fit=crop",
+                airline: "Brussels Airlines",
+                flightCode: "SN 901",
+                flightClass: "Economy",
+                departureCode: "HAM",
+                departureCity: "Hamburg",
+                departureTime: "17:30",
+                arrivalCode: "BRU",
+                arrivalCity: "Brussels",
+                arrivalTime: "19:05",
+                duration: "1h 35m",
+                price: "€52",
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=400&auto=format&fit=crop",
+                airline: "Air France",
+                flightCode: "AF 012",
+                flightClass: "Economy",
+                departureCode: "FRA",
+                departureCity: "Frankfurt",
+                departureTime: "12:00",
+                arrivalCode: "ORY",
+                arrivalCity: "Paris",
+                arrivalTime: "13:30",
+                duration: "1h 30m",
+                price: "€88",
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1529074963764-98f45c47344b?q=80&w=400&auto=format&fit=crop",
+                airline: "Iberia",
+                flightCode: "IB 123",
+                flightClass: "Economy",
+                departureCode: "MUC",
+                departureCity: "Munich",
+                departureTime: "16:45",
+                arrivalCode: "BCN",
+                arrivalCity: "Barcelona",
+                arrivalTime: "19:20",
+                duration: "2h 35m",
+                price: "€92",
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=400&auto=format&fit=crop",
+                airline: "TAP Air Portugal",
+                flightCode: "TP 234",
+                flightClass: "Economy",
+                departureCode: "TXL",
+                departureCity: "Berlin",
+                departureTime: "09:30",
+                arrivalCode: "LIS",
+                arrivalCity: "Lisbon",
+                arrivalTime: "12:15",
+                duration: "2h 45m",
+                price: "€76",
+              },
+              {
+                imageUrl:
+                  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=400&auto=format&fit=crop",
+                airline: "Turkish Airlines",
+                flightCode: "TK 345",
+                flightClass: "Economy",
+                departureCode: "FRA",
+                departureCity: "Frankfurt",
+                departureTime: "18:20",
+                arrivalCode: "IST",
+                arrivalCity: "Istanbul",
+                arrivalTime: "22:45",
+                duration: "4h 25m",
+                price: "€125",
+              },
+            ].map((flight, index) => (
+              <FlightCard key={index} {...flight} />
+            ))}
+          </div>
+        </LazyWrapper>
+
         {/* Featured Products Section - Dynamic */}
-        <LazyWrapper className={styles.suggestedSection}>
+        <LazyWrapper className={`${styles.suggestedSection} mt-40`}>
           <div className={styles.sectionHeader}>
             <h2 className={styles.suggestedSectionTitle}>Featured Products</h2>
             <OptimizedImage
