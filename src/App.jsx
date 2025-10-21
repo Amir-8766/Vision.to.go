@@ -394,19 +394,19 @@ function Navigation() {
         <div className="hidden md:flex items-center gap-6">
           {[
             "/",
-            "/services",
-            "/about",
-            "/products",
-            "/affiliates",
             "/commission",
+            "/affiliates",
+            "/products",
+            "/about",
+            "/services",
           ].map((path, idx) => {
             const names = [
               "HOME",
-              "SERVICES",
-              "ABOUT US",
-              "PRODUCTS",
+              "OFFERS",
               "AFFILIATES",
-              "COMMISSION",
+              "PRODUCTS",
+              "ABOUT US",
+              "SERVICES",
             ];
             return (
               <div key={path} className="relative">
@@ -553,19 +553,19 @@ function Navigation() {
         >
           {[
             "/",
-            "/services",
-            "/about",
-            "/products",
-            "/affiliates",
             "/commission",
+            "/affiliates",
+            "/products",
+            "/about",
+            "/services",
           ].map((path, idx) => {
             const names = [
               "HOME",
-              "SERVICES",
-              "ABOUT US",
-              "PRODUCTS",
+              "OFFERS",
               "AFFILIATES",
-              "COMMISSION",
+              "PRODUCTS",
+              "ABOUT US",
+              "SERVICES",
             ];
             return (
               <NavLink
