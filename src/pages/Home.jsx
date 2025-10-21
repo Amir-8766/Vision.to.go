@@ -14,6 +14,7 @@ import travelEssential from "../assets/travel essemtial.png";
 import synergyIcon from "../assets/synergy-icon-line-illustration-vector.jpg";
 import featureProduct from "../assets/feature product.jpg";
 import travelPlan from "../assets/Travel Plan.webp";
+import homeLogo from "../assets/Home-Logo.png";
 
 export default function Home() {
   const [newestProducts, setNewestProducts] = useState([]);
@@ -184,10 +185,8 @@ export default function Home() {
           {/* Background image as content image to allow fetchpriority */}
           <picture>
             <img
-              src={
-                new URL("../assets/Background.Hero.jpg", import.meta.url).href
-              }
-              alt="Background"
+              src={homeLogo}
+              alt="Vision To Go Background"
               style={{
                 position: "absolute",
                 inset: 0,

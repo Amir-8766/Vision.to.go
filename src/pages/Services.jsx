@@ -3,6 +3,12 @@ import lineWoman11 from "../assets/line-woman11.png";
 import lineWoman12 from "../assets/line-woman12.png";
 import lineWoman13 from "../assets/line-woman13.png";
 import travelPlan from "../assets/Travel Plan.webp";
+import services01 from "../assets/Services01.jpg";
+import services02 from "../assets/Services02.jpg";
+import services03 from "../assets/Services03.jpg";
+import services04 from "../assets/Services04.jpg";
+import services05 from "../assets/Services05.png";
+import services06 from "../assets/Services06.webp";
 import SEOHead from "../components/SEOHead";
 
 const services = [
@@ -10,25 +16,25 @@ const services = [
     title: "Cheap Flight Deals",
     description:
       "Search and book the best-priced airline tickets with real-time offers and seasonal discounts.",
-    image: lineWoman11,
+    image: services05,
   },
   {
     title: "Affiliate Partnerships",
     description:
       "Join our affiliate program and earn commissions by promoting exclusive travel and flight deals.",
-    image: lineWoman12,
+    image: services04,
   },
   {
     title: "Travel Essentials Shop",
     description:
       "Find curated gear for air travel: luggage, tech accessories, comfort items and more.",
-    image: lineWoman13,
+    image: services03,
   },
   {
     title: "Support & Trip Assistance",
     description:
       "Get help with planning, booking changes, and customer support before and during your trip.",
-    image: lineWoman11,
+    image: services06,
   },
 ];
 
@@ -56,7 +62,7 @@ export default function Services() {
                 </p>
                 <div className="flex items-center gap-4">
                   <img
-                    src={lineWoman11}
+                    src={services01}
                     alt="Service illustration"
                     className="w-16 h-16 rounded-full object-cover border-4 border-pink-300"
                   />
@@ -67,7 +73,7 @@ export default function Services() {
               </div>
               <div className="flex justify-center">
                 <img
-                  src={lineWoman12}
+                  src={services02}
                   alt="Services illustration"
                   className="max-w-full h-auto max-h-96 object-contain"
                 />
