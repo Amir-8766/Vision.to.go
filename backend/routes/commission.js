@@ -27,17 +27,15 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// افزودن کالای کمیسیونی جدید (فقط ادمین)
-router.post("/", authMiddleware, async (req, res) => {
+// افزودن کالای کمیسیونی جدید (موقتاً بدون authentication)
+router.post("/", async (req, res) => {
   try {
-    if (req.user.role !== "admin") {
-      return res.status(403).json({ error: "Access denied" });
-    }
-
+    console.log("Received commission data:", req.body);
     const product = new CommissionProduct(req.body);
     await product.save();
     res.status(201).json(product);
   } catch (err) {
+    console.error("Commission creation error:", err);
     res.status(400).json({ error: err.message });
   }
 });

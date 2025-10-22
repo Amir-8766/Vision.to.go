@@ -7,14 +7,24 @@ const commissionProductSchema = new mongoose.Schema({
   originalPrice: { type: Number }, // قیمت اصلی قبل از تخفیف
   isDiscounted: { type: Boolean, default: false }, // آیا محصول تخفیف خورده
   discountLabel: { type: String, default: "Last Chance" }, // برچسب تخفیف
-  commissionRate: { type: Number, required: true, min: 0, max: 100 }, // 30-40%
-  partnerName: { type: String, required: true },
-  partnerLogo: String,
-  partnerDescription: String,
-  category: String,
+  airlineLogo: String, // لوگو هواپیمایی
   images: [String],
   isActive: { type: Boolean, default: true },
   createdAt: { type: Date, default: Date.now },
+  // Flight specific fields
+  airline: String,
+  flightCode: String,
+  flightClass: { type: String, default: "Economy" },
+  departureCode: String,
+  departureCity: String,
+  departureTime: String,
+  arrivalCode: String,
+  arrivalCity: String,
+  arrivalTime: String,
+  duration: String,
+  durationHours: String,
+  durationMinutes: String,
+  flightImageUrl: String,
 });
 
 module.exports = mongoose.model("CommissionProduct", commissionProductSchema);
