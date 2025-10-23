@@ -5,15 +5,33 @@ const Order = require("../models/Order");
 const { authMiddleware, adminMiddleware } = require("../middleware/auth");
 
 // گرفتن همه سفارش‌ها (فقط ادمین)
-router.get("/", authMiddleware, adminMiddleware, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const orders = await Order.find().populate("items.productId");
+    // Check authorization header
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ error: "No token provided" });
+    }
+
+    const token = authHeader.substring(7);
+    const jwt = require("jsonwebtoken");
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET || "your-secret-key-12345"
+    );
+
+    if (decoded.role !== "admin") {
+      return res.status(403).json({ error: "Access denied: Admins only" });
+    }
+
+    const orders = await Order.find();
+    console.log(`✅ Found ${orders.length} orders for admin`);
     res.json(orders);
   } catch (err) {
+    console.error("❌ Error fetching orders:", err.message);
     res.status(500).json({ error: err.message });
   }
 });
-
 
 // گرفتن سفارشات کاربر فعلی
 router.get("/user/my-orders", authMiddleware, async (req, res) => {
