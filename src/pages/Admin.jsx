@@ -633,7 +633,7 @@ export default function Admin() {
               : "bg-gray-200 text-gray-700"
           }`}
         >
-          Commission Products
+          Offers
         </button>
         <button
           onClick={() => setActiveTab("affiliates")}
